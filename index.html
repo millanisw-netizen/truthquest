@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0a0e27" />
+  <meta name="description" content="TruthQuest — A browser-based media literacy RPG for the UNESCO Youth Hackathon 2026. Play as the last honest journalist. Can you save Veridis City from disinformation?" />
+  <meta name="keywords" content="media literacy, disinformation, UNESCO, MIL, fact checking, game, journalism, education" />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="TruthQuest Team — UNESCO Youth Hackathon 2026" />
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:title"       content="TruthQuest — Can You Save Veridis From Disinformation?" />
+  <meta property="og:description" content="A media literacy RPG. Step into the shoes of the last honest journalist. Every choice matters. UNESCO Youth Hackathon 2026." />
+  <meta property="og:image"       content="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&q=80&auto=format&fit=crop" />
+  <meta property="og:url"         content="https://truthquest.app/" />
+  <meta property="og:site_name"   content="TruthQuest" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="TruthQuest — Play Your Part in the Fight for Truth" />
+  <meta name="twitter:description" content="A free browser-based media literacy game. UNESCO Youth Hackathon 2026. #TruthQuest #MIL #UNESCO2026" />
+  <meta name="twitter:image"       content="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&q=80&auto=format&fit=crop" />
+
+  <title>TruthQuest — UNESCO Youth Hackathon 2026</title>
+
+  <!-- Favicon (inline SVG — no file needed) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>" />
+  <link rel="apple-touch-icon" href="assets/icon-192.png" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="css/main.css" />
+
+  <!-- Apply saved theme before page renders to avoid flash -->
+  <script>
+    (function () {
+      const saved = localStorage.getItem('tq_theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', saved);
+    })();
+  </script>
+</head>
+<body>
+  <!-- Scroll progress bar -->
+  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
+  <!-- Floating quotes background -->
+  <div id="quotes-bg" aria-hidden="true"></div>
+
+  <!-- ═══════════════════════════════════════════
+       HEADER / NAV
+  ════════════════════════════════════════════ -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo-group">
+        <span class="logo-icon" aria-hidden="true">🔍</span>
+        <span class="logo-text">TruthQuest</span>
+      </div>
+      <nav class="header-nav" aria-label="Main navigation">
+        <a href="#about">About MIL</a>
+        <a href="#real-cases">📋 Real Cases</a>
+        <a href="#fact-checker">🔬 Fact Check</a>
+        <a href="#video-section">Trailer</a>
+        <a href="leaderboard.html">🏆 Leaderboard</a>
+        <a href="game.html" class="nav-cta">Play Now</a>
+        <!-- Dark / Light mode toggle -->
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode" title="Toggle theme">
+          <span class="theme-icon" aria-hidden="true">🌙</span>
+        </button>
+      </nav>
+      <!-- Hamburger (mobile) -->
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════
+       HERO SECTION
+  ════════════════════════════════════════════ -->
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-badge">
+        <span>🏆</span> UNESCO Youth Hackathon 2026
+      </div>
+
+      <!-- MIL Tip of the Day -->
+      <div class="mil-tip-banner" id="mil-tip" role="note" aria-label="Media literacy tip of the day">
+        <span class="mil-tip-label" aria-hidden="true">💡 MIL TIP</span>
+        <span class="mil-tip-text" id="mil-tip-text"></span>
+      </div>
+
+      <h1 id="hero-title" class="hero-title">
+        Truth<span class="title-accent">Quest</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Can you save the city from disinformation?
+      </p>
+
+      <p class="hero-tagline">
+        Step into the shoes of Veridis City's last honest journalist.<br />
+        Every choice matters. Every source counts. The truth is yours to uncover.
+      </p>
+
+      <div class="hero-actions">
+        <a href="game.html" class="btn-primary pulse-glow" role="button">
+          <span class="btn-icon" aria-hidden="true">▶</span>
+          Play TruthQuest Now
+        </a>
+        <a href="#about" class="btn-secondary">
+          What is MIL? →
+        </a>
+      </div>
+
+      <!-- Stats bar -->
+      <div class="stats-bar" role="region" aria-label="Hackathon statistics">
+        <div class="stat-item">
+          <span class="stat-number">1,200+</span>
+          <span class="stat-label">Submissions Worldwide</span>
+        </div>
+        <div class="stat-divider" aria-hidden="true">|</div>
+        <div class="stat-item">
+          <span class="stat-number">138</span>
+          <span class="stat-label">Countries</span>
+        </div>
+        <div class="stat-divider" aria-hidden="true">|</div>
+        <div class="stat-item">
+          <span class="stat-number">You</span>
+          <span class="stat-label">Could Be Next</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         VIDEO SECTION — Main Trailer
+    ════════════════════════════════════════════ -->
+    <section id="video-section" class="video-section" aria-labelledby="video-heading">
+      <div class="section-label">🎬 FEATURED TRAILER</div>
+      <h2 id="video-heading" class="section-title">Watch Our Story</h2>
+      <p class="section-sub">See the world of Veridis come to life</p>
+
+      <div class="video-wrapper" role="region" aria-label="TruthQuest trailer video player">
+        <!-- Drop-in video: add src="assets/trailer.mp4" when ready -->
+        <video
+          id="trailer-video"
+          src=""
+          preload="none"
+          poster=""
+          playsinline
+          controls
+          aria-label="TruthQuest trailer — add assets/trailer.mp4 to activate"
+        ></video>
+
+        <!-- Placeholder overlay — shown when no video is loaded -->
+        <div class="video-placeholder" id="video-placeholder" role="img" aria-label="TruthQuest trailer placeholder">
+          <div class="video-overlay-bg" aria-hidden="true"></div>
+
+          <!-- Animated scan lines for cinematic feel -->
+          <div class="video-scanlines" aria-hidden="true"></div>
+
+          <!-- UNESCO watermark -->
+          <div class="video-watermark" aria-hidden="true">
+            <span>UNESCO</span>
+            <span class="watermark-year">2026</span>
+          </div>
+
+          <!-- Animated text reveal in the center -->
+          <div class="video-center-reveal" aria-hidden="true">
+            <div class="vcr-tag">▶ OFFICIAL TRAILER</div>
+            <button class="video-play-btn" id="video-play-btn" aria-label="Play trailer (add assets/trailer.mp4 to activate)">
+              <div class="play-circle">
+                <div class="play-ripple"></div>
+                <div class="play-triangle" aria-hidden="true"></div>
+              </div>
+            </button>
+            <p class="vcr-add-video">Drop <code>assets/trailer.mp4</code> here</p>
+          </div>
+
+          <!-- Title overlay -->
+          <div class="video-title-overlay" aria-hidden="true">
+            <span class="video-series-tag">🎙️ UNESCO HACKATHON 2026</span>
+            <h3 class="video-title-text">TruthQuest: Play Your Part</h3>
+          </div>
+
+          <!-- Bottom controls bar -->
+          <div class="video-controls" aria-hidden="true">
+            <div class="video-progress-track">
+              <div class="video-progress-fill"></div>
+            </div>
+            <div class="video-controls-row">
+              <span class="video-play-icon">▶</span>
+              <span class="video-time">0:00 / 2:34</span>
+              <div class="video-controls-right">
+                <span class="video-cc">CC</span>
+                <span class="video-fullscreen">⛶</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Video description below player -->
+      <div class="video-description-bar" aria-label="Trailer description">
+        <div class="vdb-item">
+          <span class="vdb-icon" aria-hidden="true">🏙️</span>
+          <span>Veridis City — a world on the brink</span>
+        </div>
+        <div class="vdb-item">
+          <span class="vdb-icon" aria-hidden="true">📰</span>
+          <span>One journalist. Three crises. No easy answers.</span>
+        </div>
+        <div class="vdb-item">
+          <span class="vdb-icon" aria-hidden="true">🔍</span>
+          <span>Play your part in the fight for truth</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         MINI AD STRIP — Promotional Spots
+    ════════════════════════════════════════════ -->
+    <section class="ad-strip-section" aria-labelledby="ad-strip-heading">
+      <h2 id="ad-strip-heading" class="visually-hidden">Featured Videos</h2>
+      <div class="ad-strip-label" aria-hidden="true">
+        <span class="ad-strip-dot" aria-hidden="true"></span>
+        FEATURED CLIPS
+        <span class="ad-strip-dot" aria-hidden="true"></span>
+      </div>
+
+      <div class="ad-strip-grid">
+
+        <!-- Ad Card 1 -->
+        <div class="ad-card" role="region" aria-label="Ad: How to spot fake news">
+          <div class="ad-thumb" aria-hidden="true">
+            <div class="ad-thumb-bg ad-thumb-bg-1"></div>
+            <!-- Real video slot: replace src with assets/clip-fakenews.mp4 -->
+            <video class="ad-video-clip" src="" preload="none" playsinline
+                   aria-label="How to spot fake news — add assets/clip-fakenews.mp4 to activate"></video>
+            <div class="ad-thumb-overlay">
+              <button class="ad-play-btn" aria-label="Play: How to spot fake news">
+                <span aria-hidden="true">▶</span>
+              </button>
+              <div class="ad-duration" aria-label="Duration">1:15</div>
+              <div class="ad-badge-tag" aria-hidden="true">📚 MIL TIP</div>
+            </div>
+          </div>
+          <div class="ad-info">
+            <h3 class="ad-title">How to Spot Fake News in 60 Seconds</h3>
+            <p class="ad-sub">Real journalist techniques, simplified for everyone.</p>
+            <div class="ad-meta" aria-label="Video metadata">
+              <span>🔥 2.4K views</span>
+              <span>UNESCO MIL</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ad Card 2 -->
+        <div class="ad-card" role="region" aria-label="Ad: Deepfakes explained">
+          <div class="ad-thumb" aria-hidden="true">
+            <div class="ad-thumb-bg ad-thumb-bg-2"></div>
+            <video class="ad-video-clip" src="" preload="none" playsinline
+                   aria-label="Deepfakes explained — add assets/clip-deepfake.mp4 to activate"></video>
+            <div class="ad-thumb-overlay">
+              <button class="ad-play-btn" aria-label="Play: Deepfakes explained">
+                <span aria-hidden="true">▶</span>
+              </button>
+              <div class="ad-duration" aria-label="Duration">2:08</div>
+              <div class="ad-badge-tag" aria-hidden="true">🤖 AI LITERACY</div>
+            </div>
+          </div>
+          <div class="ad-info">
+            <h3 class="ad-title">Deepfakes: What Are They &amp; How to Detect Them</h3>
+            <p class="ad-sub">AI-generated media is everywhere. Here's how to fight back.</p>
+            <div class="ad-meta" aria-label="Video metadata">
+              <span>🔥 5.1K views</span>
+              <span>UNESCO MIL</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ad Card 3 -->
+        <div class="ad-card" role="region" aria-label="Ad: Why MIL matters">
+          <div class="ad-thumb" aria-hidden="true">
+            <div class="ad-thumb-bg ad-thumb-bg-3"></div>
+            <video class="ad-video-clip" src="" preload="none" playsinline
+                   aria-label="Why MIL matters — add assets/clip-mil.mp4 to activate"></video>
+            <div class="ad-thumb-overlay">
+              <button class="ad-play-btn" aria-label="Play: Why MIL matters">
+                <span aria-hidden="true">▶</span>
+              </button>
+              <div class="ad-duration" aria-label="Duration">3:22</div>
+              <div class="ad-badge-tag" aria-hidden="true">🌍 GLOBAL IMPACT</div>
+            </div>
+          </div>
+          <div class="ad-info">
+            <h3 class="ad-title">Why Media Literacy Is the Skill of the Century</h3>
+            <p class="ad-sub">From election manipulation to health misinformation — MIL protects everyone.</p>
+            <div class="ad-meta" aria-label="Video metadata">
+              <span>🔥 8.7K views</span>
+              <span>UNESCO MIL</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- "Add your videos" instruction -->
+      <p class="ad-strip-notice" aria-live="polite">
+        📽️ Replace the <code>src=""</code> attributes in the ad cards with your video file paths to activate the players.
+      </p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         FEATURES STRIP
+    ════════════════════════════════════════════ -->
+    <section class="features-section" aria-labelledby="features-heading">
+      <h2 id="features-heading" class="visually-hidden">Game Features</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon" aria-hidden="true">📰</div>
+          <h3>3 Full Chapters</h3>
+          <p>Navigate fake viral videos, political whistleblowers, and deepfake audio across a rich branching narrative.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" aria-hidden="true">🔍</div>
+          <h3>Source Verification</h3>
+          <p>Use real journalist tools — reverse image search, publication dates, AI detectors — to expose disinformation.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" aria-hidden="true">🏙️</div>
+          <h3>Living City</h3>
+          <p>Watch the city of Veridis react in real time. Every choice you make changes the city's trust in the media.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" aria-hidden="true">🏆</div>
+          <h3>Earn MIL Badges</h3>
+          <p>Collect Media and Information Literacy skill badges as you play. Share your score and challenge friends.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         FACT CHECKER TOOL
+    ════════════════════════════════════════════ -->
+    <section id="fact-checker" class="fc-section" aria-labelledby="fc-heading">
+      <div class="section-label">🔬 LIVE TOOL</div>
+      <h2 id="fc-heading" class="section-title">Fact Checker</h2>
+      <p class="section-sub">Paste a URL, headline, or claim — we'll analyse it for credibility signals instantly.</p>
+
+      <div class="fc-card">
+
+        <!-- Input row -->
+        <div class="fc-input-row">
+          <div class="fc-input-wrap">
+            <span class="fc-input-icon" aria-hidden="true">🔗</span>
+            <input
+              type="text"
+              id="fc-input"
+              class="fc-input"
+              placeholder="Paste a URL or type a headline / claim…"
+              aria-label="Enter a URL or claim to fact-check"
+              autocomplete="off"
+              spellcheck="false"
+            />
+            <button class="fc-clear-btn" id="fc-clear" aria-label="Clear input" title="Clear" style="display:none">✕</button>
+          </div>
+          <button class="fc-check-btn" id="fc-check-btn" aria-label="Analyse this claim">
+            <span class="fc-btn-icon" aria-hidden="true">🔍</span>
+            <span class="fc-btn-text">Analyse</span>
+          </button>
+        </div>
+
+        <!-- Example chips -->
+        <div class="fc-examples" aria-label="Example claims to try">
+          <span class="fc-example-label">Try:</span>
+          <button class="fc-chip" data-val="Mayor poisons city water supply — video proof inside!">🚨 Viral headline</button>
+          <button class="fc-chip" data-val="https://bbc.com/news/world">🌐 bbc.com</button>
+          <button class="fc-chip" data-val="https://randomnews99.xyz/breaking-mayor-arrested">⚠️ Suspicious URL</button>
+          <button class="fc-chip" data-val="Scientists say chocolate cures all diseases — share NOW">🍫 Clickbait</button>
+        </div>
+
+        <!-- Result panel -->
+        <div class="fc-result" id="fc-result" aria-live="polite" style="display:none">
+
+          <!-- Verdict banner -->
+          <div class="fc-verdict-banner" id="fc-verdict-banner">
+            <span class="fc-verdict-icon" id="fc-verdict-icon" aria-hidden="true"></span>
+            <div>
+              <div class="fc-verdict-title" id="fc-verdict-title"></div>
+              <div class="fc-verdict-sub"   id="fc-verdict-sub"></div>
+            </div>
+            <div class="fc-verdict-score" id="fc-verdict-score" aria-label="Credibility score"></div>
+          </div>
+
+          <!-- Signal breakdown bars -->
+          <div class="fc-signals" id="fc-signals" aria-label="Credibility signal breakdown"></div>
+
+          <!-- What to do next -->
+          <div class="fc-advice" id="fc-advice"></div>
+
+          <!-- MIL tip linked to the result -->
+          <div class="fc-mil-tip" id="fc-mil-tip"></div>
+        </div>
+
+        <!-- Loading state -->
+        <div class="fc-loading" id="fc-loading" style="display:none" aria-live="polite" role="status">
+          <div class="fc-loading-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <span class="fc-loading-text">Analysing signals…</span>
+        </div>
+
+      </div>
+
+      <p class="fc-disclaimer">
+        ⚠️ This tool uses pattern-based heuristics to educate about credibility signals — not a substitute for professional fact-checking. Always verify with multiple sources.
+      </p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         REAL CASES SECTION
+    ════════════════════════════════════════════ -->
+    <section id="real-cases" class="cases-section" aria-labelledby="cases-heading">
+      <div class="section-label">📋 DOCUMENTED INCIDENTS</div>
+      <h2 id="cases-heading" class="section-title">When Fake News Turned Deadly</h2>
+      <p class="section-sub">These are real events. Disinformation isn't a game — but understanding it can save lives.</p>
+
+      <div class="cases-grid">
+
+        <!-- Case 1: Pizzagate -->
+        <article class="case-card" aria-labelledby="case-1-title">
+          <div class="case-header">
+            <div class="case-severity case-severity-high" aria-label="High severity">HIGH IMPACT</div>
+            <div class="case-year">2016</div>
+          </div>
+          <div class="case-icon" aria-hidden="true">🍕</div>
+          <h3 id="case-1-title" class="case-title">Pizzagate — The Shooting That Never Should Have Happened</h3>
+          <div class="case-country">🇺🇸 Washington D.C., USA</div>
+          <p class="case-what"><strong>The lie:</strong> A viral conspiracy claimed a Washington D.C. pizza restaurant was secretly running a child trafficking ring connected to senior Democratic politicians. The claim spread via social media and fringe websites, citing fabricated "coded messages" in hacked emails.</p>
+          <p class="case-what"><strong>What happened:</strong> On December 4, 2016, a man drove from North Carolina to the restaurant armed with an assault rifle and two handguns. He fired multiple shots inside while "self-investigating." No victims were harmed physically, but the restaurant staff lived in terror for months. The owner received thousands of death threats.</p>
+          <div class="case-lesson">
+            <span class="case-lesson-icon" aria-hidden="true">💡</span>
+            <span><strong>MIL lesson:</strong> Fabricated "evidence" in the form of screenshots and creative interpretation of normal text spread unchecked across platforms. The claim was debunked by every major news organisation — but the believers never saw the corrections.</span>
+          </div>
+          <div class="case-sources">
+            <span class="case-sources-label">Sources:</span>
+            <a href="https://www.bbc.com/news/blogs-trending-38156985" target="_blank" rel="noopener noreferrer" class="case-source-link">BBC</a>
+            <a href="https://apnews.com/article/pizzagate-shooting-dc" target="_blank" rel="noopener noreferrer" class="case-source-link">AP News</a>
+          </div>
+        </article>
+
+        <!-- Case 2: Myanmar / Rohingya -->
+        <article class="case-card case-card-critical" aria-labelledby="case-2-title">
+          <div class="case-header">
+            <div class="case-severity case-severity-critical" aria-label="Critical severity">GENOCIDE LINK</div>
+            <div class="case-year">2017</div>
+          </div>
+          <div class="case-icon" aria-hidden="true">📱</div>
+          <h3 id="case-2-title" class="case-title">Myanmar — Facebook and the Rohingya Genocide</h3>
+          <div class="case-country">🇲🇲 Myanmar (Burma)</div>
+          <p class="case-what"><strong>The lie:</strong> For years, coordinated networks of Facebook accounts — many linked to the Myanmar military — spread fabricated stories portraying the Rohingya Muslim minority as violent criminals, terrorists, and threats to Buddhist society. The content included fake images, manufactured atrocity stories, and dehumanising language.</p>
+          <p class="case-what"><strong>What happened:</strong> A UN fact-finding mission concluded that Facebook played a "determining role" in spreading hate speech that contributed to violence. In August 2017, military operations forced over 700,000 Rohingya to flee to Bangladesh. Mass killings, sexual violence, and village burnings were documented. The UN described it as bearing the hallmarks of genocide.</p>
+          <div class="case-lesson">
+            <span class="case-lesson-icon" aria-hidden="true">💡</span>
+            <span><strong>MIL lesson:</strong> Social media platforms with no local language moderation allowed coordinated disinformation to operate unchecked for years. For many Rohingya, Facebook was the internet — there was no competing information ecosystem to provide context.</span>
+          </div>
+          <div class="case-sources">
+            <span class="case-sources-label">Sources:</span>
+            <a href="https://www.amnesty.org/en/latest/news/2022/09/myanmar-facebooks-systems-promoted-violence-against-rohingya-meta-owes-reparations-new-report/" target="_blank" rel="noopener noreferrer" class="case-source-link">Amnesty International</a>
+            <a href="https://news.un.org/en/story/2026/01/1166764" target="_blank" rel="noopener noreferrer" class="case-source-link">UN News</a>
+          </div>
+        </article>
+
+        <!-- Case 3: WhatsApp India lynchings -->
+        <article class="case-card" aria-labelledby="case-3-title">
+          <div class="case-header">
+            <div class="case-severity case-severity-high" aria-label="High severity">LIVES LOST</div>
+            <div class="case-year">2018</div>
+          </div>
+          <div class="case-icon" aria-hidden="true">📲</div>
+          <h3 id="case-3-title" class="case-title">India WhatsApp Lynchings — Forwarded Messages, Real Deaths</h3>
+          <div class="case-country">🇮🇳 Multiple states, India</div>
+          <p class="case-what"><strong>The lie:</strong> A WhatsApp voice message and video claimed that strangers were kidnapping children in local villages. The message — entirely fabricated — spread rapidly through rural WhatsApp groups, often forwarded dozens of times before reaching recipients who had no way to verify it.</p>
+          <p class="case-what"><strong>What happened:</strong> At least 31 people were killed in mob lynchings across India between 2017 and 2019, directly linked to false child abduction rumours spread via WhatsApp. In one documented case, five Muslim men from Hyderabad were beaten to death by a mob of over 200 people after being falsely identified as kidnappers. They were on a charitable visit distributing food.</p>
+          <div class="case-lesson">
+            <span class="case-lesson-icon" aria-hidden="true">💡</span>
+            <span><strong>MIL lesson:</strong> End-to-end encryption means disinformation in private messaging apps is nearly impossible to monitor or correct at scale. The "forwarded" label on messages is a weak signal — it cannot convey how many times false information has been amplified.</span>
+          </div>
+          <div class="case-sources">
+            <span class="case-sources-label">Sources:</span>
+            <a href="https://www.washingtonpost.com/politics/2020/02/21/how-misinformation-whatsapp-led-deathly-mob-lynching-india/" target="_blank" rel="noopener noreferrer" class="case-source-link">Washington Post</a>
+            <a href="https://en.wikipedia.org/wiki/Indian_WhatsApp_lynchings" target="_blank" rel="noopener noreferrer" class="case-source-link">Wikipedia</a>
+          </div>
+        </article>
+
+        <!-- Case 4: COVID-19 / 5G -->
+        <article class="case-card" aria-labelledby="case-4-title">
+          <div class="case-header">
+            <div class="case-severity case-severity-high" aria-label="High severity">INFRASTRUCTURE</div>
+            <div class="case-year">2020</div>
+          </div>
+          <div class="case-icon" aria-hidden="true">📡</div>
+          <h3 id="case-4-title" class="case-title">COVID-19 + 5G Conspiracy — Towers Burned Across Europe</h3>
+          <div class="case-country">🇬🇧🇳🇱🇧🇪🇮🇪 UK, Netherlands, Belgium, Ireland</div>
+          <p class="case-what"><strong>The lie:</strong> A conspiracy theory falsely claimed 5G mobile phone towers were causing or spreading COVID-19. The claim — which has no scientific basis — spread through YouTube videos, Facebook posts, and celebrity endorsements, reaching millions within weeks of the pandemic's start.</p>
+          <p class="case-what"><strong>What happened:</strong> More than 100 arson attacks on 5G infrastructure were recorded across the UK and Europe in early 2020. Telecom engineers were harassed and physically attacked. In some cases, engineers working on completely unrelated equipment were targeted. Hospitals relying on those networks faced disruption during the height of the pandemic.</p>
+          <div class="case-lesson">
+            <span class="case-lesson-icon" aria-hidden="true">💡</span>
+            <span><strong>MIL lesson:</strong> In a crisis, people seek explanations — and disinformation fills that vacuum faster than facts. The BBC published debunking articles, but the conspiracy's emotional appeal ("they're making us sick") outpaced corrections in algorithmic feeds.</span>
+          </div>
+          <div class="case-sources">
+            <span class="case-sources-label">Sources:</span>
+            <a href="https://www.pbs.org/newshour/world/conspiracy-theorists-burn-5g-towers-claiming-link-to-virus" target="_blank" rel="noopener noreferrer" class="case-source-link">PBS NewsHour</a>
+            <a href="https://www.bbc.com/news/stories-52731624" target="_blank" rel="noopener noreferrer" class="case-source-link">BBC</a>
+          </div>
+        </article>
+
+        <!-- Case 5: Sri Lanka Easter Sunday -->
+        <article class="case-card" aria-labelledby="case-5-title">
+          <div class="case-header">
+            <div class="case-severity case-severity-critical" aria-label="Critical severity">VIOLENCE SPARKED</div>
+            <div class="case-year">2019</div>
+          </div>
+          <div class="case-icon" aria-hidden="true">💬</div>
+          <h3 id="case-5-title" class="case-title">Sri Lanka — Social Media Shutdown After Attacks Fuelled Riots</h3>
+          <div class="case-country">🇱🇰 Sri Lanka</div>
+          <p class="case-what"><strong>The lie:</strong> Following the Easter Sunday bombings that killed 269 people, false rumours and manipulated images spread rapidly on Facebook, WhatsApp, and Viber, falsely blaming Muslim communities and inciting retaliation. Fabricated claims about Muslims stockpiling weapons spread within hours.</p>
+          <p class="case-what"><strong>What happened:</strong> Riots broke out in multiple cities. Mosques and Muslim-owned businesses were attacked and burned. The Sri Lankan government took the drastic step of blocking all social media platforms nationally for several days — a decision criticised for impacting press freedom but seen as necessary to prevent further bloodshed. At least one person was killed in the subsequent communal violence.</p>
+          <div class="case-lesson">
+            <span class="case-lesson-icon" aria-hidden="true">💡</span>
+            <span><strong>MIL lesson:</strong> In the immediate aftermath of real tragedies, the disinformation environment is at its most dangerous. Grief and fear lower critical thinking thresholds — making verification more important, not less, precisely when it is hardest.</span>
+          </div>
+          <div class="case-sources">
+            <span class="case-sources-label">Sources:</span>
+            <a href="https://www.reuters.com/article/us-sri-lanka-blasts-socialmedia/" target="_blank" rel="noopener noreferrer" class="case-source-link">Reuters</a>
+            <a href="https://www.bbc.com/news/world-asia-48056265" target="_blank" rel="noopener noreferrer" class="case-source-link">BBC</a>
+          </div>
+        </article>
+
+        <!-- Case 6: Brazil Amazon fires -->
+        <article class="case-card" aria-labelledby="case-6-title">
+          <div class="case-header">
+            <div class="case-severity case-severity-medium" aria-label="Medium severity">POLICY IMPACT</div>
+            <div class="case-year">2019</div>
+          </div>
+          <div class="case-icon" aria-hidden="true">🌳</div>
+          <h3 id="case-6-title" class="case-title">Amazon Fires — Old Photos Weaponised for Political Narratives</h3>
+          <div class="case-country">🇧🇷 Brazil</div>
+          <p class="case-what"><strong>The lie:</strong> During the 2019 Amazon wildfire crisis, viral social media posts shared dramatic images of burning rainforest — many of which were decades-old stock photos or images from fires in other countries entirely. Some were AI-manipulated. These images were shared millions of times alongside emotionally charged, sometimes misleading claims about causes and responsibility.</p>
+          <p class="case-what"><strong>What happened:</strong> The Brazilian government and international leaders publicly clashed based partly on the distorted information environment. Celebrities and world leaders shared false images in good faith, amplifying confusion. Meanwhile, the actual scale of fires — which was genuinely alarming — was simultaneously overstated and distorted by the false imagery, undermining trust in legitimate environmental reporting.</p>
+          <div class="case-lesson">
+            <span class="case-lesson-icon" aria-hidden="true">💡</span>
+            <span><strong>MIL lesson:</strong> Even when sharing content you care deeply about, reverse image search takes 10 seconds. Sharing false images for a true cause still spreads disinformation — and hands ammunition to those who want to discredit the entire story.</span>
+          </div>
+          <div class="case-sources">
+            <span class="case-sources-label">Sources:</span>
+            <a href="https://www.bbc.com/news/world-latin-america-49486285" target="_blank" rel="noopener noreferrer" class="case-source-link">BBC</a>
+            <a href="https://apnews.com/article/fact-check-amazon-fires" target="_blank" rel="noopener noreferrer" class="case-source-link">AP Fact Check</a>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Bottom CTA -->
+      <div class="cases-cta" role="complementary" aria-label="Call to action">
+        <div class="cases-cta-inner">
+          <span class="cases-cta-icon" aria-hidden="true">🎮</span>
+          <div>
+            <strong>These are real. The game is practice.</strong>
+            <p>TruthQuest puts you in situations modelled after real disinformation campaigns so you can build the skills to recognise them before they spread.</p>
+          </div>
+          <a href="game.html" class="btn-primary" role="button">Play TruthQuest →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         ABOUT MIL SECTION
+    ════════════════════════════════════════════ -->
+    <section id="about" class="about-section" aria-labelledby="about-heading">
+      <div class="about-inner">
+        <div class="about-text">
+          <div class="section-label">📚 LEARN</div>
+          <h2 id="about-heading" class="section-title">What is Media &amp;<br />Information Literacy?</h2>
+          <p>
+            <strong>Media and Information Literacy (MIL)</strong> is the set of skills that allows people to access, analyze, evaluate, create, and act using all forms of communication. In a world of viral misinformation, algorithmic feeds, and AI-generated content, MIL is not optional — it's survival.
+          </p>
+          <p>
+            UNESCO champions MIL as a fundamental right. Informed, critical citizens are the strongest defense against the manipulation of public opinion. TruthQuest puts these skills in your hands — through play.
+          </p>
+          <div class="mil-skills-list" role="list">
+            <div class="mil-skill" role="listitem"><span aria-hidden="true">✅</span> Identifying credible sources</div>
+            <div class="mil-skill" role="listitem"><span aria-hidden="true">✅</span> Recognizing manipulation tactics</div>
+            <div class="mil-skill" role="listitem"><span aria-hidden="true">✅</span> Understanding digital footprints</div>
+            <div class="mil-skill" role="listitem"><span aria-hidden="true">✅</span> Ethical information sharing</div>
+            <div class="mil-skill" role="listitem"><span aria-hidden="true">✅</span> Detecting AI-generated content</div>
+          </div>
+          <a href="https://www.unesco.org/en/media-information-literacy" target="_blank" rel="noopener noreferrer" class="btn-secondary" aria-label="Learn more about MIL on UNESCO website (opens in new tab)">
+            Learn More at UNESCO →
+          </a>
+        </div>
+        <div class="about-visual" aria-hidden="true">
+          <div class="mil-wheel">
+            <div class="mil-center">MIL</div>
+            <div class="mil-spoke" style="--angle: 0deg">Access</div>
+            <div class="mil-spoke" style="--angle: 60deg">Analyze</div>
+            <div class="mil-spoke" style="--angle: 120deg">Evaluate</div>
+            <div class="mil-spoke" style="--angle: 180deg">Create</div>
+            <div class="mil-spoke" style="--angle: 240deg">Reflect</div>
+            <div class="mil-spoke" style="--angle: 300deg">Act</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         FINAL CTA
+    ════════════════════════════════════════════ -->
+    <section class="cta-section" aria-labelledby="cta-heading">
+      <h2 id="cta-heading" class="cta-title">Veridis needs you.</h2>
+      <p class="cta-sub">The disinformation won't stop itself. Are you ready?</p>
+      <a href="game.html" class="btn-primary btn-large pulse-glow" role="button">
+        <span aria-hidden="true">▶</span> Start Your Investigation
+      </a>
+    </section>
+  </main>
+
+  <!-- Back to top -->
+  <button class="back-to-top" id="back-to-top" aria-label="Back to top">
+    <span aria-hidden="true">↑</span>
+  </button>
+
+  <!-- No-JS fallback -->
+  <noscript>
+    <div style="position:fixed;bottom:0;left:0;right:0;background:#ff4444;color:#fff;text-align:center;padding:12px;font-family:sans-serif;font-size:0.9rem;z-index:9999">
+      ⚠️ TruthQuest requires JavaScript to run. Please enable it in your browser settings.
+    </div>
+  </noscript>
+
+  <!-- ═══════════════════════════════════════════
+       FOOTER
+  ════════════════════════════════════════════ -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="logo-icon" aria-hidden="true">🔍</span>
+        <strong>TruthQuest</strong>
+      </div>
+      <p class="footer-tagline">
+        A UNESCO Youth Hackathon 2026 submission<br />
+        Theme: <em>Play Your Part: Youth Designing the Future of Media and Information Literacy</em>
+      </p>
+      <div class="footer-links">
+        <a href="https://www.unesco.org" target="_blank" rel="noopener noreferrer">UNESCO.org</a>
+        <a href="https://www.unesco.org/en/media-information-literacy" target="_blank" rel="noopener noreferrer">MIL Resources</a>
+        <a href="game.html">Play Game</a>
+      </div>
+      <p class="footer-copy">
+        &copy; <span id="footer-year">2026</span> TruthQuest Team — Built for UNESCO Youth Hackathon 2026.
+        All characters and events are fictional.
+      </p>
+    </div>
+  </footer>
+
+  <script src="js/ui.js"></script>
+  <!-- PWA Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+      });
+    }
+  </script>
+  <script>
+    // ── Floating Quotes Background ────────────────────────────────────────
+    (function () {
+      const container = document.getElementById('quotes-bg');
+      if (!container) return;
+
+      const QUOTES = [
+        { text: '"A free press can be good or bad, but without freedom it can only be bad."', author: '— Albert Camus' },
+        { text: '"The first casualty of war is the truth."', author: '— Aeschylus' },
+        { text: '"Misinformation is like a virus — it spreads faster than the truth."', author: '— UNESCO MIL Framework' },
+        { text: '"Not everything that is faced can be changed, but nothing can be changed until it is faced."', author: '— James Baldwin' },
+        { text: '"Freedom of the press is not just important to democracy — it is democracy."', author: '— Walter Cronkite' },
+        { text: '"In a world of disinformation, the most radical act is to verify."', author: '— TruthQuest' },
+        { text: '"The truth will set you free, but first it will make you uncomfortable."', author: '— Gloria Steinem' },
+        { text: '"Whoever controls the media controls the mind."', author: '— Jim Morrison' },
+        { text: '"Media literacy is not just a skill — it is a survival tool for democracy."', author: '— UNESCO' },
+        { text: '"Four hostile newspapers are more to be feared than a thousand bayonets."', author: '— Napoleon Bonaparte' },
+        { text: '"The goal of fake news is not to convince you of a lie — it is to make you distrust the truth."', author: '— Research on Disinformation' },
+        { text: '"Every time we look away from a lie, we become complicit in it."', author: '— TruthQuest' },
+        { text: '"A lie can travel halfway around the world while the truth is still putting on its shoes."', author: '— Mark Twain' },
+        { text: '"Critical thinking is the vaccine against disinformation."', author: '— UNESCO MIL' },
+        { text: '"The press is the best instrument for enlightening the mind of man."', author: '— Thomas Jefferson' },
+        { text: '"Information is power. Access to accurate information is a human right."', author: '— UN Declaration' },
+        { text: '"AI can generate the perfect lie. Media literacy is your detector."', author: '— TruthQuest' },
+        { text: '"Democracy dies in darkness."', author: '— Washington Post' },
+      ];
+
+      // Config
+      const COUNT    = 9;    // number of floating quotes on screen
+      const MIN_DUR  = 18;   // seconds to float across
+      const MAX_DUR  = 32;
+      const MIN_SIZE = 0.72; // rem
+      const MAX_SIZE = 0.88;
+
+      // Track which quotes are in use so we don't repeat
+      const inUse = new Set();
+
+      function pickQuote() {
+        const available = QUOTES.filter((_, i) => !inUse.has(i));
+        const pool = available.length > 0 ? available : QUOTES;
+        const idx  = QUOTES.indexOf(pool[Math.floor(Math.random() * pool.length)]);
+        inUse.add(idx);
+        setTimeout(() => inUse.delete(idx), (MIN_DUR + MAX_DUR) * 500);
+        return QUOTES[idx];
+      }
+
+      function createCard() {
+        const q    = pickQuote();
+        const card = document.createElement('div');
+        card.className = 'quote-card';
+
+        // Random lane (vertical position %)
+        const top  = 4 + Math.random() * 88;
+        const dur  = MIN_DUR + Math.random() * (MAX_DUR - MIN_DUR);
+        const size = MIN_SIZE + Math.random() * (MAX_SIZE - MIN_SIZE);
+        const delay= Math.random() * -MAX_DUR; // start at a random point mid-animation
+
+        card.style.cssText = `
+          top: ${top}%;
+          font-size: ${size}rem;
+          animation-duration: ${dur}s;
+          animation-delay: ${delay}s;
+        `;
+
+        card.innerHTML = `
+          <span class="qc-mark" aria-hidden="true">"</span>
+          <span class="qc-text">${q.text.replace(/^"|"$/g, '')}</span>
+          <span class="qc-author">${q.author}</span>
+        `;
+
+        container.appendChild(card);
+
+        // Remove after 2 full cycles to avoid DOM bloat
+        card.addEventListener('animationiteration', () => {
+          // Replace the quote text on each cycle for variety
+          const nq = pickQuote();
+          card.querySelector('.qc-text').textContent   = nq.text.replace(/^"|"$/g, '');
+          card.querySelector('.qc-author').textContent = nq.author;
+        });
+      }
+
+      // Spawn initial cards
+      for (let i = 0; i < COUNT; i++) createCard();
+    })();
+
+    // ── Main trailer play button ──────────────────────────────────────────
+    const playBtn = document.getElementById('video-play-btn');
+    if (playBtn) {
+      playBtn.addEventListener('click', function () {
+        const video       = document.getElementById('trailer-video');
+        const placeholder = document.getElementById('video-placeholder');
+        if (video && video.src && video.src !== window.location.href && video.src !== '') {
+          placeholder.style.display = 'none';
+          video.style.display = 'block';
+          video.play().catch(() => {});
+        } else {
+          const notice = document.querySelector('.vcr-add-video');
+          if (notice) {
+            notice.style.color = '#ffd700';
+            notice.style.transform = 'scale(1.08)';
+            notice.style.transition = 'all 0.3s ease';
+            setTimeout(() => { notice.style.color = ''; notice.style.transform = ''; }, 1000);
+          }
+        }
+      });
+    }
+
+    // ── Ad card play buttons ──────────────────────────────────────────────
+    document.querySelectorAll('.ad-play-btn').forEach(btn => {
+      btn.addEventListener('click', function () {
+        const card    = btn.closest('.ad-card');
+        const video   = card.querySelector('.ad-video-clip');
+        const overlay = card.querySelector('.ad-thumb-overlay');
+        if (video && video.src && video.src !== window.location.href && video.src !== '') {
+          video.style.zIndex = '5';
+          video.controls = true;
+          overlay.style.opacity = '0';
+          video.play().catch(() => {});
+        } else {
+          btn.style.transition = 'transform 0.15s ease';
+          btn.style.transform = 'scale(0.85)';
+          setTimeout(() => { btn.style.transform = ''; }, 300);
+        }
+      });
+    });
+
+    // ════════════════════════════════════════════════════
+    // 🌙 DARK / LIGHT MODE TOGGLE
+    // ════════════════════════════════════════════════════
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon   = themeToggle ? themeToggle.querySelector('.theme-icon') : null;
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('tq_theme', theme);
+      if (themeIcon) themeIcon.textContent = theme === 'dark' ? '🌙' : '☀️';
+      if (themeToggle) themeToggle.setAttribute('aria-label',
+        theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', theme === 'dark' ? '#0a0e27' : '#eef2ff');
+    }
+
+    applyTheme(localStorage.getItem('tq_theme') || 'dark');
+
+    themeToggle && themeToggle.addEventListener('click', () => {
+      const cur = document.documentElement.getAttribute('data-theme');
+      applyTheme(cur === 'dark' ? 'light' : 'dark');
+      playClick();
+    });
+
+    // ════════════════════════════════════════════════════
+    // 🍔 HAMBURGER MENU (mobile)
+    // ════════════════════════════════════════════════════
+    const hamburger = document.getElementById('hamburger');
+    const headerNav = document.querySelector('.header-nav');
+
+    if (hamburger && headerNav) {
+      hamburger.addEventListener('click', () => {
+        const open = hamburger.getAttribute('aria-expanded') === 'true';
+        hamburger.setAttribute('aria-expanded', String(!open));
+        hamburger.classList.toggle('open', !open);
+        headerNav.classList.toggle('nav-open', !open);
+        playClick();
+      });
+      headerNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+        hamburger.setAttribute('aria-expanded', 'false');
+        hamburger.classList.remove('open');
+        headerNav.classList.remove('nav-open');
+      }));
+    }
+
+    // ════════════════════════════════════════════════════
+    // 📜 SCROLL PROGRESS BAR
+    // ════════════════════════════════════════════════════
+    const progressBar = document.getElementById('scroll-progress');
+    window.addEventListener('scroll', () => {
+      if (!progressBar) return;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      progressBar.style.width = max > 0 ? (window.scrollY / max * 100) + '%' : '0%';
+    }, { passive: true });
+
+    // ════════════════════════════════════════════════════
+    // ✨ SCROLL REVEAL ANIMATIONS
+    // ════════════════════════════════════════════════════
+    if ('IntersectionObserver' in window) {
+      const revealObs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) { e.target.classList.add('revealed'); revealObs.unobserve(e.target); }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+      document.querySelectorAll('.feature-card, .mil-skill, .ad-card, .stat-item, .vdb-item, .about-text p')
+        .forEach((el, i) => {
+          el.classList.add('reveal-on-scroll');
+          el.style.transitionDelay = (i % 4 * 0.09) + 's';
+          revealObs.observe(el);
+        });
+    }
+
+    // ════════════════════════════════════════════════════
+    // 💡 MIL TIP OF THE DAY
+    // ════════════════════════════════════════════════════
+    const MIL_TIPS = [
+      'Before sharing a story, check if 2 other credible sources report the same thing.',
+      'Look at a website\'s "About" page — anonymous publishers are a red flag.',
+      'Reverse image search reveals if a photo has been taken out of context.',
+      'Emotional headlines designed to make you angry or scared are often misleading.',
+      'Check the date — old news reposted as "breaking" is a common disinformation tactic.',
+      'AI-generated images often have distorted hands, teeth, or backgrounds. Look closely.',
+      'Satire sites look real. Always verify an outlet before sharing its content.',
+      'Verified checkmarks can be bought or faked. Check the account\'s full history.',
+      'If a claim sounds too outrageous to be true, it probably is. Pause before sharing.',
+      'UNESCO\'s MIL framework: Access → Analyze → Evaluate → Create → Reflect → Act.'
+    ];
+    const tipEl = document.getElementById('mil-tip-text');
+    if (tipEl) {
+      const day = Math.floor((Date.now() - new Date(new Date().getFullYear(),0,0)) / 86400000);
+      tipEl.textContent = MIL_TIPS[day % MIL_TIPS.length];
+    }
+
+    // ════════════════════════════════════════════════════
+    // 🔊 WEB AUDIO CLICK SOUND (no audio files needed)
+    // ════════════════════════════════════════════════════
+    let _audioCtx = null;
+    function playClick() {
+      try {
+        if (!_audioCtx) _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = _audioCtx.createOscillator();
+        const gain = _audioCtx.createGain();
+        osc.connect(gain); gain.connect(_audioCtx.destination);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(660, _audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(420, _audioCtx.currentTime + 0.09);
+        gain.gain.setValueAtTime(0.07, _audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, _audioCtx.currentTime + 0.12);
+        osc.start(); osc.stop(_audioCtx.currentTime + 0.12);
+      } catch(e) {}
+    }
+    document.querySelectorAll('a.btn-primary, a.btn-secondary, a.nav-cta, .ad-play-btn').forEach(el => {
+      el.addEventListener('click', playClick, { passive: true });
+    });
+
+    // ════════════════════════════════════════════════════
+    // 🔬 FACT CHECKER ENGINE
+    // ════════════════════════════════════════════════════
+    (function () {
+      const input    = document.getElementById('fc-input');
+      const checkBtn = document.getElementById('fc-check-btn');
+      const clearBtn = document.getElementById('fc-clear');
+      const result   = document.getElementById('fc-result');
+      const loading  = document.getElementById('fc-loading');
+      if (!input || !checkBtn) return;
+
+      // ── Chip shortcuts ──────────────────────────────────────────
+      document.querySelectorAll('.fc-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+          input.value = chip.dataset.val;
+          clearBtn.style.display = 'inline-flex';
+          input.focus();
+          runCheck();
+        });
+      });
+
+      // ── Clear button ────────────────────────────────────────────
+      input.addEventListener('input', () => {
+        clearBtn.style.display = input.value ? 'inline-flex' : 'none';
+        if (!input.value) hideResult();
+      });
+      clearBtn && clearBtn.addEventListener('click', () => {
+        input.value = '';
+        clearBtn.style.display = 'none';
+        hideResult();
+        input.focus();
+      });
+
+      // ── Enter key ───────────────────────────────────────────────
+      input.addEventListener('keydown', e => { if (e.key === 'Enter') runCheck(); });
+      checkBtn.addEventListener('click', runCheck);
+
+      function hideResult() {
+        if (result)  result.style.display  = 'none';
+        if (loading) loading.style.display = 'none';
+      }
+
+      // ── ANALYSIS ENGINE ─────────────────────────────────────────
+      function runCheck() {
+        const raw = input.value.trim();
+        if (!raw) { input.focus(); return; }
+
+        result.style.display  = 'none';
+        loading.style.display = 'flex';
+
+        // Simulate async analysis (150–600ms feel)
+        setTimeout(() => {
+          loading.style.display = 'none';
+          const analysis = analyse(raw);
+          renderResult(analysis);
+          result.style.display = 'block';
+          result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 400 + Math.random() * 350);
+      }
+
+      // ── Signal rules ─────────────────────────────────────────────
+      const CREDIBLE_DOMAINS = [
+        'bbc.com','reuters.com','apnews.com','theguardian.com','nytimes.com',
+        'washingtonpost.com','economist.com','nature.com','who.int','un.org',
+        'unesco.org','britannica.com','sciencemag.org','npr.org','pbs.org',
+        'aljazeera.com','dw.com','france24.com','abc.net.au','cbc.ca',
+        'theatlantic.com','wired.com','smithsonianmag.com'
+      ];
+      const SUSPICIOUS_DOMAINS = [
+        'xyz','click','info','buzz','viral','breaking','truth','real','secret',
+        'exposed','shock','insider','daily','report','news99','top10'
+      ];
+      const CLICKBAIT_WORDS = [
+        'shocking','you won\'t believe','share now','share before','they delete',
+        'doctors hate','one weird trick','breaking!!!','urgent','must see',
+        'exclusive proof','explosive','bombshell','caught','exposed','wake up',
+        'mainstream media won\'t','government hiding','deep state','illuminati',
+        'share this','wake up sheeple','they don\'t want you','secret cure',
+        'miracle','banned','censored'
+      ];
+      const EMOTIONAL_CAPS = /[A-Z]{4,}/g;
+      const EXCESS_PUNCT   = /[!?]{2,}/g;
+      const URL_RE         = /^https?:\/\//i;
+
+      function analyse(text) {
+        const lower   = text.toLowerCase();
+        const isURL   = URL_RE.test(text);
+        let   domain  = '';
+        let   signals = [];
+        let   score   = 50; // start neutral
+
+        // ── Domain extraction ──────────────────────────────────
+        if (isURL) {
+          try {
+            domain = new URL(text).hostname.replace('www.', '');
+          } catch (e) { domain = ''; }
+        }
+
+        // ── Signal: known credible domain ─────────────────────
+        if (domain && CREDIBLE_DOMAINS.some(d => domain.endsWith(d))) {
+          score += 35;
+          signals.push({ label: 'Recognised credible domain', icon: '✅', impact: 'positive', detail: `"${domain}" is a well-established, internationally recognised news source.` });
+        }
+
+        // ── Signal: suspicious TLD or domain keywords ─────────
+        const tld = domain.split('.').pop();
+        if (domain && SUSPICIOUS_DOMAINS.some(s => domain.includes(s) || tld === s)) {
+          score -= 25;
+          signals.push({ label: 'Suspicious domain pattern', icon: '⚠️', impact: 'negative', detail: `"${domain}" contains patterns common in low-credibility or disinformation sites (e.g. .xyz, "viral", "truth", "breaking").` });
+        }
+
+        // ── Signal: clickbait language ────────────────────────
+        const cbMatches = CLICKBAIT_WORDS.filter(w => lower.includes(w));
+        if (cbMatches.length >= 2) {
+          score -= 20 + (cbMatches.length * 3);
+          signals.push({ label: 'Clickbait language detected', icon: '🎣', impact: 'negative', detail: `Contains high-manipulation phrases: "${cbMatches.slice(0,3).join('", "')}" — common in emotionally manipulative content.` });
+        } else if (cbMatches.length === 1) {
+          score -= 8;
+          signals.push({ label: 'Mild clickbait language', icon: '⚡', impact: 'warning', detail: `Contains the phrase "${cbMatches[0]}" which can signal sensational framing.` });
+        }
+
+        // ── Signal: ALL CAPS words ────────────────────────────
+        const capsMatches = text.match(EMOTIONAL_CAPS) || [];
+        if (capsMatches.length >= 2) {
+          score -= 15;
+          signals.push({ label: 'Excessive capitalisation', icon: '📢', impact: 'negative', detail: `Words in ALL CAPS (${capsMatches.slice(0,3).join(', ')}) are used to trigger emotional reactions — a classic manipulation tactic.` });
+        }
+
+        // ── Signal: excessive punctuation !!!! ───────────────
+        const punctMatches = text.match(EXCESS_PUNCT) || [];
+        if (punctMatches.length >= 1) {
+          score -= 10;
+          signals.push({ label: 'Excessive punctuation', icon: '❗', impact: 'negative', detail: `Multiple exclamation or question marks (${punctMatches.join(' ')}) create false urgency.` });
+        }
+
+        // ── Signal: urgency words ("share before deleted") ───
+        const urgency = ['share before','before they delete','delete this','act now','time sensitive','limited time'];
+        if (urgency.some(u => lower.includes(u))) {
+          score -= 20;
+          signals.push({ label: 'Artificial urgency', icon: '🚨', impact: 'negative', detail: 'Phrases like "share before they delete this" are engineered to bypass critical thinking by creating panic.' });
+        }
+
+        // ── Signal: no URL for a factual claim ───────────────
+        if (!isURL && text.length > 30) {
+          score -= 5;
+          signals.push({ label: 'No source link provided', icon: '🔗', impact: 'warning', detail: 'Strong claims need strong sources. A verifiable URL or citation should accompany factual assertions.' });
+        }
+
+        // ── Signal: HTTPS ─────────────────────────────────────
+        if (isURL && text.startsWith('https://')) {
+          score += 5;
+          signals.push({ label: 'Secure connection (HTTPS)', icon: '🔒', impact: 'positive', detail: 'HTTPS is a basic security standard. Not a credibility guarantee, but its absence is a red flag.' });
+        } else if (isURL && text.startsWith('http://')) {
+          score -= 8;
+          signals.push({ label: 'Insecure connection (HTTP)', icon: '🔓', impact: 'warning', detail: 'Non-HTTPS sites lack basic security. Reputable outlets use HTTPS as a minimum standard.' });
+        }
+
+        // ── Signal: question bait ─────────────────────────────
+        const qbait = ['is this real','could this be true','what they\'re not telling','the truth about','what really happened'];
+        if (qbait.some(q => lower.includes(q))) {
+          score -= 12;
+          signals.push({ label: 'Question-bait framing', icon: '🪤', impact: 'negative', detail: 'Framing claims as "what they don\'t tell you" implies a hidden truth — a common conspiracy rhetoric pattern.' });
+        }
+
+        // ── If no signals triggered add neutral default ───────
+        if (signals.length === 0) {
+          signals.push({ label: 'No strong signals detected', icon: '➖', impact: 'neutral', detail: 'No obvious red flags or credibility markers found. Apply further verification before sharing.' });
+        }
+
+        // ── Clamp score ───────────────────────────────────────
+        score = Math.max(0, Math.min(100, score));
+
+        // ── Verdict ───────────────────────────────────────────
+        let verdict, verdictIcon, verdictColor, advice, milTip;
+        if (score >= 75) {
+          verdict     = 'Likely Credible';
+          verdictIcon = '✅';
+          verdictColor= 'positive';
+          advice      = 'This shows signs of credibility — but always cross-check with a second source before sharing.';
+          milTip      = '💡 <strong>MIL Tip:</strong> Even credible outlets can make mistakes. Corroboration across independent sources is the gold standard.';
+        } else if (score >= 50) {
+          verdict     = 'Proceed with Caution';
+          verdictIcon = '⚠️';
+          verdictColor= 'warning';
+          advice      = 'Mixed signals detected. Do not share until you can verify the original source independently.';
+          milTip      = '💡 <strong>MIL Tip:</strong> The SIFT method helps — Stop, Investigate the source, Find better coverage, Trace claims.';
+        } else if (score >= 25) {
+          verdict     = 'High Risk of Misinformation';
+          verdictIcon = '🚩';
+          verdictColor= 'negative';
+          advice      = 'Multiple red flags found. Search for this claim on fact-checking sites like Snopes, AFP Fact Check, or Full Fact.';
+          milTip      = '💡 <strong>MIL Tip:</strong> Emotional language is designed to make you share without thinking. Pause — your critical brain is your best tool.';
+        } else {
+          verdict     = 'Very Likely Disinformation';
+          verdictIcon = '❌';
+          verdictColor= 'danger';
+          advice      = 'Strong disinformation indicators. Do NOT share. Report to platform if encountered on social media.';
+          milTip      = '💡 <strong>MIL Tip:</strong> Sharing false content — even to debunk it — can spread it further (the "backfire effect"). Verify privately first.';
+        }
+
+        return { score, verdict, verdictIcon, verdictColor, advice, milTip, signals, input: text, isURL, domain };
+      }
+
+      // ── Render result ──────────────────────────────────────────
+      function renderResult(a) {
+        // Verdict banner
+        const banner = document.getElementById('fc-verdict-banner');
+        banner.className = `fc-verdict-banner fc-verdict-${a.verdictColor}`;
+        document.getElementById('fc-verdict-icon').textContent  = a.verdictIcon;
+        document.getElementById('fc-verdict-title').textContent = a.verdict;
+        document.getElementById('fc-verdict-sub').textContent   = a.isURL
+          ? `Domain: ${a.domain || 'unknown'}`
+          : `"${a.input.length > 60 ? a.input.slice(0,60) + '…' : a.input}"`;
+
+        // Score meter
+        const scoreEl = document.getElementById('fc-verdict-score');
+        scoreEl.innerHTML = `
+          <div class="fc-score-num">${a.score}</div>
+          <div class="fc-score-label">/ 100</div>
+          <div class="fc-score-bar-wrap">
+            <div class="fc-score-bar" style="width:${a.score}%;background:${scoreColor(a.score)}"></div>
+          </div>
+        `;
+
+        // Signals
+        const sigEl = document.getElementById('fc-signals');
+        sigEl.innerHTML = a.signals.map(s => `
+          <div class="fc-signal fc-signal-${s.impact}">
+            <span class="fc-sig-icon" aria-hidden="true">${s.icon}</span>
+            <div class="fc-sig-body">
+              <div class="fc-sig-label">${s.label}</div>
+              <div class="fc-sig-detail">${s.detail}</div>
+            </div>
+            <span class="fc-sig-badge fc-sig-badge-${s.impact}">${s.impact === 'positive' ? '+' : s.impact === 'negative' ? '−' : '~'}</span>
+          </div>
+        `).join('');
+
+        // Advice
+        document.getElementById('fc-advice').innerHTML = `<span aria-hidden="true">📋</span> <strong>What to do:</strong> ${a.advice}`;
+
+        // MIL tip
+        document.getElementById('fc-mil-tip').innerHTML = a.milTip;
+      }
+
+      function scoreColor(s) {
+        if (s >= 75) return 'var(--green, #00ff88)';
+        if (s >= 50) return '#ffd700';
+        if (s >= 25) return '#ff8800';
+        return '#ff4444';
+      }
+    })();
+
+    // ════════════════════════════════════════════════════
+    // ⬆ BACK TO TOP BUTTON
+    // ════════════════════════════════════════════════════
+    (function () {
+      const btn = document.getElementById('back-to-top');
+      if (!btn) return;
+      window.addEventListener('scroll', () => {
+        btn.classList.toggle('visible', window.scrollY > 400);
+      }, { passive: true });
+      btn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        playClick();
+      });
+    })();
+
+    // ── Dynamic footer year ───────────────────────────────────────
+    const yearEl = document.getElementById('footer-year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  </script>
+</body>
+</html>

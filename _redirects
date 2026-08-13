@@ -1,0 +1,5 @@
+# Netlify redirects
+/play          /game.html         301
+/leaderboard   /leaderboard.html  301
+/factcheck     /index.html#fact-checker  301
+/*             /404.html          404

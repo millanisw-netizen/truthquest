@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0a0e27" />
+  <title>TruthQuest — Page Not Found</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+    :root { --navy:#0a0e27; --blue:#00d4ff; --gold:#ffd700; --muted:#8899bb; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--navy); color: #fff;
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 24px;
+    }
+    .glitch {
+      font-family: 'Orbitron', monospace; font-size: clamp(5rem, 20vw, 10rem);
+      font-weight: 900; color: var(--blue);
+      text-shadow: 0 0 40px rgba(0,212,255,0.5), 4px 0 var(--gold);
+      animation: glitch 2s infinite;
+      margin-bottom: 16px;
+    }
+    @keyframes glitch {
+      0%,95%,100% { text-shadow: 0 0 40px rgba(0,212,255,0.5), 4px 0 var(--gold); }
+      96% { text-shadow: -4px 0 #ff4444, 4px 0 var(--blue); }
+      97% { text-shadow: 4px 0 #ff4444, -4px 0 var(--gold); }
+    }
+    h1 { font-family:'Orbitron',monospace; font-size:clamp(1.2rem,4vw,2rem); font-weight:700; margin-bottom:12px; }
+    p  { color:var(--muted); max-width:400px; line-height:1.7; margin-bottom:36px; font-size:0.95rem; }
+    .btns { display:flex; gap:14px; flex-wrap:wrap; justify-content:center; }
+    a.btn-p {
+      display:inline-flex; align-items:center; gap:8px;
+      background:linear-gradient(135deg,var(--blue),#0099cc);
+      color:var(--navy); font-family:'Orbitron',monospace; font-weight:700;
+      font-size:0.9rem; padding:13px 28px; border-radius:100px;
+      text-decoration:none; transition:all .3s ease;
+    }
+    a.btn-p:hover { background:linear-gradient(135deg,var(--gold),#ccac00); transform:translateY(-2px); }
+    a.btn-s {
+      display:inline-flex; align-items:center; gap:6px;
+      color:var(--blue); text-decoration:none; font-size:0.88rem;
+      padding:11px 22px; border:1px solid rgba(0,212,255,0.2); border-radius:100px;
+      transition:all .3s ease;
+    }
+    a.btn-s:hover { border-color:var(--blue); background:rgba(0,212,255,0.08); }
+    .scan {
+      font-family:'Orbitron',monospace; font-size:0.65rem; letter-spacing:3px;
+      color:rgba(0,212,255,0.4); text-transform:uppercase; margin-top:48px;
+      animation: scan-blink 1.5s step-end infinite;
+    }
+    @keyframes scan-blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+  </style>
+</head>
+<body>
+  <div class="glitch" aria-hidden="true">404</div>
+  <h1>Signal Lost</h1>
+  <p>This page doesn't exist — or it's been buried under disinformation. Either way, we can't find it. Head back to the investigation.</p>
+  <div class="btns">
+    <a href="game.html" class="btn-p">▶ Back to Game</a>
+    <a href="index.html" class="btn-s">← Home</a>
+  </div>
+  <p class="scan" aria-live="polite">// scanning veridis network...</p>
+</body>
+</html>

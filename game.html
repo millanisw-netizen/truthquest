@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0a0e27" />
+  <meta name="description" content="TruthQuest — Play as the last honest journalist in Veridis City. Investigate disinformation, verify sources, and save democracy. UNESCO Youth Hackathon 2026." />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="TruthQuest Team — UNESCO Youth Hackathon 2026" />
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:title"       content="TruthQuest — Begin Your Investigation" />
+  <meta property="og:description" content="Play as the last honest journalist in Veridis City. Every choice matters. UNESCO Youth Hackathon 2026." />
+  <meta property="og:image"       content="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&q=80&auto=format&fit=crop" />
+  <meta property="og:url"         content="https://truthquest.app/game.html" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="TruthQuest — Play Now" />
+  <meta name="twitter:description" content="A free browser-based media literacy game. #TruthQuest #UNESCO2026 #MIL" />
+  <meta name="twitter:image"       content="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&q=80&auto=format&fit=crop" />
+
+  <title>TruthQuest — Play</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>" />
+  <link rel="apple-touch-icon" href="assets/icon-192.png" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="css/game.css" />
+  <script>
+    (function () {
+      const t = localStorage.getItem('tq_theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════
+       QUOTES BAR (replaces city canvas on intro)
+  ════════════════════════════════════════════ -->
+  <div class="city-bar" id="city-bar" role="region" aria-label="Veridis City — live trust visualization">
+    <!-- City canvas — shown during gameplay only -->
+    <canvas id="city-canvas" aria-label="Animated city of Veridis reacting to your choices"></canvas>
+    <div class="city-label" aria-hidden="true">
+      <span class="city-name">🏙️ VERIDIS</span>
+      <span class="city-status" id="city-status-text">City Status: Stable</span>
+    </div>
+
+    <!-- Quotes banner — shown on intro screen only -->
+    <div class="quotes-banner" id="quotes-banner" aria-live="polite" aria-label="Media literacy quote">
+      <span class="qb-icon" aria-hidden="true">❝</span>
+      <div class="qb-body">
+        <p class="qb-text" id="qb-text">A lie can travel halfway around the world while the truth is still putting on its shoes.</p>
+        <span class="qb-author" id="qb-author">— Mark Twain</span>
+      </div>
+      <span class="qb-icon qb-icon-right" aria-hidden="true">❞</span>
+      <!-- Dot indicators -->
+      <div class="qb-dots" id="qb-dots" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       INTRO SCREEN — Redesigned with quotes + imagery
+  ════════════════════════════════════════════ -->
+  <div id="intro-screen" class="screen intro-screen" role="main" aria-labelledby="intro-title">
+
+    <!-- Background: full-bleed image slideshow -->
+    <div class="intro-bg" aria-hidden="true">
+      <div class="intro-bg-slide active" style="background-image:url('https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1600&q=80&auto=format&fit=crop')"></div>
+      <div class="intro-bg-slide" style="background-image:url('https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=1600&q=80&auto=format&fit=crop')"></div>
+      <div class="intro-bg-slide" style="background-image:url('https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1600&q=80&auto=format&fit=crop')"></div>
+      <div class="intro-bg-slide" style="background-image:url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1600&q=80&auto=format&fit=crop')"></div>
+      <div class="intro-bg-overlay"></div>
+    </div>
+
+    <!-- Rotating quote strip (left side) -->
+    <div class="intro-quote-strip" aria-live="polite" aria-label="Media literacy quote">
+      <div class="iqs-line" aria-hidden="true"></div>
+      <blockquote class="iqs-quote" id="intro-quote-text">
+        "A lie can travel halfway around the world while the truth is still putting on its shoes."
+      </blockquote>
+      <cite class="iqs-author" id="intro-quote-author">— Mark Twain</cite>
+    </div>
+
+    <!-- Center content -->
+    <div class="intro-content">
+
+      <!-- Top pills -->
+      <div class="intro-pills" aria-hidden="true">
+        <span class="intro-pill pill-gold">🏆 UNESCO Hackathon 2026</span>
+        <span class="intro-pill pill-blue">🌍 138 Countries</span>
+      </div>
+
+      <h1 id="intro-title" class="intro-logo">
+        Truth<span class="accent-blue">Quest</span>
+      </h1>
+
+      <!-- Typewriter subtitle -->
+      <div class="typewriter-container" aria-live="polite" role="status">
+        <p class="typewriter-text" id="intro-typewriter"></p>
+      </div>
+
+      <!-- Image cards row -->
+      <div class="intro-img-row" aria-label="Story preview images">
+        <div class="intro-img-card" role="img" aria-label="Journalist at work">
+          <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&q=75&auto=format&fit=crop" alt="Journalist at a press conference" loading="lazy" />
+          <span class="iic-label">Ch.1 · The Viral Video</span>
+        </div>
+        <div class="intro-img-card" role="img" aria-label="Digital investigation">
+          <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400&q=75&auto=format&fit=crop" alt="Digital investigation screen" loading="lazy" />
+          <span class="iic-label">Ch.2 · The Hidden Agenda</span>
+        </div>
+        <div class="intro-img-card" role="img" aria-label="City truth spreading">
+          <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&q=75&auto=format&fit=crop" alt="City with information spreading" loading="lazy" />
+          <span class="iic-label">Ch.3 · The Truth Spreads</span>
+        </div>
+      </div>
+
+      <button class="btn-start" id="btn-begin" aria-label="Begin your investigation as the last honest journalist in Veridis">
+        <span aria-hidden="true">🔍</span> Begin Investigation
+      </button>
+      <a href="index.html" class="back-link">← Back to Home</a>
+    </div>
+
+    <!-- Bottom ticker: scrolling MIL facts -->
+    <div class="intro-ticker" aria-hidden="true">
+      <div class="intro-ticker-track">
+        <span>📰 Verify before you share &nbsp;·&nbsp;</span>
+        <span>🔍 Check the source, not just the headline &nbsp;·&nbsp;</span>
+        <span>🤖 AI can generate convincing lies — use your tools &nbsp;·&nbsp;</span>
+        <span>🌍 Media literacy is a human right &nbsp;·&nbsp;</span>
+        <span>⚖️ Every choice you make shapes the city &nbsp;·&nbsp;</span>
+        <span>🕵️ Follow the evidence, not the emotion &nbsp;·&nbsp;</span>
+        <span>📰 Verify before you share &nbsp;·&nbsp;</span>
+        <span>🔍 Check the source, not just the headline &nbsp;·&nbsp;</span>
+        <span>🤖 AI can generate convincing lies — use your tools &nbsp;·&nbsp;</span>
+        <span>🌍 Media literacy is a human right &nbsp;·&nbsp;</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       MAIN GAME SCREEN
+  ════════════════════════════════════════════ -->
+  <div id="game-screen" class="screen game-screen hidden" role="main" aria-label="TruthQuest game">
+
+    <!-- Top bar: chapter + trust meter -->
+    <div class="game-topbar" role="banner">
+      <div class="chapter-indicator" id="chapter-indicator" aria-live="polite">
+        <span class="chapter-num" id="chapter-num">Chapter 1</span>
+        <span class="chapter-title" id="chapter-title">The Viral Video</span>
+      </div>
+
+      <div class="trust-meter-container" role="region" aria-label="City Trust Meter">
+        <div class="trust-label">
+          <span>City Trust</span>
+          <span class="trust-value" id="trust-value" aria-live="polite">65%</span>
+        </div>
+        <div class="trust-bar-track" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" aria-label="City trust level">
+          <div class="trust-bar-fill" id="trust-bar-fill" style="width:65%"></div>
+          <div class="trust-bar-glow" id="trust-bar-glow"></div>
+        </div>
+      </div>
+
+      <div class="badges-mini" id="badges-mini" aria-label="Earned badges" aria-live="polite"></div>
+
+      <!-- Theme toggle in topbar -->
+      <button class="game-theme-toggle" id="game-theme-toggle" aria-label="Toggle dark/light mode" title="Toggle theme">
+        <span class="game-theme-icon" aria-hidden="true">🌙</span>
+      </button>
+
+      <!-- How to play button -->
+      <button class="howto-btn" id="howto-open-btn" aria-label="How to play (H)" title="How to play (H)">
+        <span aria-hidden="true">?</span>
+      </button>
+    </div>
+
+    <!-- Scene progress strip -->
+    <div class="scene-progress-bar" id="scene-progress-bar" aria-hidden="true">
+      <div class="scene-progress-fill" id="scene-progress-fill"></div>
+      <span class="scene-progress-label" id="scene-progress-label">Scene 1</span>
+    </div>
+
+    <!-- Main split layout -->
+    <div class="game-layout">
+
+      <!-- LEFT PANEL: Narrative -->
+      <aside class="panel-left" aria-label="Story narrative">
+        <div class="speaker-card" id="speaker-card">
+          <div class="speaker-avatar" id="speaker-avatar" aria-hidden="true">👩‍💼</div>
+          <div class="speaker-info">
+            <div class="speaker-name" id="speaker-name">Editor Maya</div>
+            <div class="speaker-role" id="speaker-role">Veridis Tribune</div>
+          </div>
+        </div>
+
+        <div class="dialogue-box" role="log" aria-live="polite" aria-label="Character dialogue">
+          <p class="dialogue-text" id="dialogue-text"></p>
+          <div class="typing-indicator" id="typing-indicator" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+
+        <div class="feedback-box hidden" id="feedback-box" role="status" aria-live="assertive">
+          <div class="feedback-icon" id="feedback-icon" aria-hidden="true"></div>
+          <p class="feedback-text" id="feedback-text"></p>
+        </div>
+      </aside>
+
+      <!-- RIGHT PANEL: Evidence + Actions -->
+      <main class="panel-right">
+
+        <!-- Evidence Dossier -->
+        <section class="evidence-dossier" aria-labelledby="dossier-heading">
+          <h2 id="dossier-heading" class="dossier-title">
+            <span aria-hidden="true">📂</span> Evidence Dossier
+          </h2>
+          <div class="evidence-grid" id="evidence-grid" role="list" aria-label="Collected evidence">
+            <div class="evidence-empty" id="evidence-empty" aria-label="No evidence collected yet">
+              <span aria-hidden="true">🔍</span>
+              <p>No evidence collected yet</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Choice buttons -->
+        <section class="choices-section" aria-labelledby="choices-heading">
+          <h2 id="choices-heading" class="choices-label">
+            <span aria-hidden="true">⚡</span> Your Move
+          </h2>
+          <div class="choices-grid" id="choices-grid" role="group" aria-label="Available choices"></div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SOURCE VERIFICATION MINI-GAME MODAL
+  ════════════════════════════════════════════ -->
+  <div id="minigame-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="mg-title">
+    <div class="modal-box" role="document">
+      <div class="modal-header">
+        <h2 id="mg-title" class="modal-title">
+          <span aria-hidden="true">🔍</span> <span id="mg-title-text">Source Verification</span>
+        </h2>
+        <div class="modal-subtitle">Use at least 2 tools before making your verdict</div>
+      </div>
+
+      <!-- Social card / document preview -->
+      <div class="social-card" id="social-card" role="region" aria-label="Evidence to verify">
+        <div class="social-card-header">
+          <div class="social-avatar" id="mg-avatar" aria-hidden="true">🦅</div>
+          <div class="social-user-info">
+            <div class="social-username" id="mg-username">VeridasTruth_Official</div>
+            <div class="social-handle" id="mg-handle">@VeridasTruth_Official</div>
+          </div>
+          <div class="social-verified" id="mg-verified" aria-label="Verified badge" title="Verified account"></div>
+        </div>
+        <p class="social-text" id="mg-text"></p>
+        <div class="social-image-desc" id="mg-image-desc" aria-label="Image description"></div>
+        <div class="social-footer">
+          <span id="mg-timestamp" class="social-timestamp"></span>
+          <div class="social-stats">
+            <span id="mg-likes"></span>
+            <span id="mg-retweets"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Verification tools -->
+      <div class="tools-section" role="group" aria-label="Verification tools">
+        <div class="tools-grid">
+          <button class="tool-btn" id="tool-source" data-tool="source_history" aria-label="Check source history">
+            <span class="tool-icon" aria-hidden="true">🔍</span>
+            <span class="tool-name">Check Source History</span>
+          </button>
+          <button class="tool-btn" id="tool-image" data-tool="reverse_image" aria-label="Run reverse image search">
+            <span class="tool-icon" aria-hidden="true">🖼️</span>
+            <span class="tool-name">Reverse Image Search</span>
+          </button>
+          <button class="tool-btn" id="tool-date" data-tool="publication_date" aria-label="Check publication date">
+            <span class="tool-icon" aria-hidden="true">📅</span>
+            <span class="tool-name">Check Publication Date</span>
+          </button>
+          <button class="tool-btn" id="tool-ai" data-tool="ai_detector" aria-label="Run AI content detector">
+            <span class="tool-icon" aria-hidden="true">🤖</span>
+            <span class="tool-name">AI Content Detector</span>
+          </button>
+        </div>
+
+        <!-- Tool result panel -->
+        <div class="tool-result-panel" id="tool-result-panel" role="status" aria-live="polite" aria-label="Tool analysis result">
+          <div class="tool-result-placeholder" id="tool-result-placeholder">
+            <span aria-hidden="true">👆</span> Click a tool to analyze this evidence
+          </div>
+          <div class="tool-result-content hidden" id="tool-result-content"></div>
+        </div>
+      </div>
+
+      <!-- Tools used counter -->
+      <div class="tools-used-bar" aria-live="polite">
+        <span class="tools-used-text">Tools used: <strong id="tools-used-count">0</strong> / 4</span>
+        <div class="tools-used-dots" id="tools-used-dots" aria-hidden="true">
+          <span class="dot" data-idx="0"></span>
+          <span class="dot" data-idx="1"></span>
+          <span class="dot" data-idx="2"></span>
+          <span class="dot" data-idx="3"></span>
+        </div>
+      </div>
+
+      <!-- Verdict buttons -->
+      <div class="verdict-section" id="verdict-section">
+        <div class="verdict-label">Your Verdict:</div>
+        <div class="verdict-btns">
+          <button class="verdict-btn verdict-verified" id="verdict-verified" disabled aria-label="Mark as verified — trustworthy content">
+            <span aria-hidden="true">✓</span> Mark as Verified
+          </button>
+          <button class="verdict-btn verdict-false" id="verdict-false" disabled aria-label="Flag as misinformation">
+            <span aria-hidden="true">✗</span> Flag as Misinformation
+          </button>
+        </div>
+        <p class="verdict-hint" id="verdict-hint" aria-live="polite">Use at least 2 tools to unlock verdicts</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       END / RESULTS SCREEN
+  ════════════════════════════════════════════ -->
+  <div id="end-screen" class="screen end-screen hidden" role="main" aria-labelledby="end-title">
+    <div class="end-content">
+      <div class="end-city-icon" aria-hidden="true" id="end-city-icon">🏙️</div>
+      <h1 id="end-title" class="end-title">Investigation Complete</h1>
+      <p class="end-subtitle">Veridis has spoken.</p>
+
+      <!-- Score display -->
+      <div class="score-display" role="region" aria-label="Final truth score">
+        <div class="score-ring" id="score-ring" aria-hidden="true">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="8"/>
+            <circle cx="60" cy="60" r="50" fill="none"
+                    stroke="url(#score-gradient)" stroke-width="8"
+                    stroke-linecap="round"
+                    id="score-arc"
+                    stroke-dasharray="314"
+                    stroke-dashoffset="314"
+                    transform="rotate(-90 60 60)"/>
+            <defs>
+              <linearGradient id="score-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#00d4ff"/>
+                <stop offset="100%" stop-color="#ffd700"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="score-number-container">
+            <span class="score-number" id="score-number" aria-live="polite">0</span>
+            <span class="score-max">/100</span>
+          </div>
+        </div>
+        <div class="score-label" id="score-label">Truth Score</div>
+        <div class="score-grade" id="score-grade" aria-live="polite"></div>
+      </div>
+
+      <!-- MIL Badges earned -->
+      <section class="badges-section" aria-labelledby="badges-heading">
+        <h2 id="badges-heading" class="badges-section-title">
+          <span aria-hidden="true">🎖️</span> MIL Skills Demonstrated
+        </h2>
+        <div class="badges-earned-grid" id="badges-earned-grid" role="list" aria-label="Earned MIL badges"></div>
+      </section>
+
+      <!-- Share card -->
+      <div class="share-card" role="region" aria-label="Shareable result card">
+        <div class="share-card-inner" id="share-card-inner">
+          <div class="share-logo" aria-hidden="true">🔍 TruthQuest</div>
+          <p class="share-text" id="share-text">I scored 0/100 in TruthQuest! Can you save Veridis?</p>
+          <div class="share-tags" aria-hidden="true">#TruthQuest #UNESCO2026 #MIL</div>
+        </div>
+      </div>
+
+      <!-- End actions -->
+      <div class="end-actions">
+        <button class="btn-start" id="btn-play-again" aria-label="Play TruthQuest again from the beginning">
+          <span aria-hidden="true">🔄</span> Play Again
+        </button>
+        <a href="leaderboard.html" class="btn-mil-link" aria-label="View global leaderboard">
+          🏆 View Leaderboard
+        </a>
+        <button class="btn-share" id="btn-share" aria-label="Share your score">
+          <span aria-hidden="true">🔗</span> Share Score
+        </button>
+        <a href="https://www.unesco.org/en/media-information-literacy" target="_blank" rel="noopener noreferrer" class="btn-mil-link" aria-label="Learn more about Media and Information Literacy on UNESCO website (opens in new tab)">
+          📚 Learn More About MIL
+        </a>
+        <a href="index.html" class="back-link">← Back to Home</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       HOW TO PLAY MODAL
+  ════════════════════════════════════════════ -->
+  <div id="howto-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="howto-title">
+    <div class="modal-box howto-box">
+      <div class="modal-header">
+        <h2 id="howto-title" class="modal-title">
+          <span aria-hidden="true">📖</span> How to Play TruthQuest
+        </h2>
+        <button class="howto-close-btn" id="howto-close-btn" aria-label="Close how to play">✕</button>
+      </div>
+
+      <div class="howto-grid">
+        <div class="howto-item">
+          <div class="howto-icon" aria-hidden="true">📰</div>
+          <div>
+            <strong>Read & Decide</strong>
+            <p>A character speaks. You choose how to respond. Every decision changes the City Trust meter.</p>
+          </div>
+        </div>
+        <div class="howto-item">
+          <div class="howto-icon" aria-hidden="true">🔍</div>
+          <div>
+            <strong>Verify Evidence</strong>
+            <p>When a minigame appears, use the 4 tools to analyze the content, then give your verdict.</p>
+          </div>
+        </div>
+        <div class="howto-item">
+          <div class="howto-icon" aria-hidden="true">🏙️</div>
+          <div>
+            <strong>Watch the City</strong>
+            <p>The Veridis skyline reacts in real time — lights dim and the sky turns red as trust falls.</p>
+          </div>
+        </div>
+        <div class="howto-item">
+          <div class="howto-icon" aria-hidden="true">🏆</div>
+          <div>
+            <strong>Earn Badges</strong>
+            <p>Good choices and correct verdicts earn MIL skill badges. Collect them all!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="howto-keys" aria-label="Keyboard shortcuts">
+        <div class="howto-keys-title">⌨️ Keyboard Shortcuts</div>
+        <div class="howto-key-list">
+          <div class="howto-key-row"><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> <span>Select a choice</span></div>
+          <div class="howto-key-row"><kbd>H</kbd> <span>Toggle this help screen</span></div>
+          <div class="howto-key-row"><kbd>ESC</kbd> <span>Close modals</span></div>
+        </div>
+      </div>
+
+      <div class="howto-tip" aria-label="Pro tip">
+        💡 <strong>Pro tip:</strong> In minigames, use all 4 tools before deciding — each one reveals a different clue.
+      </div>
+
+      <button class="btn-start howto-start" id="howto-close-btn2" aria-label="Got it, start playing">
+        Got it — Let's Play!
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       NOTIFICATION TOAST
+  ════════════════════════════════════════════ -->
+  <div id="toast-container" class="toast-container" aria-live="assertive" aria-atomic="true"></div>
+
+  <!-- ═══════════════════════════════════════════
+       CHAPTER TRANSITION OVERLAY
+  ════════════════════════════════════════════ -->
+  <div id="chapter-transition" class="chapter-transition hidden" role="status" aria-live="assertive">
+    <div class="transition-content">
+      <div class="transition-chapter-num" id="transition-chapter-num" aria-hidden="true"></div>
+      <h2 class="transition-title" id="transition-title"></h2>
+      <p class="transition-intro" id="transition-intro"></p>
+    </div>
+  </div>
+
+  <!-- Load scripts in dependency order -->
+  <script src="js/story-data.js"></script>
+  <script src="js/city.js"></script>
+  <script src="js/verifier.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/engine.js"></script>
+
+  <!-- PWA + Sound + Theme + Share + Keyboard -->
+  <script>
+    // ── Quotes banner (city bar on intro screen) ─────────────────
+    (function () {
+      const QUOTES = [
+        { text: 'A lie can travel halfway around the world while the truth is still putting on its shoes.', author: '— Mark Twain' },
+        { text: 'The first casualty of war is the truth.', author: '— Aeschylus' },
+        { text: 'Democracy dies in darkness.', author: '— Washington Post' },
+        { text: 'Critical thinking is the vaccine against disinformation.', author: '— UNESCO MIL' },
+        { text: 'Freedom of the press is not just important to democracy — it is democracy.', author: '— Walter Cronkite' },
+        { text: 'In a world of disinformation, the most radical act is to verify.', author: '— TruthQuest' },
+        { text: 'Media literacy is not just a skill — it is a survival tool for democracy.', author: '— UNESCO' },
+        { text: 'Every time we look away from a lie, we become complicit in it.', author: '— TruthQuest' },
+        { text: 'The goal of fake news is not to convince you of a lie — it is to make you distrust the truth.', author: '— Research on Disinformation' },
+        { text: 'Information is power. Access to accurate information is a human right.', author: '— UN Declaration' },
+      ];
+
+      const textEl   = document.getElementById('qb-text');
+      const authorEl = document.getElementById('qb-author');
+      const dotsEl   = document.getElementById('qb-dots');
+      if (!textEl || !authorEl) return;
+
+      let current = 0;
+
+      // Build dot indicators
+      QUOTES.forEach((_, i) => {
+        const d = document.createElement('span');
+        d.className = 'qb-dot' + (i === 0 ? ' active' : '');
+        d.addEventListener('click', () => goTo(i));
+        dotsEl && dotsEl.appendChild(d);
+      });
+
+      function goTo(idx) {
+        current = idx;
+        // Fade out
+        textEl.classList.add('qb-fade');
+        authorEl.classList.add('qb-fade');
+        setTimeout(() => {
+          textEl.textContent   = QUOTES[current].text;
+          authorEl.textContent = QUOTES[current].author;
+          textEl.classList.remove('qb-fade');
+          authorEl.classList.remove('qb-fade');
+          // Update dots
+          dotsEl && dotsEl.querySelectorAll('.qb-dot').forEach((d, i) => {
+            d.classList.toggle('active', i === current);
+          });
+        }, 400);
+      }
+
+      // Auto-rotate every 5s
+      const timer = setInterval(() => goTo((current + 1) % QUOTES.length), 5000);
+
+      // Expose so engine can stop rotation when game starts
+      window._quoteBannerTimer = timer;
+    })();
+
+    // ── Intro quote rotator + image slideshow ────────────────────
+    (function () {
+      const QUOTES = [
+        { text: 'A lie can travel halfway around the world while the truth is still putting on its shoes.', author: '— Mark Twain' },
+        { text: 'The first casualty of war is the truth.', author: '— Aeschylus' },
+        { text: 'Freedom of the press is not just important to democracy — it is democracy.', author: '— Walter Cronkite' },
+        { text: 'Critical thinking is the vaccine against disinformation.', author: '— UNESCO MIL' },
+        { text: 'Democracy dies in darkness.', author: '— Washington Post' },
+        { text: 'In a world of disinformation, the most radical act is to verify.', author: '— TruthQuest' },
+        { text: 'Not everything that is faced can be changed, but nothing can be changed until it is faced.', author: '— James Baldwin' },
+        { text: 'Media literacy is not just a skill — it is a survival tool for democracy.', author: '— UNESCO' },
+        { text: 'Every time we look away from a lie, we become complicit in it.', author: '— TruthQuest' },
+        { text: 'Information is power. Access to accurate information is a human right.', author: '— UN Declaration' },
+      ];
+
+      const qText   = document.getElementById('intro-quote-text');
+      const qAuthor = document.getElementById('intro-quote-author');
+      if (!qText || !qAuthor) return;
+
+      let idx = 0;
+
+      function rotateQuote() {
+        // Fade out
+        qText.style.opacity = '0';
+        qAuthor.style.opacity = '0';
+        setTimeout(() => {
+          idx = (idx + 1) % QUOTES.length;
+          qText.textContent   = '\u201C' + QUOTES[idx].text + '\u201D';
+          qAuthor.textContent = QUOTES[idx].author;
+          // Fade in
+          qText.style.opacity = '1';
+          qAuthor.style.opacity = '1';
+        }, 600);
+      }
+
+      // Rotate every 5 seconds
+      setInterval(rotateQuote, 5000);
+
+      // ── Background slideshow ──────────────────────────────────
+      const slides = document.querySelectorAll('.intro-bg-slide');
+      let slideIdx = 0;
+      if (slides.length > 1) {
+        setInterval(() => {
+          slides[slideIdx].classList.remove('active');
+          slideIdx = (slideIdx + 1) % slides.length;
+          slides[slideIdx].classList.add('active');
+        }, 6000);
+      }
+    })();
+
+    // ── Service Worker ────────────────────────────────────────────
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+    }
+
+    // ── Theme toggle ──────────────────────────────────────────────
+    (function () {
+      const btn  = document.getElementById('game-theme-toggle');
+      const icon = btn && btn.querySelector('.game-theme-icon');
+      function applyTheme(t) {
+        document.documentElement.setAttribute('data-theme', t);
+        localStorage.setItem('tq_theme', t);
+        if (icon) icon.textContent = t === 'dark' ? '🌙' : '☀️';
+        if (btn)  btn.setAttribute('aria-label', t === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+        const m = document.querySelector('meta[name="theme-color"]');
+        if (m) m.setAttribute('content', t === 'dark' ? '#0a0e27' : '#eef2ff');
+      }
+      applyTheme(localStorage.getItem('tq_theme') || 'dark');
+      if (btn) btn.addEventListener('click', () => {
+        applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+      });
+    })();
+
+    // ── Sound effects (Web Audio — no files needed) ───────────────
+    let _ac = null;
+    function _tone(f1, f2, dur, vol) {
+      try {
+        if (!_ac) _ac = new (window.AudioContext || window.webkitAudioContext)();
+        if (_ac.state === 'suspended') _ac.resume();
+        const o = _ac.createOscillator(), g = _ac.createGain();
+        o.connect(g); g.connect(_ac.destination);
+        o.type = 'sine';
+        o.frequency.setValueAtTime(f1, _ac.currentTime);
+        if (f2) o.frequency.exponentialRampToValueAtTime(f2, _ac.currentTime + dur);
+        g.gain.setValueAtTime(vol, _ac.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.001, _ac.currentTime + dur);
+        o.start(); o.stop(_ac.currentTime + dur);
+      } catch (e) {}
+    }
+    window.SFX = {
+      click:   () => _tone(600, 400, 0.09, 0.06),
+      good:    () => { _tone(440, 660, 0.15, 0.07); setTimeout(() => _tone(660, 880, 0.15, 0.05), 120); },
+      bad:     () => { _tone(300, 200, 0.18, 0.08); setTimeout(() => _tone(200, 150, 0.20, 0.06), 160); },
+      badge:   () => [440,550,660,880].forEach((f,i) => setTimeout(() => _tone(f, f*1.1, 0.12, 0.06), i*80)),
+      chapter: () => [330,440,550,660,770].forEach((f,i) => setTimeout(() => _tone(f, f, 0.18, 0.05), i*100))
+    };
+
+    // ── Share score ───────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+      const shareBtn = document.getElementById('btn-share');
+      if (!shareBtn) return;
+      shareBtn.addEventListener('click', async () => {
+        const text = (document.getElementById('share-text')?.textContent || 'I just played TruthQuest! #TruthQuest #UNESCO2026 #MIL').trim();
+        const url  = location.href.replace('game.html', 'index.html');
+        if (navigator.share) {
+          try { await navigator.share({ title: 'TruthQuest', text, url }); return; } catch (e) {}
+        }
+        try {
+          await navigator.clipboard.writeText(text + '\n' + url);
+          shareBtn.innerHTML = '✅ Copied!';
+          shareBtn.style.borderColor = '#00ff88';
+          setTimeout(() => { shareBtn.innerHTML = '<span aria-hidden="true">🔗</span> Share Score'; shareBtn.style.borderColor = ''; }, 2500);
+        } catch (e) { window.prompt('Copy your score:', text); }
+      });
+    });
+
+    // ── How to Play modal ─────────────────────────────────────────
+    (function () {
+      const modal    = document.getElementById('howto-modal');
+      const openBtn  = document.getElementById('howto-open-btn');
+      const closeBtn = document.getElementById('howto-close-btn');
+      const closeBtn2= document.getElementById('howto-close-btn2');
+
+      function open()  { if (modal) modal.classList.remove('hidden'); }
+      function close() { if (modal) modal.classList.add('hidden'); }
+
+      openBtn  && openBtn.addEventListener('click',  open);
+      closeBtn && closeBtn.addEventListener('click', close);
+      closeBtn2&& closeBtn2.addEventListener('click',close);
+
+      // Close on backdrop click
+      modal && modal.addEventListener('click', e => { if (e.target === modal) close(); });
+
+      // Auto-show once for first-time visitors
+      if (!localStorage.getItem('tq_howto_seen')) {
+        setTimeout(() => { open(); localStorage.setItem('tq_howto_seen', '1'); }, 1200);
+      }
+    })();
+
+    // ── Keyboard shortcuts ────────────────────────────────────────
+    document.addEventListener('keydown', e => {
+      if (e.key >= '1' && e.key <= '9') {
+        const btns = document.querySelectorAll('#choices-grid .choice-btn:not(:disabled)');
+        const btn = btns[parseInt(e.key) - 1];
+        if (btn) { btn.click(); if (window.SFX) window.SFX.click(); }
+      }
+      if (e.key === 'Escape') {
+        const modal = document.getElementById('minigame-modal');
+        if (modal && !modal.classList.contains('hidden')) {
+          const hint = document.getElementById('verdict-hint');
+          if (hint && hint.textContent.includes('Use at least')) {
+            if (typeof Toast !== 'undefined') Toast.show('💡', 'Use at least 2 tools before making your verdict!', 'info', 2500);
+          }
+        }
+      }
+      // H = How to play
+      if (e.key === 'h' || e.key === 'H') {
+        const hw = document.getElementById('howto-modal');
+        if (hw) hw.classList.toggle('hidden');
+      }
+    });
+  </script>
+</body>
+</html>

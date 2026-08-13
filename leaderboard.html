@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0a0e27" />
+  <meta name="description" content="TruthQuest Leaderboard — See the top truth defenders of Veridis City. UNESCO Youth Hackathon 2026." />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:title"       content="TruthQuest — Global Leaderboard" />
+  <meta property="og:description" content="See the world's top truth defenders. Can you make the list? #TruthQuest #UNESCO2026" />
+  <meta property="og:image"       content="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&q=80&auto=format&fit=crop" />
+  <title>TruthQuest — Leaderboard</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>" />
+  <link rel="apple-touch-icon" href="assets/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="manifest" href="manifest.json" />
+  <script>(function(){const t=localStorage.getItem('tq_theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();</script>
+
+  <style>
+    /* ── Base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #0a0e27; --navy-mid: #0d1333; --blue: #00d4ff;
+      --gold: #ffd700; --red: #ff4444; --green: #00ff88;
+      --white: #fff; --muted: #8899bb;
+      --glass: rgba(255,255,255,0.04);
+      --border: rgba(0,212,255,0.15);
+      --r: 0.3s cubic-bezier(.4,0,.2,1);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Canvas bg ────────────────────────────────────── */
+    #bg-canvas { position:fixed; inset:0; z-index:0; pointer-events:none; }
+
+    /* ── Header ───────────────────────────────────────── */
+    header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(10,14,39,0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo {
+      font-family: 'Orbitron', monospace; font-weight: 700;
+      font-size: 1.1rem; color: var(--blue); letter-spacing: 2px;
+      text-decoration: none;
+    }
+    .logo span { color: var(--white); }
+    nav { display: flex; gap: 20px; align-items: center; }
+    nav a {
+      color: var(--muted); text-decoration: none; font-size: 0.88rem;
+      font-weight: 500; transition: color var(--r);
+    }
+    nav a:hover { color: var(--blue); }
+    .nav-cta {
+      background: var(--blue); color: var(--navy) !important;
+      padding: 8px 18px; border-radius: 100px; font-weight: 600 !important;
+    }
+    .nav-cta:hover { background: var(--gold) !important; }
+
+    /* ── Main container ───────────────────────────────── */
+    main {
+      position: relative; z-index: 1;
+      max-width: 860px; margin: 0 auto;
+      padding: 60px 24px 80px;
+    }
+
+    /* ── Page heading ─────────────────────────────────── */
+    .page-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.3);
+      color: var(--gold); font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      padding: 7px 18px; border-radius: 100px; margin-bottom: 20px;
+      animation: fadeDown 0.5s ease both;
+    }
+    .page-title {
+      font-family: 'Orbitron', monospace; font-weight: 900;
+      font-size: clamp(2rem, 6vw, 3.2rem); line-height: 1.1;
+      margin-bottom: 10px; text-shadow: 0 0 40px rgba(0,212,255,0.3);
+      animation: fadeDown 0.55s ease 0.05s both;
+    }
+    .page-sub {
+      color: var(--muted); font-size: 1rem; margin-bottom: 40px;
+      animation: fadeDown 0.6s ease 0.1s both;
+    }
+
+    @keyframes fadeDown {
+      from { opacity:0; transform:translateY(-16px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    /* ── Filter bar ───────────────────────────────────── */
+    .filter-bar {
+      display: flex; gap: 10px; flex-wrap: wrap;
+      margin-bottom: 28px;
+      animation: fadeUp 0.6s ease 0.15s both;
+    }
+    .filter-btn {
+      background: var(--glass); border: 1px solid var(--border);
+      color: var(--muted); font-size: 0.8rem; font-weight: 500;
+      padding: 8px 18px; border-radius: 100px; cursor: pointer;
+      font-family: 'Inter', sans-serif; transition: all var(--r);
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: rgba(0,212,255,0.1);
+      border-color: var(--blue); color: var(--white);
+    }
+
+    /* ── Your score card ──────────────────────────────── */
+    .your-score-card {
+      background: linear-gradient(135deg, rgba(0,212,255,0.08), rgba(255,215,0,0.05));
+      border: 1px solid rgba(0,212,255,0.3);
+      border-radius: 20px; padding: 22px 28px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 20px; flex-wrap: wrap; margin-bottom: 32px;
+      animation: fadeUp 0.6s ease 0.2s both;
+      position: relative; overflow: hidden;
+    }
+    .your-score-card::before {
+      content: 'YOUR BEST';
+      position: absolute; top: 12px; right: 16px;
+      font-family: 'Orbitron', monospace; font-size: 0.58rem;
+      font-weight: 700; color: var(--gold); letter-spacing: 2px;
+      opacity: 0.6;
+    }
+    .ysc-left { display: flex; align-items: center; gap: 16px; }
+    .ysc-rank {
+      font-family: 'Orbitron', monospace; font-size: 2rem;
+      font-weight: 900; color: var(--blue);
+      min-width: 48px; text-align: center;
+    }
+    .ysc-name { font-weight: 600; font-size: 1rem; margin-bottom: 4px; }
+    .ysc-badges { font-size: 0.78rem; color: var(--muted); }
+    .ysc-score {
+      font-family: 'Orbitron', monospace; font-size: 2.2rem;
+      font-weight: 900; color: var(--gold);
+    }
+
+    /* ── Leaderboard table ────────────────────────────── */
+    .lb-table {
+      width: 100%; border-collapse: collapse;
+      animation: fadeUp 0.65s ease 0.25s both;
+    }
+    .lb-table thead th {
+      font-family: 'Orbitron', monospace; font-size: 0.65rem;
+      font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); padding: 0 16px 12px;
+      text-align: left; border-bottom: 1px solid var(--border);
+    }
+    .lb-table thead th:last-child { text-align: right; }
+
+    .lb-row {
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      transition: background var(--r);
+      animation: fadeUp 0.4s ease both;
+    }
+    .lb-row:hover { background: rgba(0,212,255,0.04); }
+    .lb-row.top-3 { background: rgba(255,215,0,0.03); }
+    .lb-row.is-you { background: rgba(0,212,255,0.06) !important; border-color: rgba(0,212,255,0.2); }
+
+    .lb-row td { padding: 14px 16px; vertical-align: middle; }
+
+    .lb-rank {
+      font-family: 'Orbitron', monospace; font-weight: 700;
+      font-size: 0.9rem; width: 52px;
+    }
+    .rank-1 { color: #ffd700; }
+    .rank-2 { color: #c0c0c0; }
+    .rank-3 { color: #cd7f32; }
+    .rank-other { color: var(--muted); }
+
+    .lb-medal { font-size: 1.1rem; }
+
+    .lb-player { display: flex; align-items: center; gap: 12px; }
+    .lb-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--glass); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0;
+    }
+    .lb-name { font-weight: 500; font-size: 0.92rem; }
+    .lb-country { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+    .you-tag {
+      background: rgba(0,212,255,0.15); border: 1px solid rgba(0,212,255,0.3);
+      color: var(--blue); font-size: 0.58rem; font-weight: 700;
+      letter-spacing: 1px; padding: 2px 7px; border-radius: 100px;
+      text-transform: uppercase; margin-left: 6px; vertical-align: middle;
+    }
+
+    .lb-badges { font-size: 1rem; letter-spacing: 2px; }
+
+    .lb-score {
+      font-family: 'Orbitron', monospace; font-weight: 700;
+      font-size: 1.1rem; text-align: right;
+    }
+    .score-high   { color: var(--green); }
+    .score-mid    { color: var(--blue);  }
+    .score-low    { color: var(--gold);  }
+    .score-danger { color: var(--red);   }
+
+    .lb-grade {
+      font-size: 0.68rem; text-align: right;
+      color: var(--muted); margin-top: 2px;
+    }
+
+    /* ── Empty state ──────────────────────────────────── */
+    .lb-empty {
+      text-align: center; padding: 60px 24px;
+      color: var(--muted); font-size: 0.9rem;
+      display: none;
+    }
+    .lb-empty-icon { font-size: 3rem; margin-bottom: 12px; display: block; }
+
+    /* ── Stats row ────────────────────────────────────── */
+    .stats-row {
+      display: flex; gap: 0; margin-bottom: 36px; flex-wrap: wrap;
+      background: var(--glass); border: 1px solid var(--border);
+      border-radius: 16px; overflow: hidden;
+      animation: fadeUp 0.6s ease 0.18s both;
+    }
+    .stat-box {
+      flex: 1; min-width: 120px; padding: 20px 24px;
+      border-right: 1px solid var(--border); text-align: center;
+    }
+    .stat-box:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Orbitron', monospace; font-size: 1.6rem;
+      font-weight: 700; color: var(--blue); display: block;
+    }
+    .stat-lbl {
+      font-size: 0.7rem; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 1px;
+      margin-top: 4px; display: block;
+    }
+
+    /* ── CTA ──────────────────────────────────────────── */
+    .lb-cta {
+      text-align: center; margin-top: 48px;
+      animation: fadeUp 0.6s ease 0.4s both;
+    }
+    .lb-cta p { color: var(--muted); font-size: 0.9rem; margin-bottom: 16px; }
+    .btn-play {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: linear-gradient(135deg, var(--blue), #0099cc);
+      color: var(--navy); font-family: 'Orbitron', monospace;
+      font-weight: 700; font-size: 0.95rem; padding: 14px 32px;
+      border-radius: 100px; text-decoration: none;
+      transition: all var(--r);
+      box-shadow: 0 0 20px rgba(0,212,255,0.35);
+    }
+    .btn-play:hover {
+      background: linear-gradient(135deg, var(--gold), #ccac00);
+      transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,212,255,0.3);
+    }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--blue); text-decoration: none; font-size: 0.88rem;
+      padding: 10px 20px; border: 1px solid var(--border); border-radius: 100px;
+      transition: all var(--r); margin-left: 12px;
+    }
+    .btn-secondary:hover { border-color: var(--blue); background: rgba(0,212,255,0.07); }
+
+    /* ── Footer ───────────────────────────────────────── */
+    footer {
+      position: relative; z-index: 1;
+      background: rgba(0,0,0,0.25); border-top: 1px solid var(--border);
+      padding: 32px 24px; text-align: center;
+    }
+    footer p { font-size: 0.8rem; color: rgba(136,153,187,0.5); }
+    footer a { color: var(--muted); text-decoration: none; margin: 0 10px; }
+    footer a:hover { color: var(--blue); }
+
+    /* ── Responsive ───────────────────────────────────── */
+    @media (max-width: 600px) {
+      .lb-table thead th:nth-child(3) { display: none; }
+      .lb-row td:nth-child(3)         { display: none; }
+      .stats-row { flex-direction: column; }
+      .stat-box  { border-right: none; border-bottom: 1px solid var(--border); }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+  <!-- Header -->
+  <header>
+    <a href="index.html" class="logo" aria-label="TruthQuest Home">🔍 Truth<span>Quest</span></a>
+    <nav aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="game.html" class="nav-cta">Play Now</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Heading -->
+    <div class="page-badge" aria-label="Section">🏆 GLOBAL RANKINGS</div>
+    <h1 class="page-title">Truth<span style="color:var(--blue)">Board</span></h1>
+    <p class="page-sub">The top truth defenders of Veridis City — tracked across all sessions.</p>
+
+    <!-- Stats row -->
+    <div class="stats-row" role="region" aria-label="Global statistics">
+      <div class="stat-box">
+        <span class="stat-num" id="stat-players">0</span>
+        <span class="stat-lbl">Players</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num" id="stat-avg">0</span>
+        <span class="stat-lbl">Avg Score</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num" id="stat-badges">0</span>
+        <span class="stat-lbl">Badges Earned</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num" id="stat-countries">138</span>
+        <span class="stat-lbl">Countries</span>
+      </div>
+    </div>
+
+    <!-- Your best score -->
+    <div class="your-score-card" id="your-score-card" role="region" aria-label="Your best score" style="display:none">
+      <div class="ysc-left">
+        <div class="ysc-rank" id="ysc-rank">#—</div>
+        <div>
+          <div class="ysc-name">You <span class="you-tag">YOU</span></div>
+          <div class="ysc-badges" id="ysc-badges">No badges yet</div>
+        </div>
+      </div>
+      <div class="ysc-score" id="ysc-score">—</div>
+    </div>
+
+    <!-- Filter bar -->
+    <div class="filter-bar" role="group" aria-label="Sort and filter leaderboard">
+      <button class="filter-btn active" data-filter="all"    aria-pressed="true">All Time</button>
+      <button class="filter-btn"        data-filter="week"   aria-pressed="false">This Week</button>
+      <button class="filter-btn"        data-filter="badges" aria-pressed="false">Most Badges</button>
+    </div>
+
+    <!-- Table -->
+    <table class="lb-table" role="grid" aria-label="Leaderboard">
+      <thead>
+        <tr>
+          <th scope="col" style="width:52px">#</th>
+          <th scope="col">Player</th>
+          <th scope="col">Badges</th>
+          <th scope="col" style="text-align:right">Score</th>
+        </tr>
+      </thead>
+      <tbody id="lb-body"></tbody>
+    </table>
+
+    <div class="lb-empty" id="lb-empty" role="status" aria-live="polite">
+      <span class="lb-empty-icon" aria-hidden="true">🏙️</span>
+      <p>No scores yet — be the first truth defender!</p>
+    </div>
+
+    <!-- CTA -->
+    <div class="lb-cta">
+      <p>Think you can do better? The city needs you.</p>
+      <a href="game.html" class="btn-play" aria-label="Play TruthQuest">
+        <span aria-hidden="true">▶</span> Start Investigation
+      </a>
+      <a href="index.html" class="btn-secondary" aria-label="Back to home">← Home</a>
+    </div>
+  </main>
+
+  <footer role="contentinfo">
+    <p>
+      <a href="index.html">Home</a>
+      <a href="game.html">Play</a>
+      <a href="https://www.unesco.org/en/media-information-literacy" target="_blank" rel="noopener">UNESCO MIL</a>
+    </p>
+    <p style="margin-top:10px">&copy; 2026 TruthQuest — UNESCO Youth Hackathon Submission</p>
+  </footer>
+
+  <script>
+    /* ── Particle background (reused from index.html) ── */
+    (function () {
+      const canvas = document.getElementById('bg-canvas');
+      const ctx = canvas.getContext('2d');
+      let pts = [];
+      function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
+      function mkP() { return { x:Math.random()*canvas.width, y:Math.random()*canvas.height, vx:(Math.random()-.5)*.35, vy:(Math.random()-.5)*.35, r:Math.random()*1.5+.4, a:Math.random()*.4+.08 }; }
+      function init() { resize(); pts = Array.from({length:70},mkP); }
+      function draw() {
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        for (let i=0;i<pts.length;i++) for (let j=i+1;j<pts.length;j++) {
+          const d=Math.hypot(pts[i].x-pts[j].x,pts[i].y-pts[j].y);
+          if(d<110){ctx.beginPath();ctx.strokeStyle=`rgba(0,212,255,${.05*(1-d/110)})`;ctx.lineWidth=.5;ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.stroke();}
+        }
+        pts.forEach(p=>{
+          ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+          ctx.fillStyle=`rgba(0,212,255,${p.a})`;ctx.fill();
+          p.x+=p.vx;p.y+=p.vy;
+          if(p.x<0)p.x=canvas.width;if(p.x>canvas.width)p.x=0;
+          if(p.y<0)p.y=canvas.height;if(p.y>canvas.height)p.y=0;
+        });
+        requestAnimationFrame(draw);
+      }
+      window.addEventListener('resize',resize);
+      init(); draw();
+    })();
+
+    /* ── Leaderboard data engine ── */
+    const BADGE_DEFS = {
+      critical_thinker:    '🧠', digital_detective:  '🔎',
+      source_sleuth:       '🕵️', deepfake_detector:  '🤖',
+      evidence_analyst:    '📊', truth_teller:        '📰',
+      accountability:      '⚖️', document_authenticator: '📄',
+      chapter_1_complete:  '🏅', chapter_2_complete:  '🏅',
+      veridis_defender:    '🏆'
+    };
+
+    const NAMES   = ['Alex R.','Sam K.','Jordan M.','Casey T.','Riley P.','Morgan S.','Drew A.','Quinn L.','Avery B.','Taylor W.','Finley C.','Blake N.','Jamie O.','Skyler H.','Reese D.'];
+    const AVATARS = ['🧑‍💻','👩‍🎓','🧑‍🔬','👩‍💼','🧑‍🏫','👩‍🔧','🧑‍🎨','👩‍⚕️','🧑‍🚀','👩‍🌾'];
+    const COUNTRIES = ['🇺🇸 USA','🇧🇷 Brazil','🇳🇬 Nigeria','🇮🇳 India','🇫🇷 France','🇩🇪 Germany','🇯🇵 Japan','🇿🇦 South Africa','🇦🇺 Australia','🇲🇽 Mexico','🇦🇷 Argentina','🇨🇲 Cameroon','🇮🇩 Indonesia','🇻🇳 Vietnam','🇨🇦 Canada'];
+    const BADGE_POOLS = [
+      ['critical_thinker','digital_detective','source_sleuth','deepfake_detector','document_authenticator','veridis_defender'],
+      ['critical_thinker','source_sleuth','truth_teller','chapter_1_complete'],
+      ['digital_detective','evidence_analyst','accountability','chapter_2_complete'],
+      ['critical_thinker','truth_teller','veridis_defender'],
+      ['source_sleuth','deepfake_detector']
+    ];
+
+    /* Seed the same "demo" entries deterministically */
+    function seededRand(seed) {
+      let s = seed;
+      return () => { s = (s * 1664525 + 1013904223) & 0xffffffff; return (s >>> 0) / 0xffffffff; };
+    }
+
+    function generateDemoRows(count) {
+      const r = seededRand(42);
+      return Array.from({length: count}, (_, i) => ({
+        id:      'demo_' + i,
+        name:    NAMES[i % NAMES.length],
+        avatar:  AVATARS[Math.floor(r() * AVATARS.length)],
+        country: COUNTRIES[Math.floor(r() * COUNTRIES.length)],
+        score:   Math.round(30 + r() * 70),
+        badges:  BADGE_POOLS[Math.floor(r() * BADGE_POOLS.length)],
+        ts:      Date.now() - Math.floor(r() * 7 * 24 * 3600 * 1000)
+      }));
+    }
+
+    /* Load real scores from localStorage */
+    function getRealScores() {
+      try {
+        const raw = localStorage.getItem('tq_scores');
+        return raw ? JSON.parse(raw) : [];
+      } catch { return []; }
+    }
+
+    /* Save a score (called from game.html via postMessage or direct) */
+    function saveScore(score, badges) {
+      const scores = getRealScores();
+      scores.push({ id: 'you_' + Date.now(), name: 'You', avatar: '🎙️', country: '🌍 Your Country', score, badges, ts: Date.now(), isYou: true });
+      localStorage.setItem('tq_scores', JSON.stringify(scores.slice(-50))); // keep last 50
+      render();
+    }
+    window.TQ_saveScore = saveScore; // expose for game engine
+
+    /* Grade helper */
+    function grade(s) {
+      if (s >= 85) return { label: 'Champion',    cls: 'score-high'   };
+      if (s >= 70) return { label: 'Reporter',    cls: 'score-mid'    };
+      if (s >= 50) return { label: 'Cadet',       cls: 'score-low'    };
+      return              { label: 'In Training', cls: 'score-danger' };
+    }
+
+    /* Current filter */
+    let currentFilter = 'all';
+
+    /* Render */
+    function render() {
+      const demo  = generateDemoRows(15);
+      const real  = getRealScores();
+      let all     = [...real, ...demo];
+
+      const now = Date.now();
+      if (currentFilter === 'week')   all = all.filter(r => now - r.ts < 7*24*3600*1000);
+      if (currentFilter === 'badges') all.sort((a,b) => b.badges.length - a.badges.length || b.score - a.score);
+      else                            all.sort((a,b) => b.score - a.score);
+
+      // Stats
+      const totalBadges = all.reduce((n, r) => n + r.badges.length, 0);
+      const avgScore    = all.length ? Math.round(all.reduce((n,r)=>n+r.score,0)/all.length) : 0;
+      animCount('stat-players', all.length);
+      animCount('stat-avg',     avgScore);
+      animCount('stat-badges',  totalBadges);
+
+      // Your score card
+      const yourEntries = real.filter(r => r.isYou);
+      if (yourEntries.length) {
+        const best = yourEntries.reduce((a,b) => a.score >= b.score ? a : b);
+        const rank = all.findIndex(r => r.isYou && r.score === best.score) + 1;
+        document.getElementById('your-score-card').style.display = '';
+        document.getElementById('ysc-rank').textContent  = '#' + rank;
+        document.getElementById('ysc-score').textContent = best.score + '/100';
+        document.getElementById('ysc-badges').textContent = best.badges.length
+          ? best.badges.map(b => BADGE_DEFS[b] || '🏅').join(' ')
+          : 'No badges yet';
+      }
+
+      // Table
+      const tbody = document.getElementById('lb-body');
+      tbody.innerHTML = '';
+
+      if (all.length === 0) {
+        document.getElementById('lb-empty').style.display = '';
+        return;
+      }
+
+      all.forEach((row, i) => {
+        const rank   = i + 1;
+        const g      = grade(row.score);
+        const medals = ['🥇','🥈','🥉'];
+        const tr     = document.createElement('tr');
+        tr.className = 'lb-row' + (rank <= 3 ? ' top-3' : '') + (row.isYou ? ' is-you' : '');
+        tr.style.animationDelay = (i * 0.04) + 's';
+        tr.setAttribute('role', 'row');
+        tr.innerHTML = `
+          <td class="lb-rank ${rank<=3?'rank-'+rank:'rank-other'}" role="gridcell">
+            ${rank <= 3 ? '<span class="lb-medal" aria-hidden="true">'+medals[rank-1]+'</span>' : rank}
+          </td>
+          <td role="gridcell">
+            <div class="lb-player">
+              <div class="lb-avatar" aria-hidden="true">${row.avatar}</div>
+              <div>
+                <div class="lb-name">${row.name}${row.isYou ? ' <span class="you-tag">YOU</span>' : ''}</div>
+                <div class="lb-country">${row.country}</div>
+              </div>
+            </div>
+          </td>
+          <td class="lb-badges" role="gridcell" aria-label="${row.badges.length} badges">
+            ${row.badges.slice(0,6).map(b => BADGE_DEFS[b]||'🏅').join(' ') || '—'}
+          </td>
+          <td role="gridcell">
+            <div class="lb-score ${g.cls}" aria-label="Score ${row.score} out of 100">${row.score}<span style="font-size:.65em;opacity:.5">/100</span></div>
+            <div class="lb-grade">${g.label}</div>
+          </td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    /* Animate counter */
+    function animCount(id, target) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      let v = 0;
+      const step = Math.ceil(target / 40);
+      const iv = setInterval(() => {
+        v = Math.min(v + step, target);
+        el.textContent = v.toLocaleString();
+        if (v >= target) clearInterval(iv);
+      }, 30);
+    }
+
+    /* Filter buttons */
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed','false'); });
+        btn.classList.add('active');
+        btn.setAttribute('aria-pressed','true');
+        currentFilter = btn.dataset.filter;
+        render();
+      });
+    });
+
+    /* Init */
+    render();
+
+    /* Listen for score save messages from game iframe/window */
+    window.addEventListener('message', e => {
+      if (e.data && e.data.type === 'TQ_SCORE') {
+        saveScore(e.data.score, e.data.badges || []);
+      }
+    });
+  </script>
+</body>
+</html>
