@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>TruthQuest — Social Media Department</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/platform.css"/>
+  <script src="js/platform.js"></script><script src="js/nav.js"></script>
+  <style>
+    .post-card{background:#0d1333;border:1px solid rgba(255,255,255,.1);border-radius:var(--radius-md);padding:16px;margin-bottom:16px}
+    .post-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    .post-avatar{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.1);
+      display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+    .post-username{font-weight:600;font-size:.88rem}
+    .post-handle{font-size:.72rem;color:var(--text-muted)}
+    .post-platform{font-size:.62rem;font-weight:700;padding:2px 8px;border-radius:100px;margin-left:auto}
+    .pp-tiktok{background:rgba(0,0,0,.4);color:#fff;border:1px solid rgba(255,255,255,.2)}
+    .pp-fb{background:rgba(24,119,242,.15);color:#4a90e2;border:1px solid rgba(24,119,242,.25)}
+    .pp-wa{background:rgba(37,211,102,.1);color:#25d366;border:1px solid rgba(37,211,102,.2)}
+    .pp-tg{background:rgba(0,136,204,.12);color:#0088cc;border:1px solid rgba(0,136,204,.2)}
+    .pp-yt{background:rgba(255,0,0,.1);color:#ff4444;border:1px solid rgba(255,0,0,.2)}
+    .post-text{font-size:.88rem;line-height:1.65;margin-bottom:10px}
+    .post-stats{display:flex;gap:14px;font-size:.72rem;color:var(--text-muted)}
+    .post-flags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+    .pflag{font-size:.62rem;font-weight:700;padding:3px 8px;border-radius:100px}
+    .pf-red{background:rgba(255,68,68,.12);color:var(--red);border:1px solid rgba(255,68,68,.25)}
+    .pf-yellow{background:rgba(255,215,0,.1);color:var(--gold);border:1px solid rgba(255,215,0,.2)}
+    .pf-green{background:rgba(0,255,136,.08);color:var(--green);border:1px solid rgba(0,255,136,.2)}
+    .post-verdict{display:flex;gap:8px;margin-top:12px}
+    .pv-btn{flex:1;padding:8px;border:none;border-radius:var(--radius-sm);font-family:'Orbitron',monospace;
+      font-size:.65rem;font-weight:700;cursor:pointer;transition:all var(--r)}
+    .pv-mis{background:rgba(255,68,68,.12);color:var(--red);border:1px solid rgba(255,68,68,.25)}
+    .pv-sat{background:rgba(255,215,0,.1);color:var(--gold);border:1px solid rgba(255,215,0,.2)}
+    .pv-ok {background:rgba(0,255,136,.08);color:var(--green);border:1px solid rgba(0,255,136,.2)}
+    .pv-btn:hover{transform:translateY(-2px);filter:brightness(1.2)}
+    .platform-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:100px;cursor:pointer;font-size:.78rem;font-weight:500;border:1px solid transparent;transition:all var(--r)}
+    .platform-pill:hover,.platform-pill.active{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.3)}
+  </style>
+</head>
+<body>
+  <div class="dept-hero">
+    <div class="dept-badge">📱 DEPARTMENT 5 OF 8</div>
+    <h1 class="dept-title">Social Media Department</h1>
+    <p class="dept-sub">Investigate misinformation from TikTok, Facebook, WhatsApp, Telegram, and YouTube.</p>
+  </div>
+  <div class="dept-content">
+
+    <div class="grid-4" style="margin-bottom:24px">
+      <div class="stat-box"><div class="stat-num" id="soc-cases">0</div><div class="stat-lbl">Cases Resolved</div></div>
+      <div class="stat-box"><div class="stat-num" id="soc-xp">0</div><div class="stat-lbl">XP Earned</div></div>
+      <div class="stat-box"><div class="stat-num">5</div><div class="stat-lbl">Platforms</div></div>
+      <div class="stat-box"><div class="stat-num" id="soc-acc">—</div><div class="stat-lbl">Accuracy</div></div>
+    </div>
+
+    <!-- Platform filter -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px" id="platform-filter" role="group" aria-label="Filter by platform">
+      <button class="platform-pill active" data-p="all" style="background:var(--glass);border-color:var(--border);color:var(--white)">🌐 All</button>
+      <button class="platform-pill" data-p="tiktok" style="background:rgba(0,0,0,.3);border-color:rgba(255,255,255,.15);color:#fff">TikTok</button>
+      <button class="platform-pill" data-p="facebook" style="background:rgba(24,119,242,.1);border-color:rgba(24,119,242,.2);color:#4a90e2">Facebook</button>
+      <button class="platform-pill" data-p="whatsapp" style="background:rgba(37,211,102,.08);border-color:rgba(37,211,102,.18);color:#25d366">WhatsApp</button>
+      <button class="platform-pill" data-p="telegram" style="background:rgba(0,136,204,.1);border-color:rgba(0,136,204,.2);color:#0088cc">Telegram</button>
+      <button class="platform-pill" data-p="youtube" style="background:rgba(255,0,0,.08);border-color:rgba(255,0,0,.18);color:#ff4444">YouTube</button>
+    </div>
+
+    <div id="posts-feed"></div>
+    <div id="soc-complete" style="display:none;margin-top:20px"></div>
+
+    <!-- Platform-specific tactics -->
+    <div style="margin-top:40px">
+      <div class="sect-label">🧠 PLATFORM-SPECIFIC TACTICS</div>
+      <h2 class="sect-title" style="margin-bottom:16px">How disinformation spreads differently on each platform</h2>
+      <div class="grid-2">
+        <div class="card"><div class="card-title">📱 TikTok</div><p style="font-size:.8rem;color:var(--text-muted);margin-top:6px;line-height:1.6">Algorithmic amplification of emotional content means a misleading video can reach millions before fact-checkers see it. Audio trends allow false narratives to spread via sound alone.</p></div>
+        <div class="card"><div class="card-title">📘 Facebook</div><p style="font-size:.8rem;color:var(--text-muted);margin-top:6px;line-height:1.6">Closed groups create echo chambers impervious to correction. The "share" mechanic removes original context. Older users have higher engagement with false health claims.</p></div>
+        <div class="card"><div class="card-title">💬 WhatsApp</div><p style="font-size:.8rem;color:var(--text-muted);margin-top:6px;line-height:1.6">End-to-end encryption makes moderation impossible. "Forwarded many times" is the only warning. Social trust — sharing from family/friends — dramatically reduces scepticism.</p></div>
+        <div class="card"><div class="card-title">✈️ Telegram</div><p style="font-size:.8rem;color:var(--text-muted);margin-top:6px;line-height:1.6">Large public channels with no moderation. Often used as the original source for coordinated disinformation before it migrates to other platforms. Screenshot chains remove context.</p></div>
+        <div class="card"><div class="card-title">▶️ YouTube</div><p style="font-size:.8rem;color:var(--text-muted);margin-top:6px;line-height:1.6">Recommendation algorithm creates "rabbit holes" of increasingly extreme content. Long-form format allows complex conspiracy theories to appear well-researched. Monetisation incentivises outrage.</p></div>
+      </div>
+    </div>
+  </div>
+  <script>
+  document.addEventListener('DOMContentLoaded',()=>{
+    const s=TQ.load();
+    document.getElementById('soc-cases').textContent = s.socialCasesResolved||0;
+    document.getElementById('soc-xp').textContent    = s.xp||0;
+    document.getElementById('soc-acc').textContent   = s.accuracy?s.accuracy+'%':'—';
+
+    const POSTS=[
+      {id:'p1',platform:'tiktok',avatar:'👩‍🎤',user:'@truther_vids',handle:'Truther Vids',verified:false,
+       text:'🚨 Doctor SECRETLY filmed saying the new medicine is KILLING PATIENTS and the hospital is COVERING IT UP. Share before they DELETE!! 💉⚠️',
+       stats:{views:'4.2M',likes:'89K',shares:'220K'},
+       flags:[{cls:'pf-red',t:'AI-generated caption'},{cls:'pf-red',t:'Artificial urgency'},{cls:'pf-red',t:'No source'},{cls:'pf-yellow',t:'Unverified account'}],
+       correct:'misinformation',
+       explanation:'No verifiable doctor, hospital, or study cited. "Share before they delete" is a panic trigger. AI-generated caption. Classic health disinformation pattern on TikTok.'},
+      {id:'p2',platform:'facebook',avatar:'👴',user:'Thomas Freeman',handle:'Community News & Updates',verified:false,
+       text:'"URGENT: Local water supply has been contaminated with toxic chemicals. DO NOT DRINK TAP WATER. Share with your neighbours NOW before the government shuts this page down."',
+       stats:{likes:'12K',shares:'45K',comments:'8.9K'},
+       flags:[{cls:'pf-red',t:'Emergency framing'},{cls:'pf-red',t:'No authority cited'},{cls:'pf-red',t:'Conspiracy implication'},{cls:'pf-red',t:'No date or location'}],
+       correct:'misinformation',
+       explanation:'No specific location, no date, no authority source, conspiracy implication ("government shuts down"). Local health authorities can be contacted directly to verify any water advisories.'},
+      {id:'p3',platform:'whatsapp',avatar:'📱',user:'Forwarded Message',handle:'Forwarded many times',verified:false,
+       text:'"IMPORTANT: Forward to all your contacts. A new virus is spreading through 5G networks. Scientists have confirmed it. Turn off your WiFi at night. DO NOT ignore this message."',
+       stats:{forwards:'>1000 times'},
+       flags:[{cls:'pf-red',t:'Technically impossible claim'},{cls:'pf-red',t:'Chain message format'},{cls:'pf-red',t:'No source'},{cls:'pf-red',t:'Forwarded 1000+ times'}],
+       correct:'misinformation',
+       explanation:'Viruses cannot spread through radio waves — this is scientifically impossible. Chain message format with "forward to all contacts" is a classic disinformation amplification tactic.'},
+      {id:'p4',platform:'youtube',avatar:'🎙️',user:'BBC News',handle:'BBC News — Official Channel',verified:true,
+       text:'[NEWS REPORT] UN releases new report on global media literacy levels — findings show 68% of adults cannot identify AI-generated images reliably. Full breakdown with UNESCO experts.',
+       stats:{views:'890K',likes:'24K'},
+       flags:[{cls:'pf-green',t:'Verified official channel'},{cls:'pf-green',t:'Named source (UN, UNESCO)'},{cls:'pf-green',t:'Specific statistic cited'},{cls:'pf-green',t:'Expert interviews'}],
+       correct:'credible',
+       explanation:'Verified BBC channel, named sources (UN, UNESCO), specific verifiable statistic, expert commentary. This demonstrates credible reporting. Always verify the channel is the real BBC, not an impersonator.'},
+      {id:'p5',platform:'telegram',avatar:'🦅',user:'TruthPatriots2026',handle:'Channel — 890K subscribers',verified:false,
+       text:'"The election results are FAKE. We have PROOF that millions of votes were switched by a foreign government. The mainstream media is hiding the evidence. SHARE NOW."',
+       stats:{views:'5.6M',shares:'Unlimited (public channel)'},
+       flags:[{cls:'pf-red',t:'Unsubstantiated "proof"'},{cls:'pf-red',t:'Conspiracy framing'},{cls:'pf-red',t:'No evidence shown'},{cls:'pf-red',t:'Anti-institution framing'}],
+       correct:'misinformation',
+       explanation:'No evidence presented despite claiming "proof". Classic election denial disinformation pattern. Telegram channels with no moderation are frequently used to originate coordinated disinformation campaigns.'},
+    ];
+
+    let correct=0,total=0,currentFilter='all';
+    const feed = document.getElementById('posts-feed');
+
+    function renderPosts(){
+      feed.innerHTML='';
+      const filtered = currentFilter==='all'?POSTS:POSTS.filter(p=>p.platform===currentFilter);
+      filtered.forEach(p=>{
+        const d=document.createElement('div');
+        d.className='post-card';
+        d.dataset.pid=p.id;
+        const plabels={'tiktok':'TikTok','facebook':'Facebook','whatsapp':'WhatsApp','telegram':'Telegram','youtube':'YouTube'};
+        const pclasses={'tiktok':'pp-tiktok','facebook':'pp-fb','whatsapp':'pp-wa','telegram':'pp-tg','youtube':'pp-yt'};
+        const statsHtml=Object.entries(p.stats).map(([k,v])=>`<span>${k}: ${v}</span>`).join('');
+        d.innerHTML=`
+          <div class="post-header">
+            <div class="post-avatar">${p.avatar}</div>
+            <div><div class="post-username">${p.user}${p.verified?' <span style="color:var(--blue);font-size:.7rem">✓</span>':''}</div><div class="post-handle">${p.handle}</div></div>
+            <span class="post-platform ${pclasses[p.platform]}">${plabels[p.platform]}</span>
+          </div>
+          <p class="post-text">${p.text}</p>
+          <div class="post-stats">${statsHtml}</div>
+          <div class="post-flags">${p.flags.map(f=>`<span class="pflag ${f.cls}">${f.t}</span>`).join('')}</div>
+          <div class="post-verdict" id="pv-${p.id}">
+            <button class="pv-btn pv-mis" data-pid="${p.id}" data-v="misinformation">🚩 Misinformation</button>
+            <button class="pv-btn pv-sat" data-pid="${p.id}" data-v="satire">😄 Satire/Humour</button>
+            <button class="pv-btn pv-ok"  data-pid="${p.id}" data-v="credible">✅ Credible</button>
+          </div>
+          <div id="pr-${p.id}" style="display:none;margin-top:10px"></div>`;
+        feed.appendChild(d);
+      });
+    }
+    renderPosts();
+
+    // Platform filter
+    document.getElementById('platform-filter').addEventListener('click',e=>{
+      const btn=e.target.closest('[data-p]');
+      if(!btn) return;
+      currentFilter=btn.dataset.p;
+      document.querySelectorAll('[data-p]').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      renderPosts();
+    });
+
+    // Verdict
+    feed.addEventListener('click',e=>{
+      const btn=e.target.closest('[data-v]');
+      if(!btn||btn.disabled) return;
+      const pid=btn.dataset.pid, v=btn.dataset.v;
+      const post=POSTS.find(p=>p.id===pid);
+      const isC=v===post.correct;
+      document.querySelectorAll(`[data-pid="${pid}"]`).forEach(b=>b.disabled=true);
+      total++;
+      if(isC){correct++;TQ.addXP(85,'Social media case resolved');TQ.inc('socialCasesResolved');if(correct>=3)TQ.awardBadge('troll_tracker');if(correct>=5)TQ.awardBadge('bot_buster');}
+      const res=document.getElementById('pr-'+pid);
+      res.style.display='block';
+      res.innerHTML=`<div class="result-panel ${isC?'result-good':'result-bad'}"><span style="font-size:1.4rem">${isC?'✅':'❌'}</span><div><strong>${isC?'Correct!':'Not quite.'}</strong><p style="font-size:.78rem;margin-top:4px">${post.explanation}</p>${isC?'<p style="color:var(--green);font-size:.72rem;margin-top:4px">+85 XP</p>':''}</div></div>`;
+      TQ.updateAccuracy(correct,total);
+      document.getElementById('soc-cases').textContent=TQ.load().socialCasesResolved||0;
+      document.getElementById('soc-xp').textContent=TQ.load().xp||0;
+      document.getElementById('soc-acc').textContent=TQ.load().accuracy+'%';
+    });
+  });
+  </script>
+</body>
+</html>

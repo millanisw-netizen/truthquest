@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>TruthQuest — Impact Dashboard</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/platform.css"/>
+  <script src="js/platform.js"></script><script src="js/nav.js"></script>
+  <style>
+    .skill-row{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+    [data-theme="light"] .skill-row{border-bottom-color:rgba(0,0,0,.06)}
+    .skill-row:last-child{border-bottom:none}
+    .skill-icon{font-size:1.3rem;flex-shrink:0;width:28px;text-align:center}
+    .skill-name{font-size:.85rem;font-weight:500;flex:1;min-width:100px}
+    .skill-bar-wrap{flex:2}
+    .skill-num{font-family:'Orbitron',monospace;font-size:.75rem;font-weight:700;color:var(--blue);min-width:36px;text-align:right}
+    .test-q{background:var(--glass);border:1px solid var(--border);border-radius:var(--radius-md);padding:18px;margin-bottom:12px}
+    .test-opt{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:var(--radius-sm);
+      padding:10px 14px;font-size:.82rem;cursor:pointer;margin-bottom:6px;
+      color:var(--white);font-family:'Inter',sans-serif;transition:all var(--r);display:block;width:100%;text-align:left}
+    .test-opt:hover{border-color:var(--blue);background:rgba(0,212,255,.07)}
+    .test-opt.correct{background:rgba(0,255,136,.1);border-color:rgba(0,255,136,.4);color:var(--green)}
+    .test-opt.wrong{background:rgba(255,68,68,.1);border-color:rgba(255,68,68,.3);color:var(--red)}
+    [data-theme="light"] .test-opt{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.1);color:#0a0e27}
+    .gauge{position:relative;width:140px;height:140px;flex-shrink:0}
+    .gauge svg{width:100%;height:100%}
+    .gauge-num{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+    .gauge-big{font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:900;display:block}
+    .gauge-lbl{font-size:.62rem;color:var(--text-muted);letter-spacing:1px;display:block}
+    .achievement-card{background:var(--glass);border:1px solid var(--border);border-radius:var(--radius-md);
+      padding:14px;display:flex;align-items:center;gap:12px;
+      transition:border-color var(--r)}
+    .achievement-card.earned{border-color:rgba(255,215,0,.3);background:rgba(255,215,0,.04)}
+    .achievement-card.locked{opacity:.4}
+    .ach-icon{font-size:1.8rem;flex-shrink:0}
+    .ach-name{font-family:'Orbitron',monospace;font-size:.72rem;font-weight:700;color:var(--gold);margin-bottom:3px}
+    .ach-desc{font-size:.7rem;color:var(--text-muted);line-height:1.4}
+  </style>
+</head>
+<body>
+  <div class="dept-hero">
+    <div class="dept-badge">📊 IMPACT DASHBOARD</div>
+    <h1 class="dept-title">Impact Dashboard</h1>
+    <p class="dept-sub">Your learning progress, accuracy, completed investigations, and MIL skill growth — all in one place.</p>
+  </div>
+  <div class="dept-content">
+
+    <!-- Hero stats -->
+    <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start;margin-bottom:36px">
+      <!-- Accuracy gauge -->
+      <div class="card" style="display:flex;align-items:center;gap:20px;flex:1;min-width:280px">
+        <div class="gauge" aria-label="Overall accuracy">
+          <svg viewBox="0 0 140 140" aria-hidden="true">
+            <circle cx="70" cy="70" r="56" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="10"/>
+            <circle cx="70" cy="70" r="56" fill="none" stroke="url(#acc-grad)" stroke-width="10"
+              stroke-linecap="round" id="acc-arc"
+              stroke-dasharray="352" stroke-dashoffset="352" transform="rotate(-90 70 70)"/>
+            <defs><linearGradient id="acc-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#00d4ff"/><stop offset="100%" stop-color="#00ff88"/>
+            </linearGradient></defs>
+          </svg>
+          <div class="gauge-num"><span class="gauge-big" id="acc-pct">0%</span><span class="gauge-lbl">ACCURACY</span></div>
+        </div>
+        <div style="flex:1">
+          <div class="sect-label" style="margin-bottom:6px">Overall Performance</div>
+          <div id="acc-grade" style="font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:700;margin-bottom:8px;color:var(--green)">—</div>
+          <p style="font-size:.78rem;color:var(--text-muted);line-height:1.5" id="acc-msg">Complete some investigations to see your accuracy score.</p>
+        </div>
+      </div>
+
+      <!-- Summary stats -->
+      <div class="grid-4" style="flex:2;min-width:280px">
+        <div class="stat-box"><div class="stat-num" id="imp-xp">0</div><div class="stat-lbl">Total XP</div></div>
+        <div class="stat-box"><div class="stat-num" id="imp-level">1</div><div class="stat-lbl">Level</div></div>
+        <div class="stat-box"><div class="stat-num" id="imp-badges">0</div><div class="stat-lbl">Badges</div></div>
+        <div class="stat-box"><div class="stat-num" id="imp-join">—</div><div class="stat-lbl">Days Active</div></div>
+        <div class="stat-box"><div class="stat-num" id="imp-inv">0</div><div class="stat-lbl">Investigations</div></div>
+        <div class="stat-box"><div class="stat-num" id="imp-facts">0</div><div class="stat-lbl">Facts Checked</div></div>
+        <div class="stat-box"><div class="stat-num" id="imp-ai">0</div><div class="stat-lbl">Deepfakes Found</div></div>
+        <div class="stat-box"><div class="stat-num" id="imp-lessons">0</div><div class="stat-lbl">Lessons Done</div></div>
+      </div>
+    </div>
+
+    <!-- MIL Skill Progress -->
+    <div class="card" style="margin-bottom:28px">
+      <div class="sect-label" style="margin-bottom:4px">🧠 MIL SKILL BREAKDOWN</div>
+      <h3 class="sect-title" style="margin-bottom:16px">Your progress across core competencies</h3>
+      <div id="skill-list"></div>
+    </div>
+
+    <!-- Pre/Post Test -->
+    <div class="card" style="margin-bottom:28px">
+      <div class="sect-label" style="margin-bottom:4px">📝 MIL ASSESSMENT</div>
+      <h3 class="sect-title" style="margin-bottom:6px">Test your media literacy</h3>
+      <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:20px">Take this 5-question assessment to measure your MIL level before and after using TruthQuest.</p>
+      <div id="test-area"></div>
+      <div id="test-result" style="display:none;margin-top:16px"></div>
+      <div id="test-improvement" style="margin-top:12px;display:none"></div>
+    </div>
+
+    <!-- Achievements -->
+    <div>
+      <div class="sect-label" style="margin-bottom:4px">🏆 ACHIEVEMENTS</div>
+      <h3 class="sect-title" style="margin-bottom:16px">All badges and what they mean</h3>
+      <div class="grid-3" id="achievements-grid"></div>
+    </div>
+  </div>
+  <script>
+  document.addEventListener('DOMContentLoaded',()=>{
+    const s = TQ.load();
+
+    // Stats
+    document.getElementById('imp-xp').textContent      = s.xp||0;
+    document.getElementById('imp-level').textContent   = s.level||1;
+    document.getElementById('imp-badges').textContent  = (s.badgesEarned||[]).length;
+    document.getElementById('imp-inv').textContent     = s.investigationsCompleted||0;
+    document.getElementById('imp-facts').textContent   = s.factsChecked||0;
+    document.getElementById('imp-ai').textContent      = s.deepfakesDetected||0;
+    document.getElementById('imp-lessons').textContent = s.lessonsCompleted||0;
+    const days = Math.max(1,Math.floor((Date.now()-(s.joinDate||Date.now()))/86400000));
+    document.getElementById('imp-join').textContent    = days;
+
+    // Accuracy gauge animation
+    const acc = s.accuracy||0;
+    document.getElementById('acc-pct').textContent = acc+'%';
+    setTimeout(()=>{
+      const arc = document.getElementById('acc-arc');
+      arc.style.transition='stroke-dashoffset 1.5s ease';
+      arc.style.strokeDashoffset = 352 - (acc/100)*352;
+    },200);
+    const gradeEl=document.getElementById('acc-grade'), msgEl=document.getElementById('acc-msg');
+    if(acc>=85){gradeEl.textContent='Expert';gradeEl.style.color='var(--green)';msgEl.textContent='Outstanding accuracy. You are consistently identifying disinformation correctly.';}
+    else if(acc>=70){gradeEl.textContent='Proficient';gradeEl.style.color='var(--blue)';msgEl.textContent='Good accuracy. Keep investigating to sharpen your instincts further.';}
+    else if(acc>=50){gradeEl.textContent='Developing';gradeEl.style.color='var(--gold)';msgEl.textContent='You\'re getting there. Review the MIL Academy lessons for the areas where you\'re scoring lower.';}
+    else if(acc>0){gradeEl.textContent='Beginner';gradeEl.style.color='var(--orange)';msgEl.textContent='Everyone starts somewhere. Complete more investigations and lessons to build accuracy.';}
+
+    // Skill bars
+    const SKILLS=[
+      {icon:'🔍',name:'Investigation',key:'investigationsCompleted',max:20,color:'var(--blue)'},
+      {icon:'📋',name:'Fact-Checking',key:'factsChecked',max:20,color:'var(--green)'},
+      {icon:'🤖',name:'AI Detection',key:'deepfakesDetected',max:10,color:'var(--purple)'},
+      {icon:'📚',name:'Source Analysis',key:'sourcesAnalysed',max:15,color:'var(--gold)'},
+      {icon:'📱',name:'Social Media',key:'socialCasesResolved',max:10,color:'var(--orange)'},
+      {icon:'🎓',name:'MIL Lessons',key:'lessonsCompleted',max:8,color:'var(--green)'},
+      {icon:'🎮',name:'Game Missions',key:'missionsCompleted',max:5,color:'var(--blue)'},
+    ];
+    const sl=document.getElementById('skill-list');
+    SKILLS.forEach(sk=>{
+      const val=Math.min(s[sk.key]||0, sk.max);
+      const pct=Math.round(val/sk.max*100);
+      const d=document.createElement('div');
+      d.className='skill-row';
+      d.innerHTML=`<span class="skill-icon">${sk.icon}</span><span class="skill-name">${sk.name}</span>
+        <div class="skill-bar-wrap"><div class="prog-track"><div class="prog-fill" style="width:0%;background:${sk.color}" data-w="${pct}"></div></div></div>
+        <span class="skill-num">${val}/${sk.max}</span>`;
+      sl.appendChild(d);
+    });
+    // Animate bars
+    setTimeout(()=>{
+      sl.querySelectorAll('.prog-fill').forEach(b=>{ b.style.transition='width 1s ease'; b.style.width=b.dataset.w+'%'; });
+    },200);
+
+    // MIL Assessment
+    const TEST_QS=[
+      {q:'You see a viral video claiming a politician said something shocking. Your FIRST action should be:',opts:['Share it immediately — the public should know','Search for the video on major news sites to see if it\'s being reported','Comment your opinion','Like it to show support'],correct:1},
+      {q:'An image shows a crowd at a political event. To verify it\'s from today, you should:',opts:['Count the people in the crowd','Do a reverse image search to check when it first appeared online','Look at the image quality','Read the caption carefully'],correct:1},
+      {q:'A message forwarded to you on WhatsApp claims a new food causes cancer, citing "scientists." You should:',opts:['Forward it to warn your family','Search for the claim on WHO.int and established medical databases','Ignore it','Share only to close friends'],correct:1},
+      {q:'Which is the STRONGEST indicator that a social media account is inauthentic?',opts:['It has fewer than 1000 followers','It was created very recently with no post history and unusual activity patterns','It posts in a language you don\'t speak','It has no profile picture'],correct:1},
+      {q:'The SIFT method stands for:',opts:['Search, Identify, Find, Tell','Stop, Investigate, Find better coverage, Trace claims','Scan, Investigate, Forward, Track','Stop, Inform, Fact-check, Tell others'],correct:1},
+    ];
+
+    let testAnswered=0, testCorrect=0, testStarted=false;
+    const testArea=document.getElementById('test-area');
+
+    function startTest(isPost){
+      testStarted=true; testAnswered=0; testCorrect=0;
+      testArea.innerHTML='';
+      TEST_QS.forEach((q,qi)=>{
+        const d=document.createElement('div');
+        d.className='test-q';
+        d.innerHTML=`<p style="font-size:.85rem;font-weight:500;margin-bottom:10px;line-height:1.6">${qi+1}. ${q.q}</p>`+
+          q.opts.map((o,i)=>`<button class="test-opt" data-qi="${qi}" data-oi="${i}" data-correct="${q.correct}" data-is-post="${isPost?1:0}">${o}</button>`).join('');
+        testArea.appendChild(d);
+      });
+    }
+
+    const preScore=s.preTestScore;
+    const postScore=s.postTestScore;
+
+    if(preScore===null||preScore===undefined){
+      testArea.innerHTML=`<div style="text-align:center;padding:20px 0"><p style="color:var(--text-muted);font-size:.85rem;margin-bottom:16px">Take the <strong>Pre-Test</strong> now to record your starting level. You can retake it as a Post-Test after completing lessons to measure your improvement.</p><button class="btn btn-primary" id="start-pre">📝 Start Pre-Test</button></div>`;
+      document.getElementById('start-pre').addEventListener('click',()=>startTest(false));
+    } else {
+      testArea.innerHTML=`<div style="margin-bottom:16px"><div class="result-panel result-good"><span style="font-size:1.4rem">✅</span><div><strong>Pre-Test complete: ${preScore}/5</strong><p style="font-size:.78rem;margin-top:4px">You can retake as a Post-Test after completing more lessons to measure your improvement.</p></div></div></div>`;
+      if(postScore!==null&&postScore!==undefined){
+        const improvement=postScore-preScore;
+        document.getElementById('test-improvement').style.display='block';
+        document.getElementById('test-improvement').innerHTML=`<div class="result-panel ${improvement>=0?'result-good':'result-warn'}"><span style="font-size:1.4rem">${improvement>=0?'📈':'📉'}</span><div><strong>Improvement: ${improvement>=0?'+':''}${improvement} points</strong><p style="font-size:.78rem;margin-top:4px">Pre-test: ${preScore}/5 → Post-test: ${postScore}/5. ${improvement>=2?'Excellent growth in MIL skills!':improvement>=1?'Good progress. Keep learning.':'Keep practising — complete more lessons and investigations.'}</p></div></div>`;
+      } else {
+        const btn=document.createElement('button');
+        btn.className='btn btn-secondary'; btn.textContent='📝 Take Post-Test';
+        btn.addEventListener('click',()=>startTest(true));
+        testArea.appendChild(btn);
+      }
+    }
+
+    testArea.addEventListener('click',e=>{
+      const btn=e.target.closest('.test-opt');
+      if(!btn||btn.disabled) return;
+      const qi=parseInt(btn.dataset.qi), oi=parseInt(btn.dataset.oi), cor=parseInt(btn.dataset.correct), isPost=!!parseInt(btn.dataset.isPost);
+      testArea.querySelectorAll(`[data-qi="${qi}"]`).forEach(b=>b.disabled=true);
+      if(oi===cor){btn.classList.add('correct');testCorrect++;}
+      else{btn.classList.add('wrong');testArea.querySelectorAll(`[data-qi="${qi}"]`)[cor].classList.add('correct');}
+      testAnswered++;
+      if(testAnswered===TEST_QS.length){
+        const res=document.getElementById('test-result');
+        res.style.display='block';
+        res.innerHTML=`<div class="result-panel ${testCorrect>=4?'result-good':testCorrect>=3?'result-warn':'result-bad'}"><span style="font-size:1.4rem">${testCorrect>=4?'🏆':testCorrect>=3?'📚':'📖'}</span><div><strong>${testCorrect}/5 correct — ${isPost?'Post':'Pre'}-Test complete</strong><p style="font-size:.78rem;margin-top:4px">${testCorrect>=4?'Excellent MIL knowledge!':testCorrect>=3?'Good foundation. Keep learning.':'Complete more MIL Academy lessons to improve your score.'}</p></div></div>`;
+        const ns=TQ.load();
+        if(!isPost||ns.preTestScore===null||ns.preTestScore===undefined) ns.preTestScore=testCorrect;
+        else ns.postTestScore=testCorrect;
+        TQ.save(ns);
+        TQ.addXP(testCorrect*20,'MIL Assessment');
+      }
+    });
+
+    // Achievements
+    const ag=document.getElementById('achievements-grid');
+    Object.entries(TQ.BADGE_DEFS).forEach(([id,def])=>{
+      const earned=(s.badgesEarned||[]).includes(id);
+      const d=document.createElement('div');
+      d.className='achievement-card'+(earned?' earned':' locked');
+      d.innerHTML=`<div class="ach-icon">${earned?def.icon:'🔒'}</div><div><div class="ach-name">${def.name}</div><div class="ach-desc">${def.description}</div>${earned?'<div style="font-size:.62rem;color:var(--gold);margin-top:4px">+'+def.xp+' XP earned</div>':''}</div>`;
+      ag.appendChild(d);
+    });
+  });
+  </script>
+</body>
+</html>

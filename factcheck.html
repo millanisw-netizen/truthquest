@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>TruthQuest — Fact-Check Department</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/platform.css"/>
+  <script src="js/platform.js"></script><script src="js/nav.js"></script>
+  <style>
+    .sift-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:32px}
+    .sift-card{background:var(--glass);border:1px solid var(--border);border-radius:var(--radius-md);
+      padding:20px;text-align:center;cursor:pointer;transition:all var(--r)}
+    .sift-card:hover,.sift-card.done{border-color:rgba(0,255,136,.4);background:rgba(0,255,136,.05)}
+    .sift-letter{font-family:'Orbitron',monospace;font-size:2.2rem;font-weight:900;color:var(--blue);margin-bottom:6px}
+    .sift-word{font-size:.82rem;font-weight:700;color:var(--white);margin-bottom:6px}
+    .sift-desc{font-size:.75rem;color:var(--text-muted);line-height:1.5}
+    .fc-challenge{background:var(--glass);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:20px}
+    .fc-claim{font-size:.92rem;line-height:1.7;margin-bottom:16px;padding:14px;background:rgba(0,0,0,.2);border-radius:var(--radius-sm);border-left:3px solid var(--blue)}
+    [data-theme="light"] .fc-claim{background:rgba(0,0,0,.04)}
+    .fc-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .fc-option{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius-sm);
+      padding:12px 14px;font-size:.82rem;cursor:pointer;text-align:left;
+      color:var(--white);font-family:'Inter',sans-serif;transition:all var(--r)}
+    .fc-option:hover{border-color:var(--blue);background:rgba(0,212,255,.07)}
+    .fc-option.correct{background:rgba(0,255,136,.1);border-color:rgba(0,255,136,.4);color:var(--green)}
+    .fc-option.wrong{background:rgba(255,68,68,.1);border-color:rgba(255,68,68,.3);color:var(--red)}
+    [data-theme="light"] .fc-option{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.1);color:#0a0e27}
+  </style>
+</head>
+<body>
+  <div class="dept-hero">
+    <div class="dept-badge">📋 DEPARTMENT 2 OF 8</div>
+    <h1 class="dept-title">Fact-Check Department</h1>
+    <p class="dept-sub">Master the SIFT method. Verify claims using sources, evidence, dates, and context.</p>
+  </div>
+  <div class="dept-content">
+
+    <!-- SIFT Framework -->
+    <div class="sect-label">📚 THE SIFT METHOD</div>
+    <h2 class="sect-title" style="margin-bottom:16px">Stop. Investigate. Find. Trace.</h2>
+    <div class="sift-grid" id="sift-grid">
+      <div class="sift-card" data-sift="S"><div class="sift-letter">S</div><div class="sift-word">STOP</div><div class="sift-desc">Before sharing, pause. Emotional reactions are exactly what disinformation is designed to trigger.</div></div>
+      <div class="sift-card" data-sift="I"><div class="sift-letter">I</div><div class="sift-word">INVESTIGATE</div><div class="sift-desc">Check the source before reading the content. Who published this? What is their reputation?</div></div>
+      <div class="sift-card" data-sift="F"><div class="sift-letter">F</div><div class="sift-word">FIND</div><div class="sift-desc">Find better coverage. Look for what other credible outlets are reporting on the same story.</div></div>
+      <div class="sift-card" data-sift="T"><div class="sift-letter">T</div><div class="sift-word">TRACE</div><div class="sift-desc">Trace claims back to their original context. Quotes and images are frequently manipulated.</div></div>
+    </div>
+
+    <div id="sift-msg" style="display:none;margin-bottom:24px"></div>
+
+    <!-- Fact-Check Challenges -->
+    <div class="sect-label" style="margin-top:8px">🏋️ FACT-CHECK CHALLENGES</div>
+    <h2 class="sect-title" style="margin-bottom:16px">Apply the SIFT method to these claims</h2>
+    <div id="fc-challenges"></div>
+
+    <div id="fc-score-panel" style="margin-top:24px;display:none">
+      <div class="result-panel result-good">
+        <span style="font-size:1.5rem">🏆</span>
+        <div>
+          <strong id="fc-final-msg">Great work!</strong>
+          <p style="font-size:.78rem;margin-top:4px" id="fc-final-sub">You completed all fact-check challenges.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Fact-Check Tool -->
+    <div style="margin-top:40px">
+      <div class="sect-label">🔬 LIVE FACT-CHECK</div>
+      <h2 class="sect-title" style="margin-bottom:16px">Check any claim right now</h2>
+      <div class="card">
+        <div style="display:flex;gap:10px;margin-bottom:12px">
+          <input type="text" id="live-claim" class="tq-input" placeholder="Type or paste any claim…" aria-label="Claim to fact check"/>
+          <button class="btn btn-primary" id="live-check-btn">Check</button>
+        </div>
+        <div id="live-result"></div>
+      </div>
+    </div>
+
+  </div>
+  <script>
+  document.addEventListener('DOMContentLoaded',()=>{
+    // SIFT interaction
+    document.querySelectorAll('.sift-card').forEach(c=>{
+      c.addEventListener('click',()=>{
+        c.classList.toggle('done');
+        const allDone = document.querySelectorAll('.sift-card.done').length === 4;
+        const msg = document.getElementById('sift-msg');
+        if(allDone){
+          msg.style.display='block';
+          msg.innerHTML='<div class="result-panel result-good"><span style="font-size:1.5rem">🎓</span><div><strong>SIFT Method Mastered!</strong><p style="font-size:.78rem;margin-top:4px">You\'ve reviewed all 4 steps. +50 XP earned.</p></div></div>';
+          TQ.addXP(50,'SIFT method reviewed');
+          TQ.awardBadge('fact_finder');
+        }
+      });
+    });
+
+    // Challenges
+    const CHALLENGES = [
+      { claim:'"Scientists have proven that mobile phone radiation causes brain cancer — WHO confirmed this last month."',
+        options:['True — WHO confirmed this','False — WHO has found no conclusive evidence linking mobile phones to cancer','Misleading — some studies show minor correlation','True — all scientists agree'],
+        correct:1, explanation:'WHO\'s position as of 2024 is that current evidence does not confirm mobile phones cause cancer. Always check WHO\'s actual website, not second-hand claims about it.' },
+      { claim:'"The Great Wall of China is the only man-made object visible from space with the naked eye."',
+        options:['True — astronauts have confirmed this','False — this is a persistent myth. The wall is narrow and hard to see from space','True — confirmed by NASA','Misleading — it\'s visible but only with telescopes'],
+        correct:1, explanation:'Chinese astronaut Yang Liwei confirmed he could NOT see it from space. NASA and multiple astronauts have debunked this myth. It persists because it sounds plausible.' },
+      { claim:'"A new study shows drinking coffee daily extends your lifespan by 10 years."',
+        options:['True — well established science','Misleading — some studies show modest benefits, not 10 years. Always check the actual study','False — coffee is harmful','True — doctors recommend 5 cups daily'],
+        correct:1, explanation:'This is clickbait exaggeration of real research. Some observational studies show modest associations between coffee and longevity, but nothing close to "10 years" and no proven causation.' },
+      { claim:'"In 2023, a country passed a law making it illegal to criticise the government online, with a 20-year jail sentence."',
+        options:['Probably true, this happens in some countries','Requires verification — we need to know which country and see the actual law text','False — no country has laws like this','True — it was widely reported'],
+        correct:1, explanation:'Without a specific country named and a verifiable law text, this claim cannot be assessed. "Some country did something" is a common disinformation framing. Always ask: which country, which law, what does the text say?' },
+    ];
+
+    let answered = 0, correctCount = 0;
+    const cont = document.getElementById('fc-challenges');
+
+    CHALLENGES.forEach((ch,ci)=>{
+      const d = document.createElement('div');
+      d.className='fc-challenge';
+      d.innerHTML=`
+        <div class="sect-label" style="margin-bottom:8px">Challenge ${ci+1}</div>
+        <div class="fc-claim">${ch.claim}</div>
+        <div class="fc-options">${ch.options.map((o,i)=>`<button class="fc-option" data-ci="${ci}" data-oi="${i}">${o}</button>`).join('')}</div>
+        <div id="fc-exp-${ci}" style="display:none;margin-top:12px"></div>`;
+      cont.appendChild(d);
+    });
+
+    cont.addEventListener('click',e=>{
+      const btn = e.target.closest('.fc-option');
+      if(!btn||btn.disabled) return;
+      const ci  = parseInt(btn.dataset.ci);
+      const oi  = parseInt(btn.dataset.oi);
+      const ch  = CHALLENGES[ci];
+      const isC = oi === ch.correct;
+      // Disable all options in this challenge
+      cont.querySelectorAll(`[data-ci="${ci}"]`).forEach(b=>{
+        b.disabled=true;
+        if(parseInt(b.dataset.oi)===ch.correct) b.classList.add('correct');
+      });
+      if(!isC) btn.classList.add('wrong');
+      const exp = document.getElementById('fc-exp-' + ci);
+      exp.style.display='block';
+      exp.innerHTML=`<div class="result-panel ${isC?'result-good':'result-bad'}"><span style="font-size:1.4rem">${isC?'✅':'❌'}</span><div><strong>${isC?'Correct!':'Not quite.'}</strong><p style="font-size:.78rem;margin-top:4px">${ch.explanation}</p>${isC?'<p style="color:var(--green);font-size:.72rem;margin-top:5px">+80 XP</p>':''}</div></div>`;
+      answered++;
+      if(isC){ correctCount++; TQ.addXP(80,'Fact-check correct'); TQ.inc('factsChecked'); }
+      if(answered===CHALLENGES.length){
+        document.getElementById('fc-score-panel').style.display='block';
+        document.getElementById('fc-final-msg').textContent=`${correctCount}/${CHALLENGES.length} correct!`;
+        document.getElementById('fc-final-sub').textContent=correctCount>=3?'Excellent fact-checking skills! Myth Breaker badge earned.':'Keep practising — review the SIFT method above.';
+        if(correctCount>=3) TQ.awardBadge('myth_breaker');
+        TQ.updateAccuracy(correctCount, CHALLENGES.length);
+      }
+    });
+
+    // Live check tool (reuses fact checker from index.html logic)
+    document.getElementById('live-check-btn').addEventListener('click',()=>{
+      const claim = document.getElementById('live-claim').value.trim();
+      const res   = document.getElementById('live-result');
+      if(!claim) return;
+      res.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
+      setTimeout(()=>{
+        const lower = claim.toLowerCase();
+        const redFlags=['share now','breaking','they won\'t tell','secret','banned','doctors hate','miracle','mainstream media'];
+        const hits = redFlags.filter(f=>lower.includes(f));
+        const score = Math.max(0, 70 - hits.length*18);
+        const colour = score>=60?'result-good':score>=35?'result-warn':'result-bad';
+        const verdict = score>=60?'Low risk — but still verify':'Multiple red flags detected — treat with caution';
+        res.innerHTML=`
+          <div class="result-panel ${colour}">
+            <span style="font-size:1.5rem">${score>=60?'✅':score>=35?'⚠️':'🚩'}</span>
+            <div style="flex:1">
+              <strong>${verdict}</strong><br/>
+              <span style="font-size:.75rem;opacity:.8">Credibility score: ${score}/100</span>
+              ${hits.length?`<br/><span style="font-size:.72rem;color:var(--red)">Red flags: ${hits.join(', ')}</span>`:''}
+              <p style="font-size:.72rem;margin-top:6px;opacity:.75">💡 Apply the SIFT method: Stop → Investigate the source → Find better coverage → Trace the original claim.</p>
+            </div>
+          </div>`;
+        TQ.addXP(25,'Live fact-check performed');
+        TQ.inc('factsChecked');
+      }, 500);
+    });
+    document.getElementById('live-claim').addEventListener('keydown',e=>{ if(e.key==='Enter') document.getElementById('live-check-btn').click(); });
+  });
+  </script>
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>TruthQuest — AI Detection Department</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/platform.css"/>
+  <script src="js/platform.js"></script><script src="js/nav.js"></script>
+  <style>
+    .ai-quiz-card{background:var(--glass);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:20px}
+    .ai-media-box{background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius-md);
+      padding:24px;text-align:center;margin-bottom:16px;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+    .ai-media-icon{font-size:3rem;margin-bottom:8px}
+    .ai-media-desc{font-size:.82rem;color:var(--text-muted);max-width:420px;line-height:1.6}
+    .ai-signals{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+    .ai-signal-row{display:flex;align-items:center;gap:10px;font-size:.8rem;padding:8px 12px;
+      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:var(--radius-sm)}
+    .ai-signal-icon{font-size:1rem;flex-shrink:0}
+    .signal-val{font-family:'Orbitron',monospace;font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:100px}
+    .sig-high{background:rgba(255,68,68,.15);color:var(--red);border:1px solid rgba(255,68,68,.25)}
+    .sig-mid {background:rgba(255,215,0,.12);color:var(--gold);border:1px solid rgba(255,215,0,.2)}
+    .sig-low {background:rgba(0,255,136,.1);color:var(--green);border:1px solid rgba(0,255,136,.2)}
+    .ai-btns{display:flex;gap:10px}
+    .ai-btn{flex:1;padding:12px;border:none;border-radius:var(--radius-sm);font-family:'Orbitron',monospace;
+      font-size:.72rem;font-weight:700;cursor:pointer;transition:all var(--r)}
+    .ai-real{background:rgba(0,255,136,.12);color:var(--green);border:1px solid rgba(0,255,136,.25)}
+    .ai-fake{background:rgba(255,68,68,.12);color:var(--red);border:1px solid rgba(255,68,68,.25)}
+    .ai-btn:hover{transform:translateY(-2px);filter:brightness(1.2)}
+    .checklist-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;
+      background:var(--glass);border:1px solid var(--border);border-radius:var(--radius-sm);
+      font-size:.82rem;line-height:1.5;cursor:pointer;transition:border-color var(--r)}
+    .checklist-item input{margin-top:2px;accent-color:var(--blue);flex-shrink:0}
+    .checklist-item:has(input:checked){border-color:rgba(0,212,255,.3);background:rgba(0,212,255,.04)}
+  </style>
+</head>
+<body>
+  <div class="dept-hero">
+    <div class="dept-badge">🤖 DEPARTMENT 3 OF 8</div>
+    <h1 class="dept-title">AI Detection Department</h1>
+    <p class="dept-sub">Identify AI-generated images, deepfake videos, synthetic voices, and manufactured media.</p>
+  </div>
+  <div class="dept-content">
+
+    <div class="grid-4" style="margin-bottom:32px">
+      <div class="stat-box"><div class="stat-num" id="ai-detected">0</div><div class="stat-lbl">Detected</div></div>
+      <div class="stat-box"><div class="stat-num" id="ai-acc">—</div><div class="stat-lbl">Accuracy</div></div>
+      <div class="stat-box"><div class="stat-num" id="ai-xp">0</div><div class="stat-lbl">XP Earned</div></div>
+      <div class="stat-box"><div class="stat-num">4</div><div class="stat-lbl">Tools Available</div></div>
+    </div>
+
+    <!-- Real or AI? Quiz -->
+    <div class="sect-label">🎮 REAL OR AI? — IDENTIFY THE DEEPFAKE</div>
+    <h2 class="sect-title" style="margin-bottom:16px">Analyse the signals and decide</h2>
+    <div id="ai-quiz-container"></div>
+    <div id="ai-quiz-done" style="display:none;margin-bottom:32px"></div>
+
+    <!-- Detection checklists -->
+    <div style="margin-top:36px">
+      <div class="sect-label">📋 AI DETECTION CHECKLISTS</div>
+      <h2 class="sect-title" style="margin-bottom:16px">What to look for in each media type</h2>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">🖼️ AI-Generated Images</div>
+          <div id="img-checklist" style="margin-top:12px;display:flex;flex-direction:column;gap:8px"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">🎬 Deepfake Videos</div>
+          <div id="vid-checklist" style="margin-top:12px;display:flex;flex-direction:column;gap:8px"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">🔊 AI Voice Clones</div>
+          <div id="aud-checklist" style="margin-top:12px;display:flex;flex-direction:column;gap:8px"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">📝 AI-Generated Text</div>
+          <div id="txt-checklist" style="margin-top:12px;display:flex;flex-direction:column;gap:8px"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <script>
+  document.addEventListener('DOMContentLoaded',()=>{
+    const s = TQ.load();
+    document.getElementById('ai-detected').textContent = s.deepfakesDetected || 0;
+    document.getElementById('ai-acc').textContent = s.accuracy ? s.accuracy+'%' : '—';
+    document.getElementById('ai-xp').textContent = s.xp || 0;
+
+    const SCENARIOS = [
+      { type:'image', icon:'🖼️', isAI:true,
+        desc:'Profile photo: Subject has perfectly symmetrical features, studio-quality lighting, background has subtle geometric distortions at the edges. Posted by a new account with no personal history.',
+        signals:[
+          {icon:'👁️',text:'Pupil reflections are different in each eye',val:'HIGH',cls:'sig-high'},
+          {icon:'👂',text:'Ear details appear blurred and asymmetrical',val:'HIGH',cls:'sig-high'},
+          {icon:'🖼️',text:'Background shows impossible geometry near subject',val:'MED',cls:'sig-mid'},
+          {icon:'✨',text:'Skin texture unnaturally smooth, no pores or blemishes',val:'HIGH',cls:'sig-high'},
+        ],
+        ai_prob:96, explanation:'Classic GAN (Generative Adversarial Network) portrait. Telltale signs: different pupil reflections, blurred ears, impossible background geometry, unnaturally smooth skin.'
+      },
+      { type:'video', icon:'🎬', isAI:true,
+        desc:'Video of a world leader making controversial statements. Audio is clear but lip movements look slightly out of sync. Teeth appear to morph between frames.',
+        signals:[
+          {icon:'👄',text:'Lip movement sync delay: ~120ms behind audio',val:'HIGH',cls:'sig-high'},
+          {icon:'🦷',text:'Teeth shape changes inconsistently between frames',val:'HIGH',cls:'sig-high'},
+          {icon:'👁️',text:'Blinking frequency unnatural — too regular',val:'MED',cls:'sig-mid'},
+          {icon:'✂️',text:'Facial boundary shows slight halo artifact',val:'MED',cls:'sig-mid'},
+        ],
+        ai_prob:94, explanation:'Deepfake video. The 120ms audio-visual delay and morphing teeth are dead giveaways. Real videos have natural blink variation; deepfakes often have mechanical regularity.'
+      },
+      { type:'audio', icon:'🔊', isAI:false,
+        desc:'Leaked audio of a company executive discussing confidential matters. Voice has natural pacing, occasional hesitations, background office noise, and breathing sounds.',
+        signals:[
+          {icon:'🌊',text:'Waveform shows natural amplitude variation',val:'LOW',cls:'sig-low'},
+          {icon:'🎙️',text:'Natural filler words and self-correction present',val:'LOW',cls:'sig-low'},
+          {icon:'🔈',text:'Consistent background noise throughout (office acoustics)',val:'LOW',cls:'sig-low'},
+          {icon:'🫁',text:'Natural breathing patterns detected between sentences',val:'LOW',cls:'sig-low'},
+        ],
+        ai_prob:8, explanation:'This audio appears genuine. Natural filler words, breathing, background noise, and waveform variation all indicate authentic human speech. AI voice clones typically have unnaturally consistent amplitude.'
+      },
+      { type:'image', icon:'🖼️', isAI:true,
+        desc:'Viral photo of a crowd gathering that appears unusually large. Signs visible in the crowd have text that partially overlaps in physically impossible ways.',
+        signals:[
+          {icon:'📝',text:'Text on signs overlaps in physically impossible ways',val:'HIGH',cls:'sig-high'},
+          {icon:'👥',text:'Crowd faces appear copy-pasted at regular intervals',val:'HIGH',cls:'sig-high'},
+          {icon:'☁️',text:'Sky-crowd boundary shows unnatural smooth gradient',val:'MED',cls:'sig-mid'},
+          {icon:'🦶',text:'Feet of crowd figures do not cast consistent shadows',val:'HIGH',cls:'sig-high'},
+        ],
+        ai_prob:98, explanation:'AI image manipulation. The physically impossible text overlap and repeated face patterns are unmistakable. Shadow inconsistency confirms the crowd was artificially multiplied.'
+      },
+    ];
+
+    let correct=0, total=0;
+    const qcont = document.getElementById('ai-quiz-container');
+
+    SCENARIOS.forEach((sc,i)=>{
+      const d = document.createElement('div');
+      d.className='ai-quiz-card';
+      d.innerHTML=`
+        <div class="sect-label" style="margin-bottom:8px">Sample ${i+1} — ${sc.type.toUpperCase()}</div>
+        <div class="ai-media-box">
+          <div class="ai-media-icon">${sc.icon}</div>
+          <p class="ai-media-desc">${sc.desc}</p>
+        </div>
+        <div class="ai-signals">${sc.signals.map(s=>`
+          <div class="ai-signal-row">
+            <span class="ai-signal-icon">${s.icon}</span>
+            <span style="flex:1">${s.text}</span>
+            <span class="signal-val ${s.cls}">${s.val}</span>
+          </div>`).join('')}
+          <div class="ai-signal-row">
+            <span class="ai-signal-icon">🤖</span>
+            <span style="flex:1">AI Generation Probability</span>
+            <span class="signal-val ${sc.ai_prob>50?'sig-high':'sig-low'}">${sc.ai_prob}%</span>
+          </div>
+        </div>
+        <div class="ai-btns">
+          <button class="ai-btn ai-real" data-i="${i}" data-ans="real">✅ This is REAL</button>
+          <button class="ai-btn ai-fake" data-i="${i}" data-ans="ai">🤖 This is AI-GENERATED</button>
+        </div>
+        <div id="ai-res-${i}" style="display:none;margin-top:12px"></div>`;
+      qcont.appendChild(d);
+    });
+
+    qcont.addEventListener('click',e=>{
+      const btn = e.target.closest('[data-ans]');
+      if(!btn||btn.disabled) return;
+      const i   = parseInt(btn.dataset.i);
+      const ans = btn.dataset.ans;
+      const sc  = SCENARIOS[i];
+      const isC = (ans==='ai')===sc.isAI;
+      qcont.querySelectorAll(`[data-i="${i}"]`).forEach(b=>b.disabled=true);
+      total++;
+      if(isC){ correct++; TQ.addXP(90,'AI detection correct'); TQ.inc('deepfakesDetected'); }
+      const res = document.getElementById('ai-res-' + i);
+      res.style.display='block';
+      res.innerHTML=`<div class="result-panel ${isC?'result-good':'result-bad'}"><span style="font-size:1.4rem">${isC?'🎯':'❌'}</span><div><strong>${isC?'Correct!':'Wrong.'}</strong><p style="font-size:.78rem;margin-top:4px">${sc.explanation}</p>${isC?'<p style="color:var(--green);font-size:.72rem;margin-top:4px">+90 XP</p>':''}</div></div>`;
+      if(total===SCENARIOS.length){
+        if(correct>=3) TQ.awardBadge('deepfake_hunter');
+        if(correct>=2) TQ.awardBadge('ai_spotter');
+        document.getElementById('ai-quiz-done').style.display='block';
+        document.getElementById('ai-quiz-done').innerHTML=`<div class="result-panel result-good"><span style="font-size:1.5rem">🏆</span><div><strong>${correct}/${total} correct</strong><p style="font-size:.78rem;margin-top:4px">${correct>=3?'Excellent AI detection skills!':'Keep practising — review the checklists below.'}</p></div></div>`;
+        document.getElementById('ai-detected').textContent = TQ.load().deepfakesDetected||0;
+        document.getElementById('ai-xp').textContent = TQ.load().xp||0;
+      }
+    });
+
+    // Checklists
+    function mkChecklist(containerId, items){
+      const c = document.getElementById(containerId);
+      items.forEach((t,i)=>{
+        const l=document.createElement('label');
+        l.className='checklist-item';
+        l.innerHTML=`<input type="checkbox" id="${containerId}-${i}"/> <span>${t}</span>`;
+        c.appendChild(l);
+      });
+    }
+    mkChecklist('img-checklist',[
+      '🔍 Zoom into teeth — AI often renders them incorrectly',
+      '👁️ Check both eyes for matching reflections',
+      '👂 Ear details: AI blurs or distorts complex structures',
+      '🖐️ Count fingers — AI frequently generates wrong numbers',
+      '📐 Background geometry: impossible curves or merges',
+      '✨ Skin looks unnaturally smooth with no pores',
+    ]);
+    mkChecklist('vid-checklist',[
+      '👄 Lip sync: watch for >80ms audio-visual delay',
+      '🦷 Do teeth change shape between frames?',
+      '😳 Natural blinking? Deepfakes blink too regularly',
+      '🌟 Facial boundary halos or blurring',
+      '💡 Lighting consistency on face vs background',
+      '🔄 Unnatural head movement when speaking',
+    ]);
+    mkChecklist('aud-checklist',[
+      '🌊 Waveform: AI voice has unnaturally uniform amplitude',
+      '🫁 Are there natural breathing sounds?',
+      '🗣️ Filler words ("um", "uh") and self-corrections?',
+      '🔈 Background noise consistent throughout?',
+      '🎵 Emotional prosody: does intonation feel natural?',
+      '📱 Audio artefacts: unexpected clicks or smoothing?',
+    ]);
+    mkChecklist('txt-checklist',[
+      '📝 Overly formal or generic phrasing throughout',
+      '🔄 Repetitive sentence structures',
+      '💬 Lack of specific names, places, or dates',
+      '🎯 No contradictions or human errors',
+      '📚 Unnaturally comprehensive coverage of a topic',
+      '🤖 Run through AI detection tools: GPTZero, Copyleaks',
+    ]);
+  });
+  </script>
+</body>
+</html>

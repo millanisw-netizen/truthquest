@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>TruthQuest — Source Analysis Department</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/platform.css"/>
+  <script src="js/platform.js"></script><script src="js/nav.js"></script>
+  <style>
+    .source-card{background:var(--glass);border:1px solid var(--border);border-radius:var(--radius-md);padding:20px;margin-bottom:16px}
+    .source-header{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+    .source-avatar{width:48px;height:48px;border-radius:50%;background:rgba(0,212,255,.15);
+      border:2px solid rgba(0,212,255,.25);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
+    .source-name{font-weight:600;font-size:.92rem;margin-bottom:3px}
+    .source-url{font-size:.72rem;color:var(--text-muted)}
+    .signal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:14px}
+    .sig-item{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+      border-radius:var(--radius-sm);padding:10px 12px;font-size:.75rem;line-height:1.5}
+    .sig-item strong{display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+    .sig-green strong{color:var(--green)}.sig-red strong{color:var(--red)}.sig-yellow strong{color:var(--gold)}
+    .credibility-meter{margin-bottom:14px}
+    .cm-label{display:flex;justify-content:space-between;font-size:.72rem;color:var(--text-muted);margin-bottom:5px}
+    .cm-track{height:10px;background:rgba(255,255,255,.08);border-radius:5px;overflow:hidden}
+    .cm-fill{height:100%;border-radius:5px;transition:width .8s ease}
+  </style>
+</head>
+<body>
+  <div class="dept-hero">
+    <div class="dept-badge">📚 DEPARTMENT 4 OF 8</div>
+    <h1 class="dept-title">Source Analysis Department</h1>
+    <p class="dept-sub">Evaluate websites, authors, media outlets, and source credibility using professional frameworks.</p>
+  </div>
+  <div class="dept-content">
+
+    <div class="grid-4" style="margin-bottom:28px">
+      <div class="stat-box"><div class="stat-num" id="src-count">0</div><div class="stat-lbl">Analysed</div></div>
+      <div class="stat-box"><div class="stat-num" id="src-xp">0</div><div class="stat-lbl">XP Earned</div></div>
+      <div class="stat-box"><div class="stat-num">CRAAP</div><div class="stat-lbl">Framework</div></div>
+      <div class="stat-box"><div class="stat-num">SIFT</div><div class="stat-lbl">Method</div></div>
+    </div>
+
+    <!-- Live analyser -->
+    <div class="card" style="margin-bottom:28px">
+      <div class="card-title" style="margin-bottom:12px">🔍 Analyse Any Source</div>
+      <div style="display:flex;gap:10px;margin-bottom:12px">
+        <input type="text" id="src-input" class="tq-input" placeholder="Enter a website URL or publication name…" aria-label="Source to analyse"/>
+        <button class="btn btn-primary" id="src-analyse-btn">Analyse</button>
+      </div>
+      <div id="src-result"></div>
+    </div>
+
+    <!-- Pre-loaded sources to analyse -->
+    <div class="sect-label">🏋️ SOURCE CHALLENGES</div>
+    <h2 class="sect-title" style="margin-bottom:16px">Rate these sources — then check your answers</h2>
+    <div id="source-challenges"></div>
+
+    <!-- CRAAP Test -->
+    <div style="margin-top:36px">
+      <div class="sect-label">📋 THE CRAAP TEST</div>
+      <h2 class="sect-title" style="margin-bottom:16px">A framework for evaluating any source</h2>
+      <div class="grid-2">
+        <div class="card"><div class="card-title" style="color:var(--blue)">C — Currency</div><p style="font-size:.82rem;color:var(--text-muted);margin-top:6px">When was the source published or last updated? Is the information current enough for your needs? Check dates on statistics and studies.</p></div>
+        <div class="card"><div class="card-title" style="color:var(--green)">R — Relevance</div><p style="font-size:.82rem;color:var(--text-muted);margin-top:6px">Does the source directly relate to your question? Is it written for a general audience or specialists? Is there something better available?</p></div>
+        <div class="card"><div class="card-title" style="color:var(--gold)">A — Authority</div><p style="font-size:.82rem;color:var(--text-muted);margin-top:6px">Who created this? What are their credentials? Is the publisher reputable? Can you find information about the author independently?</p></div>
+        <div class="card"><div class="card-title" style="color:var(--orange)">A — Accuracy</div><p style="font-size:.82rem;color:var(--text-muted);margin-top:6px">Is the information supported by evidence? Are sources cited? Is the language emotionally neutral? Has it been peer reviewed?</p></div>
+        <div class="card"><div class="card-title" style="color:var(--purple)">P — Purpose</div><p style="font-size:.82rem;color:var(--text-muted);margin-top:6px">Why does this source exist? To inform, sell, entertain, or persuade? Is there a clear bias? Is the intention transparent?</p></div>
+      </div>
+    </div>
+  </div>
+  <script>
+  document.addEventListener('DOMContentLoaded',()=>{
+    const s = TQ.load();
+    document.getElementById('src-count').textContent = s.sourcesAnalysed || 0;
+    document.getElementById('src-xp').textContent = s.xp || 0;
+
+    const CREDIBLE=['bbc.com','reuters.com','apnews.com','theguardian.com','nytimes.com','washingtonpost.com','who.int','un.org','unesco.org','nature.com','sciencemag.org','economist.com','npr.org','pbs.org','aljazeera.com','dw.com','france24.com'];
+    const SUSPICIOUS=['xyz','click','buzz','viral','truth99','real-news','breaking-now','insider-report','secret-exposed'];
+
+    document.getElementById('src-analyse-btn').addEventListener('click',()=>{
+      const val = document.getElementById('src-input').value.trim();
+      const res = document.getElementById('src-result');
+      if(!val) return;
+      res.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
+      setTimeout(()=>{
+        let domain=''; try{domain=new URL(val.startsWith('http')?val:'https://'+val).hostname.replace('www.','');}catch{domain=val.toLowerCase();}
+        const isCredible = CREDIBLE.some(d=>domain.includes(d));
+        const isSusp    = SUSPICIOUS.some(d=>domain.includes(d));
+        const score     = isCredible?90:isSusp?15:45;
+        const colour    = score>=70?'result-good':score>=40?'result-warn':'result-bad';
+        res.innerHTML=`
+          <div class="credibility-meter">
+            <div class="cm-label"><span>Credibility Score</span><span style="font-family:'Orbitron',monospace;color:var(--blue)">${score}/100</span></div>
+            <div class="cm-track"><div class="cm-fill" style="width:${score}%;background:${score>=70?'var(--green)':score>=40?'var(--gold)':'var(--red)'}"></div></div>
+          </div>
+          <div class="result-panel ${colour}">
+            <span style="font-size:1.4rem">${score>=70?'✅':score>=40?'⚠️':'🚩'}</span>
+            <div>
+              <strong>${isCredible?'Recognised credible source':isSusp?'Suspicious domain detected':'Requires manual verification'}</strong>
+              <p style="font-size:.78rem;margin-top:5px;opacity:.85">
+                ${isCredible?'This domain is a well-established news organisation or international body. Still verify the specific article.':
+                  isSusp?'This domain matches patterns associated with low-credibility sites. Check: Does it have an About page? Named authors? Editorial standards?':
+                  'Cannot automatically rate this source. Apply the CRAAP test below: check Currency, Relevance, Authority, Accuracy, and Purpose.'}
+              </p>
+            </div>
+          </div>`;
+        TQ.addXP(40,'Source analysed'); TQ.inc('sourcesAnalysed');
+        document.getElementById('src-count').textContent = TQ.load().sourcesAnalysed||0;
+        document.getElementById('src-xp').textContent = TQ.load().xp||0;
+        TQ.awardBadge('source_master');
+      },500);
+    });
+    document.getElementById('src-input').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('src-analyse-btn').click();});
+
+    // Source challenges
+    const SOURCES=[
+      {name:'The Global Fact Times',url:'globalfacttimes.news',avatar:'📰',credibility:20,
+       signals:[{cls:'sig-red',k:'Founded',v:'3 months ago'},{cls:'sig-red',k:'Authors',v:'No named authors'},{cls:'sig-red',k:'About page',v:'Missing'},{cls:'sig-yellow',k:'Design',v:'Mimics legitimate outlets'}],
+       verdict:'low',explanation:'Classic "news mimic" site. No authors, no history, designed to look like a real outlet. Created recently with no accountability trail.'},
+      {name:'Reuters',url:'reuters.com',avatar:'🏛️',credibility:95,
+       signals:[{cls:'sig-green',k:'Founded',v:'1851 — 174 years'},{cls:'sig-green',k:'Authors',v:'Named journalists, verifiable'},{cls:'sig-green',k:'Standards',v:'Independent editorial board'},{cls:'sig-green',k:'Awards',v:'Pulitzer Prize winner'}],
+       verdict:'high',explanation:'Reuters is one of the oldest and most respected news wire services globally. Independent ownership, strict editorial standards, named authors with verifiable credentials.'},
+      {name:'Health Truth Daily',url:'healthtruthdaily.xyz',avatar:'💊',credibility:10,
+       signals:[{cls:'sig-red',k:'TLD',v:'.xyz — often used for low-credibility sites'},{cls:'sig-red',k:'Claims',v:'Medical advice without citations'},{cls:'sig-red',k:'Ads',v:'Heavy affiliate marketing'},{cls:'sig-red',k:'Authors',v:'"Health experts" — no names, no credentials'}],
+       verdict:'low',explanation:'Multiple red flags: .xyz domain, unnamed "experts", heavy monetisation, no citation policy. Do not use for medical information.'},
+    ];
+
+    const sc_cont = document.getElementById('source-challenges');
+    SOURCES.forEach((src,i)=>{
+      const d=document.createElement('div');
+      d.className='source-card';
+      d.innerHTML=`
+        <div class="source-header">
+          <div class="source-avatar">${src.avatar}</div>
+          <div><div class="source-name">${src.name}</div><div class="source-url">${src.url}</div></div>
+        </div>
+        <div class="signal-grid">${src.signals.map(sg=>`<div class="sig-item ${sg.cls}"><strong>${sg.k}</strong>${sg.v}</div>`).join('')}</div>
+        <div class="credibility-meter">
+          <div class="cm-label"><span>Credibility Score (hidden — rate first)</span><span id="src-score-${i}" style="font-family:'Orbitron',monospace;color:var(--blue);display:none">${src.credibility}/100</span></div>
+          <div class="cm-track"><div class="cm-fill" id="src-fill-${i}" style="width:0%;background:var(--blue)"></div></div>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:8px">
+          <button class="btn btn-success" style="font-size:.72rem;padding:8px 14px" data-si="${i}" data-v="high">✅ Credible</button>
+          <button class="btn" style="font-size:.72rem;padding:8px 14px;background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.3);color:var(--gold)" data-si="${i}" data-v="mid">⚠️ Mixed</button>
+          <button class="btn btn-danger" style="font-size:.72rem;padding:8px 14px" data-si="${i}" data-v="low">🚩 Not Credible</button>
+        </div>
+        <div id="src-res-${i}" style="display:none"></div>`;
+      sc_cont.appendChild(d);
+    });
+
+    sc_cont.addEventListener('click',e=>{
+      const btn=e.target.closest('[data-v]');
+      if(!btn||btn.disabled) return;
+      const si  = parseInt(btn.dataset.si);
+      const v   = btn.dataset.v;
+      const src = SOURCES[si];
+      const isC = v===src.verdict;
+      sc_cont.querySelectorAll(`[data-si="${si}"]`).forEach(b=>b.disabled=true);
+      document.getElementById(`src-score-${si}`).style.display='inline';
+      const fill=document.getElementById(`src-fill-${si}`);
+      fill.style.width=src.credibility+'%';
+      fill.style.background=src.credibility>=70?'var(--green)':src.credibility>=40?'var(--gold)':'var(--red)';
+      const res=document.getElementById(`src-res-${si}`);
+      res.style.display='block';
+      res.innerHTML=`<div class="result-panel ${isC?'result-good':'result-bad'}"><span style="font-size:1.4rem">${isC?'✅':'❌'}</span><div><strong>${isC?'Correct!':'Not quite.'}</strong><p style="font-size:.78rem;margin-top:4px">${src.explanation}</p>${isC?'<p style="color:var(--green);font-size:.72rem;margin-top:4px">+80 XP</p>':''}</div></div>`;
+      if(isC){TQ.addXP(80,'Source rated correctly');TQ.awardBadge('bias_detector');}
+      TQ.inc('sourcesAnalysed');
+    });
+  });
+  </script>
+</body>
+</html>

@@ -1,5 +1,13 @@
 # Netlify redirects
-/play          /game.html         301
-/leaderboard   /leaderboard.html  301
-/factcheck     /index.html#fact-checker  301
-/*             /404.html          404
+/play          /game.html              301
+/hub           /hub.html               301
+/investigate   /investigation.html     301
+/factcheck     /factcheck.html         301
+/ai            /aidetection.html       301
+/sources       /sourceanalysis.html    301
+/social        /social.html            301
+/academy       /academy.html           301
+/evidence      /evidence.html          301
+/impact        /impact.html            301
+/leaderboard   /leaderboard.html       301
+/*             /404.html               404

@@ -5,15 +5,27 @@
    Critical for UNESCO's low-connectivity regions goal.
 ═══════════════════════════════════════════════════════════════ */
 
-const CACHE_NAME  = 'truthquest-v3';
+const CACHE_NAME  = 'truthquest-v4';
 const CACHE_FIRST = [
   '/',
   '/index.html',
+  '/hub.html',
   '/game.html',
+  '/investigation.html',
+  '/factcheck.html',
+  '/aidetection.html',
+  '/sourceanalysis.html',
+  '/social.html',
+  '/academy.html',
+  '/evidence.html',
   '/leaderboard.html',
+  '/impact.html',
   '/404.html',
   '/css/main.css',
   '/css/game.css',
+  '/css/platform.css',
+  '/js/platform.js',
+  '/js/nav.js',
   '/js/story-data.js',
   '/js/city.js',
   '/js/verifier.js',

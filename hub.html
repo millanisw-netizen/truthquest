@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <meta name="description" content="TruthQuest HQ — Your investigation headquarters. Access all departments."/>
+  <title>TruthQuest — HQ</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="stylesheet" href="css/platform.css"/>
+  <script src="js/platform.js"></script>
+  <script src="js/nav.js"></script>
+  <style>
+    .hub-welcome{
+      text-align:center;padding:48px 24px 32px;
+      background:radial-gradient(ellipse at 50% 0%,rgba(0,80,120,.3),transparent 65%);
+    }
+    .hub-name{
+      font-family:'Orbitron',monospace;font-size:clamp(1.6rem,4vw,2.4rem);
+      font-weight:900;margin-bottom:8px;
+      text-shadow:0 0 40px rgba(0,212,255,.3);
+    }
+    .hub-sub{color:var(--text-muted);font-size:.95rem;margin-bottom:28px}
+
+    /* Stats strip */
+    .hub-stats{
+      display:flex;gap:16px;flex-wrap:wrap;justify-content:center;
+      margin-bottom:40px;padding:0 24px;
+    }
+    .hub-stat{
+      background:var(--glass);border:1px solid var(--border);
+      border-radius:var(--radius-md);padding:16px 22px;
+      text-align:center;min-width:100px;flex:1;max-width:160px;
+      transition:border-color var(--r),transform var(--r);
+    }
+    .hub-stat:hover{border-color:rgba(0,212,255,.4);transform:translateY(-3px)}
+    .hub-stat-num{font-family:'Orbitron',monospace;font-size:1.5rem;font-weight:900;color:var(--blue)}
+    .hub-stat-lbl{font-size:.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+    [data-theme="light"] .hub-stat{background:#fff;border-color:rgba(0,102,204,.1)}
+
+    /* XP level card */
+    .hub-level-card{
+      max-width:560px;margin:0 auto 32px;
+      background:linear-gradient(135deg,rgba(0,212,255,.07),rgba(255,215,0,.04));
+      border:1px solid rgba(0,212,255,.2);border-radius:var(--radius-lg);
+      padding:20px 24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+    }
+    .hub-level-badge{
+      width:64px;height:64px;border-radius:50%;flex-shrink:0;
+      background:linear-gradient(135deg,var(--blue),var(--blue-dim));
+      display:flex;align-items:center;justify-content:center;
+      font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:900;
+      color:var(--navy);box-shadow:0 0 24px rgba(0,212,255,.4);
+    }
+    .hub-level-info{flex:1}
+    .hub-level-title{font-family:'Orbitron',monospace;font-size:.85rem;font-weight:700;color:var(--gold);margin-bottom:4px}
+    .hub-level-name{font-size:.8rem;color:var(--text-muted);margin-bottom:10px}
+    .hub-xp-row{display:flex;justify-content:space-between;font-size:.7rem;color:var(--text-muted);margin-bottom:5px}
+    .hub-xp-track{width:100%;height:8px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden}
+    .hub-xp-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--gold));border-radius:4px;transition:width .8s ease}
+    [data-theme="light"] .hub-level-card{background:linear-gradient(135deg,rgba(0,102,204,.06),rgba(196,127,0,.04));border-color:rgba(0,102,204,.18)}
+    [data-theme="light"] .hub-xp-track{background:rgba(0,0,0,.08)}
+
+    /* Dept grid */
+    .dept-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+      gap:20px;max-width:1100px;margin:0 auto;padding:0 24px 80px;
+    }
+    .dept-card{
+      background:var(--glass);border:1px solid var(--border);
+      border-radius:var(--radius-lg);padding:24px;
+      display:flex;flex-direction:column;gap:12px;
+      text-decoration:none;color:inherit;
+      transition:all var(--r);position:relative;overflow:hidden;
+    }
+    .dept-card::before{
+      content:'';position:absolute;top:0;left:0;right:0;height:3px;
+      opacity:0;transition:opacity var(--r);
+    }
+    .dept-card:hover{border-color:rgba(0,212,255,.4);transform:translateY(-5px);
+      box-shadow:0 16px 48px rgba(0,0,0,.3)}
+    .dept-card:hover::before{opacity:1}
+    [data-theme="light"] .dept-card{background:#fff;border-color:rgba(0,102,204,.1);box-shadow:0 2px 12px rgba(0,0,0,.06)}
+
+    .dc-icon{font-size:2.4rem;line-height:1}
+    .dc-title{font-family:'Orbitron',monospace;font-size:.88rem;font-weight:700;color:var(--blue)}
+    [data-theme="light"] .dc-title{color:var(--blue)}
+    .dc-desc{font-size:.78rem;color:var(--text-muted);line-height:1.6;flex:1}
+    .dc-stat{font-size:.68rem;color:var(--text-muted);display:flex;align-items:center;gap:6px}
+    .dc-arrow{font-size:.8rem;color:var(--blue);align-self:flex-end;margin-left:auto}
+
+    .dept-card.dept-game::before{background:linear-gradient(90deg,var(--blue),var(--gold))}
+    .dept-card.dept-invest::before{background:linear-gradient(90deg,var(--blue),#0066ff)}
+    .dept-card.dept-fact::before{background:linear-gradient(90deg,var(--green),var(--blue))}
+    .dept-card.dept-ai::before{background:linear-gradient(90deg,var(--purple),var(--blue))}
+    .dept-card.dept-source::before{background:linear-gradient(90deg,var(--gold),var(--orange))}
+    .dept-card.dept-social::before{background:linear-gradient(90deg,var(--red),var(--orange))}
+    .dept-card.dept-academy::before{background:linear-gradient(90deg,var(--green),var(--gold))}
+    .dept-card.dept-evidence::before{background:linear-gradient(90deg,var(--blue-dim),var(--blue))}
+    .dept-card.dept-leader::before{background:linear-gradient(90deg,var(--gold),var(--red))}
+    .dept-card.dept-impact::before{background:linear-gradient(90deg,var(--green),var(--blue))}
+
+    /* Recent badges strip */
+    .hub-badges{max-width:1100px;margin:0 auto 32px;padding:0 24px}
+    .hub-badges-title{font-family:'Orbitron',monospace;font-size:.68rem;font-weight:700;
+      color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+    .hub-badges-row{display:flex;gap:8px;flex-wrap:wrap}
+    .hub-badge-chip{
+      display:inline-flex;align-items:center;gap:7px;
+      background:rgba(255,215,0,.07);border:1px solid rgba(255,215,0,.2);
+      border-radius:100px;padding:5px 12px;font-size:.72rem;
+    }
+    .hub-badge-chip span:first-child{font-size:1rem}
+    .hub-no-badge{font-size:.8rem;color:var(--text-muted);font-style:italic}
+  </style>
+</head>
+<body>
+  <main>
+    <!-- Welcome -->
+    <div class="hub-welcome">
+      <div class="dept-badge">🏛️ HEADQUARTERS</div>
+      <h1 class="hub-name" id="hub-name">Welcome back, Journalist</h1>
+      <p class="hub-sub">Choose your department and start investigating.</p>
+    </div>
+
+    <!-- Stats strip -->
+    <div class="hub-stats" id="hub-stats" role="region" aria-label="Your statistics">
+      <div class="hub-stat"><div class="hub-stat-num" id="hs-xp">0</div><div class="hub-stat-lbl">Total XP</div></div>
+      <div class="hub-stat"><div class="hub-stat-num" id="hs-inv">0</div><div class="hub-stat-lbl">Investigations</div></div>
+      <div class="hub-stat"><div class="hub-stat-num" id="hs-acc">0%</div><div class="hub-stat-lbl">Accuracy</div></div>
+      <div class="hub-stat"><div class="hub-stat-num" id="hs-badges">0</div><div class="hub-stat-lbl">Badges</div></div>
+      <div class="hub-stat"><div class="hub-stat-num" id="hs-lessons">0</div><div class="hub-stat-lbl">Lessons Done</div></div>
+    </div>
+
+    <!-- Level card -->
+    <div class="hub-level-card" id="hub-level-card" role="region" aria-label="Level progress">
+      <div class="hub-level-badge" id="hub-lv-badge">1</div>
+      <div class="hub-level-info">
+        <div class="hub-level-title" id="hub-lv-title">Rookie Reporter</div>
+        <div class="hub-level-name">Keep investigating to level up</div>
+        <div class="hub-xp-row">
+          <span id="hub-xp-cur">0 XP</span>
+          <span id="hub-xp-next">500 XP to next level</span>
+        </div>
+        <div class="hub-xp-track"><div class="hub-xp-fill" id="hub-xp-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- Recent badges -->
+    <div class="hub-badges">
+      <div class="hub-badges-title">🎖️ Recent Badges</div>
+      <div class="hub-badges-row" id="hub-badges-row">
+        <span class="hub-no-badge">No badges yet — start an investigation!</span>
+      </div>
+    </div>
+
+    <!-- Department cards -->
+    <div class="dept-grid" role="navigation" aria-label="Department navigation">
+
+      <a href="game.html" class="dept-card dept-game" aria-label="Mission Center">
+        <div class="dc-icon">🎮</div>
+        <div class="dc-title">Mission Center</div>
+        <p class="dc-desc">Story-driven missions based on real disinformation cases. Play as journalist in Veridis City across 3 chapters.</p>
+        <div class="dc-stat" id="dc-game-stat">🏆 <span>No score yet</span></div>
+        <span class="dc-arrow">→</span>
+      </a>
+
+      <a href="investigation.html" class="dept-card dept-invest" aria-label="Investigation Department">
+        <div class="dc-icon">🔍</div>
+        <div class="dc-title">Investigation Dept.</div>
+        <p class="dc-desc">Investigate viral claims, suspicious posts, images, and videos using real verification techniques.</p>
+        <div class="dc-stat" id="dc-inv-stat">🔍 <span>0 investigations</span></div>
+        <span class="dc-arrow">→</span>
+      </a>
+
+      <a href="factcheck.html" class="dept-card dept-fact" aria-label="Fact Check Department">
+        <div class="dc-icon">📋</div>
+        <div class="dc-title">Fact-Check Dept.</div>
+        <p class="dc-desc">Verify information using sources, evidence, dates, and context. Master the SIFT method.</p>
+        <div class="dc-stat" id="dc-fact-stat">📋 <span>0 facts checked</span></div>
+        <span class="dc-arrow">→</span>
+      </a>
+
+      <a href="aidetection.html" class="dept-card dept-ai" aria-label="AI Detection Department">
+        <div class="dc-icon">🤖</div>
+        <div class="dc-title">AI Detection Dept.</div>
+        <p class="dc-desc">Spot AI-generated images, deepfake videos, cloned audio, and synthetic media before they spread.</p>
+        <div class="dc-stat" id="dc-ai-stat">🤖 <span>0 deepfakes detected</span></div>
+        <span class="dc-arrow">→</span>
+      </a>
+
+      <a href="sourceanalysis.html" class="dept-card dept-source" aria-label="Source Analysis Department">
+        <div class="dc-icon">📚</div>
+        <div class="dc-title">Source Analysis Dept.</div>
+        <p class="dc-desc">Evaluate websites, authors, media outlets, and publication credibility using professional tools.</p>
+        <div class="dc-stat" id="dc-src-stat">📚 <span>0 sources analysed</span></div>
+        <span class="dc-arrow">→</span>
+      </a>
+
+      <a href="social.html" class="dept-card dept-social" aria-label="Social Media Department">
+        <div class="dc-icon">📱</div>
+        <div class="dc-title">Social Media Dept.</div>
+        <p class="dc-desc">Investigate misinformation from TikTok, Facebook, WhatsApp, Telegram, and YouTube.</p>
+        <div class="dc-stat" id="dc-soc-stat">📱 <span>0 cases resolved</span></div>
+        <span class="dc-arrow">→</span>
+      </a>
+
+      <a href="academy.html" class="dept-card dept-academy" aria-label="MIL Academy">
+        <div class="dc-icon">🎓</div>
+        <div class="dc-title">MIL Academy</div>
+        <p class="dc-desc">Short interactive lessons and challenges teaching core Media and Information Literacy skills.</p>
+        <div class="dc-stat" id="dc-acad-stat">🎓 <span>0 lessons completed</span></div>
+        <span class="dc-arrow">→</span>
+      </a>
+
+      <a href="evidence.html" class="dept-card dept-evidence" aria-label="Evidence Room">
+        <div class="dc-icon">🗂️</div>
+        <div class="dc-title">Evidence Room</div>
+        <p class="dc-desc">Store and organise evidence collected across all investigations. Build your case files.</p>
+        <div class="dc-stat" id="dc-ev-stat">🗂️ <span>0 items collected</span></div>
+        <span class="dc-arrow">→</span>
+      </a>
+
+      <a href="leaderboard.html" class="dept-card dept-leader" aria-label="Leaderboard">
+        <div class="dc-icon">🏆</div>
+        <div class="dc-title">Leaderboard</div>
+        <p class="dc-desc">Global rankings, XP scores, achievement badges, and top truth defenders worldwide.</p>
+        <div class="dc-stat">🌍 <span>138 countries</span></div>
+        <span class="dc-arrow">→</span>
+      </a>
+
+      <a href="impact.html" class="dept-card dept-impact" aria-label="Impact Dashboard">
+        <div class="dc-icon">📊</div>
+        <div class="dc-title">Impact Dashboard</div>
+        <p class="dc-desc">Track your learning progress, accuracy rate, completed investigations, and MIL skill growth.</p>
+        <div class="dc-stat" id="dc-imp-stat">📊 <span>View your progress</span></div>
+        <span class="dc-arrow">→</span>
+      </a>
+
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const s = TQ.load();
+
+      // Name
+      document.getElementById('hub-name').textContent = `Welcome back, ${s.name || 'Journalist'}`;
+
+      // Stats
+      document.getElementById('hs-xp').textContent      = s.xp.toLocaleString();
+      document.getElementById('hs-inv').textContent     = s.investigationsCompleted || 0;
+      document.getElementById('hs-acc').textContent     = (s.accuracy || 0) + '%';
+      document.getElementById('hs-badges').textContent  = (s.badgesEarned || []).length;
+      document.getElementById('hs-lessons').textContent = s.lessonsCompleted || 0;
+
+      // Level
+      const xpInLvl = s.xp % TQ.XP_PER_LEVEL;
+      const pct     = Math.min(100, Math.round(xpInLvl / TQ.XP_PER_LEVEL * 100));
+      document.getElementById('hub-lv-badge').textContent  = s.level || 1;
+      document.getElementById('hub-lv-title').textContent  = TQ.levelTitle(s.level || 1);
+      document.getElementById('hub-xp-cur').textContent    = s.xp + ' XP';
+      document.getElementById('hub-xp-next').textContent   = (TQ.XP_PER_LEVEL - xpInLvl) + ' XP to next level';
+      document.getElementById('hub-xp-fill').style.width   = pct + '%';
+
+      // Dept stats
+      if (s.investigationsCompleted) document.querySelector('#dc-inv-stat span').textContent  = s.investigationsCompleted + ' investigations';
+      if (s.factsChecked)            document.querySelector('#dc-fact-stat span').textContent = s.factsChecked + ' facts checked';
+      if (s.deepfakesDetected)       document.querySelector('#dc-ai-stat span').textContent   = s.deepfakesDetected + ' deepfakes detected';
+      if (s.sourcesAnalysed)         document.querySelector('#dc-src-stat span').textContent  = s.sourcesAnalysed + ' sources analysed';
+      if (s.socialCasesResolved)     document.querySelector('#dc-soc-stat span').textContent  = s.socialCasesResolved + ' cases resolved';
+      if (s.lessonsCompleted)        document.querySelector('#dc-acad-stat span').textContent = s.lessonsCompleted + ' lessons completed';
+      if (s.evidenceCollected?.length) document.querySelector('#dc-ev-stat span').textContent = s.evidenceCollected.length + ' items collected';
+      if (s.gameScore)               document.querySelector('#dc-game-stat span').textContent = s.gameScore + '/100 best score';
+
+      // Badges
+      const badgesRow = document.getElementById('hub-badges-row');
+      if (s.badgesEarned && s.badgesEarned.length > 0) {
+        badgesRow.innerHTML = s.badgesEarned.slice(-8).map(id => {
+          const def = TQ.BADGE_DEFS[id];
+          return def ? `<div class="hub-badge-chip"><span>${def.icon}</span><span>${def.name}</span></div>` : '';
+        }).join('');
+      }
+
+      // Name prompt if first visit
+      if (!s.name || s.name === 'Anonymous Journalist') {
+        setTimeout(() => {
+          const name = prompt('Welcome to TruthQuest HQ! What should we call you?');
+          if (name && name.trim()) {
+            const ns = TQ.load();
+            ns.name = name.trim();
+            TQ.save(ns);
+            document.getElementById('hub-name').textContent = `Welcome, ${name.trim()}!`;
+          }
+        }, 800);
+      }
+    });
+  </script>
+</body>
+</html>

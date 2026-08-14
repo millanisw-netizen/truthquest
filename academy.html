@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>TruthQuest — MIL Academy</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/platform.css"/>
+  <script src="js/platform.js"></script><script src="js/nav.js"></script>
+  <style>
+    .lesson-card{background:var(--glass);border:1px solid var(--border);border-radius:var(--radius-lg);
+      padding:22px;cursor:pointer;transition:all var(--r);position:relative;overflow:hidden}
+    .lesson-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--lc-color,var(--blue));opacity:.7}
+    .lesson-card:hover{transform:translateY(-4px);border-color:rgba(0,212,255,.35);box-shadow:0 12px 40px rgba(0,0,0,.25)}
+    .lesson-card.done{border-color:rgba(0,255,136,.3);background:rgba(0,255,136,.03)}
+    .lesson-card.done::before{background:var(--green)}
+    [data-theme="light"] .lesson-card{background:#fff;border-color:rgba(0,102,204,.1)}
+    .lc-icon{font-size:2rem;margin-bottom:10px}
+    .lc-title{font-family:'Orbitron',monospace;font-size:.82rem;font-weight:700;margin-bottom:6px;color:var(--white)}
+    [data-theme="light"] .lc-title{color:#0a0e27}
+    .lc-desc{font-size:.76rem;color:var(--text-muted);line-height:1.5;margin-bottom:12px}
+    .lc-meta{display:flex;gap:10px;font-size:.68rem;color:var(--text-muted)}
+    .lc-xp{font-family:'Orbitron',monospace;color:var(--gold);font-size:.68rem;font-weight:700}
+    .lc-done-badge{position:absolute;top:14px;right:14px;font-size:.65rem;font-weight:700;
+      background:rgba(0,255,136,.15);color:var(--green);border:1px solid rgba(0,255,136,.3);
+      padding:2px 8px;border-radius:100px}
+
+    /* Lesson modal */
+    .lesson-modal{position:fixed;inset:0;background:rgba(5,8,20,.88);backdrop-filter:blur(10px);
+      z-index:300;display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
+    .lesson-modal.hidden{display:none}
+    .lesson-modal-box{background:var(--navy-mid,#0d1333);border:1px solid rgba(0,212,255,.25);
+      border-radius:24px;padding:32px;max-width:640px;width:100%;
+      box-shadow:0 30px 80px rgba(0,0,0,.6);animation:modal-in .4s cubic-bezier(.34,1.2,.64,1) both}
+    @keyframes modal-in{from{transform:scale(.92) translateY(20px);opacity:0}to{transform:none;opacity:1}}
+    [data-theme="light"] .lesson-modal-box{background:#fff;border-color:rgba(0,102,204,.2)}
+    .lesson-modal-title{font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:700;
+      color:var(--blue);margin-bottom:6px}
+    .lesson-content{font-size:.88rem;line-height:1.8;color:rgba(255,255,255,.85);margin:16px 0}
+    [data-theme="light"] .lesson-content{color:rgba(10,14,39,.8)}
+    .lesson-content h4{font-family:'Orbitron',monospace;font-size:.78rem;color:var(--gold);margin:16px 0 6px}
+    .lesson-content ul{padding-left:18px;display:flex;flex-direction:column;gap:5px}
+    .lesson-content li{font-size:.83rem}
+
+    /* Quiz inside lesson */
+    .lq-option{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);
+      border-radius:var(--radius-sm);padding:12px 14px;font-size:.83rem;cursor:pointer;
+      margin-bottom:8px;color:var(--white);font-family:'Inter',sans-serif;
+      display:flex;align-items:center;gap:10px;transition:all var(--r)}
+    .lq-option:hover{border-color:var(--blue);background:rgba(0,212,255,.07)}
+    .lq-option.correct{background:rgba(0,255,136,.1);border-color:rgba(0,255,136,.4);color:var(--green)}
+    .lq-option.wrong{background:rgba(255,68,68,.1);border-color:rgba(255,68,68,.3);color:var(--red)}
+    [data-theme="light"] .lq-option{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.1);color:#0a0e27}
+
+    .prog-lesson{height:6px;background:rgba(255,255,255,.08);border-radius:3px;margin-bottom:24px;overflow:hidden}
+    [data-theme="light"] .prog-lesson{background:rgba(0,0,0,.08)}
+    .prog-lesson-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--gold));border-radius:3px;transition:width .5s ease}
+  </style>
+</head>
+<body>
+  <div class="dept-hero">
+    <div class="dept-badge">🎓 DEPARTMENT 6 OF 8</div>
+    <h1 class="dept-title">MIL Academy</h1>
+    <p class="dept-sub">Short interactive lessons and challenges teaching core Media and Information Literacy skills.</p>
+  </div>
+  <div class="dept-content">
+
+    <!-- Progress bar -->
+    <div class="prog-lesson" aria-label="Academy progress"><div class="prog-lesson-fill" id="acad-prog" style="width:0%"></div></div>
+
+    <div class="grid-4" style="margin-bottom:28px">
+      <div class="stat-box"><div class="stat-num" id="acad-done">0</div><div class="stat-lbl">Lessons Done</div></div>
+      <div class="stat-box"><div class="stat-num" id="acad-total">0</div><div class="stat-lbl">Total Lessons</div></div>
+      <div class="stat-box"><div class="stat-num" id="acad-xp">0</div><div class="stat-lbl">XP Earned</div></div>
+      <div class="stat-box"><div class="stat-num" id="acad-streak">0</div><div class="stat-lbl">Day Streak</div></div>
+    </div>
+
+    <div class="grid-3" id="lessons-grid"></div>
+  </div>
+
+  <!-- Lesson modal -->
+  <div class="lesson-modal hidden" id="lesson-modal" role="dialog" aria-modal="true" aria-labelledby="lm-title">
+    <div class="lesson-modal-box">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+        <div class="lesson-modal-title" id="lm-title"></div>
+        <button id="lm-close" aria-label="Close lesson" style="background:none;border:none;color:var(--text-muted);font-size:1.2rem;cursor:pointer;padding:4px 8px">✕</button>
+      </div>
+      <div style="font-size:.72rem;color:var(--text-muted);margin-bottom:20px" id="lm-meta"></div>
+      <div class="lesson-content" id="lm-content"></div>
+      <div id="lm-quiz"></div>
+      <div id="lm-result" style="display:none;margin:16px 0"></div>
+      <div style="display:flex;gap:10px;margin-top:16px">
+        <button class="btn btn-primary" id="lm-complete" style="flex:1">✅ Mark Complete — Earn XP</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  const LESSONS = [
+    { id:'l1', icon:'🧠', color:'#00d4ff', title:'What is Media Literacy?',
+      time:'5 min', xp:75, category:'Foundation',
+      content:`<p>Media and Information Literacy (MIL) is the ability to <strong>access, analyse, evaluate, create, and communicate</strong> using all forms of media.</p>
+      <h4>Why it matters in 2026</h4>
+      <ul><li>Over 5 billion people use social media daily</li><li>AI can generate convincing fake images, videos, and audio in seconds</li><li>65% of people share content without reading beyond the headline</li><li>Disinformation contributed to real-world violence on 6 continents</li></ul>
+      <h4>The 5 core MIL competencies</h4>
+      <ul><li><strong>Access</strong> — find and use media effectively</li><li><strong>Analyse</strong> — understand how media is constructed</li><li><strong>Evaluate</strong> — assess credibility and bias</li><li><strong>Create</strong> — produce responsible media</li><li><strong>Act</strong> — use media skills for social change</li></ul>`,
+      quiz:{q:'What does the "E" in MIL competencies stand for?',opts:['Entertainment','Evaluate','Encrypt','Edit'],correct:1}
+    },
+    { id:'l2', icon:'🔍', color:'#a855f7', title:'How to Spot a Fake Headline',
+      time:'6 min', xp:80, category:'Detection',
+      content:`<p>Fake headlines are engineered to trigger emotional reactions — fear, anger, outrage — that override critical thinking. Here's how to fight back.</p>
+      <h4>The 7 red flags of fake headlines</h4>
+      <ul><li>🔴 ALL CAPS for emphasis</li><li>🔴 Multiple exclamation marks (!!!!)</li><li>🔴 "Share before they delete this"</li><li>🔴 Vague authority ("Scientists say...", "Experts confirm...")</li><li>🔴 No publication date</li><li>🔴 Extreme language ("SHOCKING", "DEVASTATING", "PROOF")</li><li>🔴 The story only appears on one unknown website</li></ul>
+      <h4>The 10-second test</h4>
+      <p>Before clicking share: Search the headline on Google News. If no major outlet is covering it — it probably didn't happen.</p>`,
+      quiz:{q:'Which of these is the strongest red flag in a headline?',opts:['"New study suggests..."','"BREAKING: Doctors EXPOSED — Share before DELETED!!"','A story with a named journalist','A story dated today'],correct:1}
+    },
+    { id:'l3', icon:'📅', color:'#ffd700', title:'Context Manipulation',
+      time:'7 min', xp:90, category:'Techniques',
+      content:`<p>Context manipulation is when <strong>real content is presented with false context</strong>. The photo or video is genuine — but the story around it is fabricated.</p>
+      <h4>Famous examples</h4>
+      <ul><li>Real photos from natural disasters reused as "proof" of unrelated events</li><li>Old protest footage presented as happening today</li><li>Quotes taken out of context to reverse their meaning</li><li>Statistics accurate on their own but missing crucial denominators</li></ul>
+      <h4>How to detect it</h4>
+      <ul><li>Run a reverse image search to find when the image first appeared</li><li>Check the image metadata for creation date</li><li>Find the original source — what caption did it have?</li><li>Search news archives for the claimed date</li></ul>
+      <h4>The Amazon fires case (2019)</h4>
+      <p>Viral images of burning rainforest included photos that were decades old and from entirely different countries. Even well-meaning people spread them — because the cause was real, even if the specific images weren't.</p>`,
+      quiz:{q:'A photo from 2019 is shared in 2026 claiming it shows "riots happening RIGHT NOW". This is an example of:',opts:['A deepfake','Context manipulation','Satire','An honest mistake'],correct:1}
+    },
+    { id:'l4', icon:'🤖', color:'#a855f7', title:'Understanding AI-Generated Content',
+      time:'8 min', xp:100, category:'AI Literacy',
+      content:`<p>Generative AI can now produce photorealistic images, convincing videos, cloned voices, and fluent text — in seconds, for free. This has permanently changed the disinformation landscape.</p>
+      <h4>What AI can now create</h4>
+      <ul><li>Images: Faces of people who don't exist, fake crowd photos, fabricated "evidence"</li><li>Video: Deepfakes putting words in real people's mouths</li><li>Audio: Voice clones from as little as 3 seconds of real audio</li><li>Text: Fake news articles, fake social media posts, fake scientific abstracts</li></ul>
+      <h4>The 6 AI image tells</h4>
+      <ul><li>Distorted hands — AI still struggles with fingers</li><li>Mismatched eye reflections</li><li>Unnatural skin — too smooth, no pores</li><li>Background geometry errors</li><li>Text in images is often garbled</li><li>Ears are frequently blurred or asymmetric</li></ul>
+      <h4>Important principle</h4>
+      <p>AI detection tools are imperfect. A 90% AI probability score does not mean the content is fake — and 10% AI probability doesn't mean it's real. Use them as one signal among many.</p>`,
+      quiz:{q:'Which body part does AI image generation most consistently get wrong?',opts:['Nose','Ears','Hands and fingers','Eyes'],correct:2}
+    },
+    { id:'l5', icon:'⚖️', color:'#ff8800', title:'Understanding Media Bias',
+      time:'7 min', xp:85, category:'Critical Thinking',
+      content:`<p>All media has a perspective. <strong>Bias is not the same as dishonesty</strong> — but understanding it helps you read more critically.</p>
+      <h4>Types of media bias</h4>
+      <ul><li><strong>Selection bias</strong> — choosing which stories to cover</li><li><strong>Framing bias</strong> — how a story is presented changes its meaning</li><li><strong>Confirmation bias</strong> — we believe content that matches what we already think</li><li><strong>Source bias</strong> — who you quote shapes the story</li><li><strong>Omission bias</strong> — what is left out is often as important as what is included</li></ul>
+      <h4>Practical tip: Read across the spectrum</h4>
+      <p>On any major story, compare reporting from outlets with different known perspectives. The truth often lives in the overlap. Allsides.com and MediaBiasFactCheck.com are useful starting points.</p>
+      <h4>The "Who benefits?" test</h4>
+      <p>When you see a dramatic story, ask: who benefits if you believe this? Who funded this outlet? What story are they consistently telling over time?</p>`,
+      quiz:{q:'Confirmation bias means:',opts:['Media that confirms you are right to be confused','We tend to believe information that matches what we already think','A journalist confirming their sources','Bias that has been confirmed by research'],correct:1}
+    },
+    { id:'l6', icon:'🔗', color:'#00ff88', title:'Digital Footprints and Privacy',
+      time:'6 min', xp:75, category:'Digital Safety',
+      content:`<p>Every action online leaves a <strong>digital footprint</strong> — data that can be used to build a profile of you and target you with personalised disinformation.</p>
+      <h4>What creates a digital footprint</h4>
+      <ul><li>Every search query you make</li><li>Every article you click (even without reading)</li><li>How long you pause on a social media post</li><li>Your location data from apps</li><li>Which ads you click</li></ul>
+      <h4>How it enables targeted disinformation</h4>
+      <p>Cambridge Analytica used Facebook data from 87 million people to target individuals with personalised political disinformation based on their psychological profiles. Your digital footprint is a map of your vulnerabilities.</p>
+      <h4>Protect yourself</h4>
+      <ul><li>Use private browsing for sensitive searches</li><li>Review app permissions regularly</li><li>Be aware that your "feed" is personalised — you are not seeing the same internet as everyone else</li><li>Seek out news sources deliberately, not just algorithmically</li></ul>`,
+      quiz:{q:'What did Cambridge Analytica use to target individuals with personalised content?',opts:['Email databases','Facebook data from 87 million users','Google search history','Government records'],correct:1}
+    },
+    { id:'l7', icon:'🌐', color:'#00d4ff', title:'The Disinformation Ecosystem',
+      time:'9 min', xp:110, category:'Systems Thinking',
+      content:`<p>Disinformation doesn't spread randomly — it moves through a predictable <strong>ecosystem</strong> of actors, platforms, and incentives.</p>
+      <h4>The 4 actors</h4>
+      <ul><li><strong>Creators</strong> — produce disinformation (state actors, political operators, grifters)</li><li><strong>Amplifiers</strong> — spread it (bots, influencers, unwitting sharers)</li><li><strong>Platforms</strong> — algorithmic amplification of engagement, regardless of accuracy</li><li><strong>Consumers</strong> — the audience, whose trust and behaviour is the ultimate target</li></ul>
+      <h4>The business model of disinformation</h4>
+      <p>Outrage drives clicks. Clicks drive ad revenue. The platforms profit from engagement — and disinformation is typically more engaging than accurate reporting. This is a structural incentive problem, not just a content moderation problem.</p>
+      <h4>What you can do</h4>
+      <ul><li>Deliberately reduce engagement with outrage content — don't comment, don't share, even to debunk</li><li>Support quality journalism financially</li><li>Report disinformation on platforms</li><li>Build MIL skills in your community</li></ul>`,
+      quiz:{q:'Which group profits most directly from the spread of disinformation?',opts:['Governments','Fact-checkers','Social media platforms earning ad revenue from engagement','Traditional newspapers'],correct:2}
+    },
+    { id:'l8', icon:'🛡️', color:'#ff4444', title:'Prebunking — Vaccine Against Disinformation',
+      time:'6 min', xp:90, category:'Prevention',
+      content:`<p><strong>Prebunking</strong> is the practice of warning people about disinformation techniques <em>before</em> they encounter the disinformation — building psychological resistance in advance.</p>
+      <h4>Why it works better than debunking</h4>
+      <p>Research from Cambridge University shows that teaching people to recognise disinformation <em>techniques</em> (rather than specific false claims) is more effective than fact-checking individual claims. Once you can recognise emotional manipulation, it works less on you.</p>
+      <h4>The 5 most common disinformation techniques (DEPICT)</h4>
+      <ul><li><strong>D</strong>iscrediting — attacking the messenger, not the evidence</li><li><strong>E</strong>motion — triggering fear, anger, or disgust</li><li><strong>P</strong>olarisation — framing everything as "us vs them"</li><li><strong>I</strong>mpersonation — fake accounts, fake experts, fake media</li><li><strong>C</strong>onspiracy — unfalsifiable claims, hidden powerful enemies</li><li><strong>T</strong>rolling — flooding discourse to create confusion and exhaustion</li></ul>
+      <h4>You are doing this right now</h4>
+      <p>Every lesson in TruthQuest is a prebunking exercise. By practising on simulated disinformation, you build cognitive immunity to the real thing.</p>`,
+      quiz:{q:'Prebunking works by:',opts:['Removing false content from the internet','Teaching people to recognise disinformation techniques before they encounter them','Debunking individual viral claims quickly','Training journalists to write better headlines'],correct:1}
+    },
+  ];
+
+  document.addEventListener('DOMContentLoaded',()=>{
+    const state = TQ.load();
+    const done  = state.lessonsCompleted || 0;
+    const total = LESSONS.length;
+    document.getElementById('acad-done').textContent  = done;
+    document.getElementById('acad-total').textContent = total;
+    document.getElementById('acad-xp').textContent    = state.xp || 0;
+    document.getElementById('acad-prog').style.width  = Math.round(done/total*100)+'%';
+
+    // Streak (simple: days since last lesson)
+    const lastLesson = parseInt(localStorage.getItem('tq_last_lesson')||'0');
+    const daysSince  = Math.floor((Date.now()-lastLesson)/86400000);
+    const streak     = parseInt(localStorage.getItem('tq_streak')||'0');
+    document.getElementById('acad-streak').textContent = daysSince<=1 ? streak : 0;
+
+    const grid = document.getElementById('lessons-grid');
+    const completedIds = JSON.parse(localStorage.getItem('tq_completed_lessons')||'[]');
+
+    LESSONS.forEach(l=>{
+      const isDone = completedIds.includes(l.id);
+      const card   = document.createElement('div');
+      card.className = 'lesson-card' + (isDone?' done':'');
+      card.style.setProperty('--lc-color', l.color);
+      card.innerHTML = `
+        ${isDone?'<div class="lc-done-badge">✅ DONE</div>':''}
+        <div class="lc-icon">${l.icon}</div>
+        <div class="lc-title">${l.title}</div>
+        <p class="lc-desc">${l.content.replace(/<[^>]+>/g,'').slice(0,90)}…</p>
+        <div class="lc-meta">
+          <span>⏱️ ${l.time}</span>
+          <span>📚 ${l.category}</span>
+          <span class="lc-xp">+${l.xp} XP</span>
+        </div>`;
+      card.addEventListener('click',()=>openLesson(l));
+      grid.appendChild(card);
+    });
+
+    // Modal
+    const modal   = document.getElementById('lesson-modal');
+    const lmTitle = document.getElementById('lm-title');
+    const lmMeta  = document.getElementById('lm-meta');
+    const lmCont  = document.getElementById('lm-content');
+    const lmQuiz  = document.getElementById('lm-quiz');
+    const lmRes   = document.getElementById('lm-result');
+    const lmBtn   = document.getElementById('lm-complete');
+    let   quizAnswered = false;
+
+    function openLesson(l){
+      lmTitle.textContent = l.icon + ' ' + l.title;
+      lmMeta.textContent  = `${l.time} · ${l.category} · +${l.xp} XP`;
+      lmCont.innerHTML    = l.content;
+      lmRes.style.display = 'none';
+      quizAnswered        = false;
+      lmBtn.disabled      = false;
+      lmBtn.textContent   = '✅ Mark Complete — Earn XP';
+
+      // Build quiz
+      lmQuiz.innerHTML = `
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,.08)">
+          <div style="font-family:'Orbitron',monospace;font-size:.68rem;color:var(--gold);letter-spacing:2px;margin-bottom:10px">QUICK CHECK</div>
+          <p style="font-size:.85rem;margin-bottom:12px;line-height:1.6">${l.quiz.q}</p>
+          ${l.quiz.opts.map((o,i)=>`<div class="lq-option" data-oi="${i}" data-lid="${l.id}" data-correct="${l.quiz.correct}"><span style="font-family:'Orbitron',monospace;font-size:.65rem;color:var(--blue);min-width:18px">${String.fromCharCode(65+i)}.</span>${o}</div>`).join('')}
+        </div>`;
+
+      modal.classList.remove('hidden');
+      document.body.style.overflow='hidden';
+
+      // Mark done button
+      const isDone = JSON.parse(localStorage.getItem('tq_completed_lessons')||'[]').includes(l.id);
+      if(isDone){ lmBtn.textContent='✅ Already Completed'; lmBtn.disabled=true; }
+
+      lmBtn.onclick = ()=>{
+        completeLesson(l);
+        modal.classList.add('hidden');
+        document.body.style.overflow='';
+      };
+    }
+
+    // Quiz answer
+    document.getElementById('lesson-modal').addEventListener('click',e=>{
+      const opt=e.target.closest('.lq-option');
+      if(!opt||opt.classList.contains('correct')||opt.classList.contains('wrong')) return;
+      const oi  = parseInt(opt.dataset.oi);
+      const cor = parseInt(opt.dataset.correct);
+      document.querySelectorAll('.lq-option').forEach(o=>o.style.pointerEvents='none');
+      if(oi===cor){ opt.classList.add('correct'); lmRes.style.display='block'; lmRes.innerHTML='<div class="result-panel result-good"><span style="font-size:1.3rem">✅</span><div><strong>Correct!</strong><p style="font-size:.78rem;margin-top:3px">Good understanding. Now mark the lesson complete to earn your XP.</p></div></div>'; }
+      else{ opt.classList.add('wrong'); document.querySelectorAll('.lq-option')[cor].classList.add('correct'); lmRes.style.display='block'; lmRes.innerHTML='<div class="result-panel result-bad"><span style="font-size:1.3rem">❌</span><div><strong>Not quite.</strong><p style="font-size:.78rem;margin-top:3px">Review the lesson content above, then try again next time.</p></div></div>'; }
+      quizAnswered=true;
+    });
+
+    function completeLesson(l){
+      const completed = JSON.parse(localStorage.getItem('tq_completed_lessons')||'[]');
+      if(!completed.includes(l.id)){
+        completed.push(l.id);
+        localStorage.setItem('tq_completed_lessons',JSON.stringify(completed));
+        localStorage.setItem('tq_last_lesson', Date.now().toString());
+        const newStreak = daysSince<=1 ? streak+1 : 1;
+        localStorage.setItem('tq_streak', String(newStreak));
+        TQ.addXP(l.xp, 'Lesson: '+l.title);
+        TQ.inc('lessonsCompleted');
+        if(completed.length===1)  TQ.awardBadge('mil_student');
+        if(completed.length>=6)   TQ.awardBadge('mil_graduate');
+        // Refresh card
+        const cards=[...document.querySelectorAll('.lesson-card')];
+        const idx=LESSONS.findIndex(x=>x.id===l.id);
+        if(cards[idx]){ cards[idx].classList.add('done'); if(!cards[idx].querySelector('.lc-done-badge')){const b=document.createElement('div');b.className='lc-done-badge';b.textContent='✅ DONE';cards[idx].prepend(b);} }
+        const newDone = JSON.parse(localStorage.getItem('tq_completed_lessons')||'[]').length;
+        document.getElementById('acad-done').textContent = newDone;
+        document.getElementById('acad-prog').style.width = Math.round(newDone/total*100)+'%';
+        document.getElementById('acad-xp').textContent   = TQ.load().xp||0;
+      }
+    }
+
+    document.getElementById('lm-close').addEventListener('click',()=>{
+      modal.classList.add('hidden'); document.body.style.overflow='';
+    });
+    modal.addEventListener('click',e=>{ if(e.target===modal){ modal.classList.add('hidden'); document.body.style.overflow=''; } });
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ modal.classList.add('hidden'); document.body.style.overflow=''; } });
+  });
+  </script>
+</body>
+</html>

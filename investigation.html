@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>TruthQuest — Investigation Department</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/platform.css"/>
+  <script src="js/platform.js"></script><script src="js/nav.js"></script>
+  <style>
+    .inv-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+    .inv-tab{background:var(--glass);border:1px solid var(--border);border-radius:100px;
+      padding:7px 16px;font-size:.78rem;cursor:pointer;color:var(--text-muted);
+      font-family:'Inter',sans-serif;transition:all var(--r)}
+    .inv-tab.active,.inv-tab:hover{background:rgba(0,212,255,.12);border-color:var(--blue);color:var(--white)}
+    .inv-panel{display:none}.inv-panel.active{display:block}
+    .claim-card{background:var(--glass);border:1px solid var(--border);border-radius:var(--radius-md);padding:20px;margin-bottom:16px}
+    .claim-source{font-size:.7rem;color:var(--text-muted);margin-bottom:6px;display:flex;gap:8px;align-items:center}
+    .claim-text{font-size:.9rem;line-height:1.65;margin-bottom:14px}
+    .claim-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .verdict-bar{display:flex;gap:10px;margin-top:12px}
+    .v-btn{flex:1;padding:10px;border:none;border-radius:var(--radius-sm);
+      font-family:'Orbitron',monospace;font-size:.72rem;font-weight:700;cursor:pointer;transition:all var(--r)}
+    .v-true{background:rgba(0,255,136,.15);color:var(--green);border:1px solid rgba(0,255,136,.3)}
+    .v-false{background:rgba(255,68,68,.15);color:var(--red);border:1px solid rgba(255,68,68,.3)}
+    .v-mixed{background:rgba(255,215,0,.12);color:var(--gold);border:1px solid rgba(255,215,0,.25)}
+    .v-btn:hover{transform:translateY(-2px);filter:brightness(1.2)}
+    .tool-result{font-size:.8rem;line-height:1.6;color:rgba(255,255,255,.85);padding:12px;
+      background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.15);
+      border-radius:var(--radius-sm);margin-top:8px;display:none}
+    .tool-result.show{display:block;animation:fadeIn .3s ease both}
+    .claim-badge{font-size:.62rem;font-weight:700;padding:3px 8px;border-radius:100px;font-family:'Orbitron',monospace}
+    .cb-video{background:rgba(0,212,255,.1);color:var(--blue);border:1px solid rgba(0,212,255,.2)}
+    .cb-image{background:rgba(168,85,247,.1);color:var(--purple);border:1px solid rgba(168,85,247,.2)}
+    .cb-text {background:rgba(255,215,0,.1);color:var(--gold);border:1px solid rgba(255,215,0,.2)}
+    .cb-audio{background:rgba(255,136,0,.1);color:var(--orange);border:1px solid rgba(255,136,0,.2)}
+    .score-row{display:flex;justify-content:space-between;align-items:center;
+      background:var(--glass);border:1px solid var(--border);border-radius:var(--radius-md);
+      padding:14px 18px;margin-bottom:20px}
+  </style>
+</head>
+<body>
+  <div class="dept-hero">
+    <div class="dept-badge">🔍 DEPARTMENT 1 OF 8</div>
+    <h1 class="dept-title">Investigation Department</h1>
+    <p class="dept-sub">Analyse viral claims, suspicious posts, images, and videos using professional verification tools.</p>
+  </div>
+  <div class="dept-content">
+
+    <!-- Score row -->
+    <div class="score-row" aria-label="Your investigation stats">
+      <span style="font-family:'Orbitron',monospace;font-size:.75rem;color:var(--gold)">🔍 INVESTIGATIONS</span>
+      <div style="display:flex;gap:20px;font-size:.78rem;color:var(--text-muted)">
+        <span>Completed: <strong id="inv-count" style="color:var(--blue)">0</strong></span>
+        <span>Accuracy: <strong id="inv-acc" style="color:var(--green)">—</strong></span>
+        <span>XP Earned: <strong id="inv-xp" style="color:var(--gold)">0</strong></span>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="inv-tabs" role="tablist">
+      <button class="inv-tab active" data-tab="claims" role="tab" aria-selected="true">📢 Viral Claims</button>
+      <button class="inv-tab" data-tab="images" role="tab" aria-selected="false">🖼️ Image Check</button>
+      <button class="inv-tab" data-tab="video" role="tab" aria-selected="false">🎬 Video Check</button>
+      <button class="inv-tab" data-tab="submit" role="tab" aria-selected="false">➕ Submit a Claim</button>
+    </div>
+
+    <!-- Panel: Viral Claims -->
+    <div class="inv-panel active" id="tab-claims" role="tabpanel">
+      <div class="grid-2" id="claims-grid"></div>
+    </div>
+
+    <!-- Panel: Image Check -->
+    <div class="inv-panel" id="tab-images" role="tabpanel">
+      <div class="card" style="text-align:center;padding:32px">
+        <div style="font-size:3rem;margin-bottom:16px">🖼️</div>
+        <div class="sect-title" style="margin-bottom:8px">Image Verification Tool</div>
+        <p style="color:var(--text-muted);font-size:.88rem;margin-bottom:20px">Paste an image URL to check if it has been manipulated, reused out of context, or previously fact-checked.</p>
+        <div style="display:flex;gap:10px;max-width:560px;margin:0 auto">
+          <input type="url" id="img-url" class="tq-input" placeholder="https://example.com/image.jpg" aria-label="Image URL to verify"/>
+          <button class="btn btn-primary" id="img-check-btn">Analyse</button>
+        </div>
+        <div id="img-result" style="margin-top:20px;max-width:560px;margin-left:auto;margin-right:auto"></div>
+      </div>
+      <div class="grid-3" style="margin-top:20px">
+        <div class="card"><div style="font-size:1.5rem;margin-bottom:8px">🔍</div><div class="card-title">Reverse Image Search</div><p style="font-size:.8rem;color:var(--text-muted)">Find where an image originally appeared. A photo showing up years before claimed is a major red flag.</p></div>
+        <div class="card"><div style="font-size:1.5rem;margin-bottom:8px">📍</div><div class="card-title">Metadata Check</div><p style="font-size:.8rem;color:var(--text-muted)">EXIF data reveals camera, GPS location, and creation date. Mismatched data exposes manipulation.</p></div>
+        <div class="card"><div style="font-size:1.5rem;margin-bottom:8px">✂️</div><div class="card-title">Context Verification</div><p style="font-size:.8rem;color:var(--text-muted)">Real photos can become fake news when stripped of context. Always check what the original caption said.</p></div>
+      </div>
+    </div>
+
+    <!-- Panel: Video Check -->
+    <div class="inv-panel" id="tab-video" role="tabpanel">
+      <div class="card" style="text-align:center;padding:32px">
+        <div style="font-size:3rem;margin-bottom:16px">🎬</div>
+        <div class="sect-title" style="margin-bottom:8px">Video Verification Checklist</div>
+        <p style="color:var(--text-muted);font-size:.88rem;margin-bottom:24px">Use these professional steps to verify any suspicious video before sharing.</p>
+        <div id="video-checklist" style="text-align:left;max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:10px"></div>
+        <button class="btn btn-primary" style="margin-top:24px" id="vid-complete-btn">Mark Complete — Earn XP</button>
+      </div>
+    </div>
+
+    <!-- Panel: Submit -->
+    <div class="inv-panel" id="tab-submit" role="tabpanel">
+      <div class="card">
+        <div class="sect-title" style="margin-bottom:16px">➕ Submit a Claim for Investigation</div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div>
+            <label style="font-size:.8rem;color:var(--text-muted);display:block;margin-bottom:6px">Claim or URL *</label>
+            <input type="text" id="submit-claim" class="tq-input" placeholder="Paste the suspicious claim or URL here…"/>
+          </div>
+          <div>
+            <label style="font-size:.8rem;color:var(--text-muted);display:block;margin-bottom:6px">Platform</label>
+            <select id="submit-platform" class="tq-input" style="appearance:auto">
+              <option>Facebook</option><option>WhatsApp</option><option>TikTok</option>
+              <option>Twitter/X</option><option>Telegram</option><option>YouTube</option><option>Other</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:.8rem;color:var(--text-muted);display:block;margin-bottom:6px">Your initial assessment</label>
+            <textarea id="submit-notes" class="tq-input" rows="3" placeholder="What made this suspicious? What did you already check?…"></textarea>
+          </div>
+          <button class="btn btn-primary" id="submit-inv-btn">🔍 Add to Investigation Queue</button>
+          <div id="submit-result" style="display:none"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Load stats
+    const s = TQ.load();
+    document.getElementById('inv-count').textContent = s.investigationsCompleted || 0;
+    document.getElementById('inv-acc').textContent   = s.accuracy ? s.accuracy + '%' : '—';
+    document.getElementById('inv-xp').textContent    = s.xp || 0;
+
+    // Tab switching
+    document.querySelectorAll('.inv-tab').forEach(t => {
+      t.addEventListener('click', () => {
+        document.querySelectorAll('.inv-tab').forEach(x => { x.classList.remove('active'); x.setAttribute('aria-selected','false'); });
+        document.querySelectorAll('.inv-panel').forEach(x => x.classList.remove('active'));
+        t.classList.add('active'); t.setAttribute('aria-selected','true');
+        document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+      });
+    });
+
+    // Claims data
+    const CLAIMS = [
+      { id:'c1', type:'video', platform:'WhatsApp', date:'June 2024',
+        text:'"Breaking video shows toxic chemicals being dumped in local river — share immediately before government removes this!!"',
+        tools:{
+          source:'Account created 2 days ago. No prior posts. Classic disinformation account pattern.',
+          date:'Video metadata: uploaded 3 years ago in a different country. File renamed today.',
+          image:'Reverse search: same footage appears in a 2019 documentary about industrial waste in Eastern Europe — unrelated.',
+          ai:'Caption language: 98% AI-generated probability. Urgency triggers ("share before removed") are automated disinformation hallmarks.'
+        },
+        answer:'false', explanation:'The video is real but completely out of context — it happened in another country years ago. The account spreading it is brand new and AI-assisted. Classic context manipulation.'
+      },
+      { id:'c2', type:'image', platform:'Facebook', date:'March 2025',
+        text:'"PROOF: This photo shows opposition politician at a meeting with foreign agents plotting against our country. The media won\'t show you this."',
+        tools:{
+          source:'Source is a website registered 1 month ago. No about page. No listed authors.',
+          date:'Photo metadata: taken 4 years ago at a different international conference — routine diplomatic event.',
+          image:'Reverse search: original photo found in AP archive. Caption: "Delegation at multilateral trade summit, Geneva 2021."',
+          ai:'Text overlay on image shows signs of AI-generated composition. Watermarks removed digitally.'
+        },
+        answer:'false', explanation:'The photo is genuine but deliberately mislabelled. This is "context manipulation" — one of the most common disinformation techniques.'
+      },
+      { id:'c3', type:'text', platform:'Telegram', date:'January 2026',
+        text:'"Scientists at WHO confirm that [common food] causes cancer in 90% of cases. Mainstream media hiding this because of food industry lobby."',
+        tools:{
+          source:'WHO has no record of this statement. Their actual position is the opposite.',
+          date:'Claim has circulated since 2019 with different foods swapped in. Classic recycled health misinformation.',
+          image:'No original study cited. Search for the supposed research yields zero peer-reviewed results.',
+          ai:'95% probability AI-generated text. Pattern matches known health disinformation templates.'
+        },
+        answer:'false', explanation:'Classic health misinformation combining false authority (WHO), conspiracy framing ("media hiding"), and AI generation. No study, no source, no evidence.'
+      },
+      { id:'c4', type:'audio', platform:'WhatsApp', date:'April 2026',
+        text:'"Voice message from a doctor friend: the new vaccine batch is contaminated — hospitals have been told to cover it up. Pass this on urgently."',
+        tools:{
+          source:'No doctor can be identified. "Friend of a friend" sourcing is a classic rumour-spreading technique.',
+          date:'Identical messages have appeared in 6 countries with different "doctor friends." Same script, different names.',
+          image:'Audio analysis: voice synthesis AI probability 89%. Unnatural phoneme transitions detected.',
+          ai:'Template matches known vaccine disinformation campaign patterns circulating since 2021.'
+        },
+        answer:'false', explanation:'This is a coordinated AI-generated disinformation campaign. The "doctor friend" framing creates false credibility. Health authorities confirmed no contamination.'
+      }
+    ];
+
+    const grid = document.getElementById('claims-grid');
+    let correct = 0, total = 0;
+
+    CLAIMS.forEach(c => {
+      const card = document.createElement('div');
+      card.className = 'claim-card';
+      card.innerHTML = `
+        <div class="claim-source">
+          <span class="claim-badge cb-${c.type}">${c.type.toUpperCase()}</span>
+          <span>📱 ${c.platform}</span><span>📅 ${c.date}</span>
+        </div>
+        <p class="claim-text">${c.text}</p>
+        <div class="claim-actions">
+          <button class="btn btn-secondary" data-tool="source" data-id="${c.id}" style="font-size:.72rem;padding:7px 12px">🔍 Check Source</button>
+          <button class="btn btn-secondary" data-tool="date" data-id="${c.id}" style="font-size:.72rem;padding:7px 12px">📅 Check Date</button>
+          <button class="btn btn-secondary" data-tool="image" data-id="${c.id}" style="font-size:.72rem;padding:7px 12px">🖼️ Reverse Search</button>
+          <button class="btn btn-secondary" data-tool="ai" data-id="${c.id}" style="font-size:.72rem;padding:7px 12px">🤖 AI Detector</button>
+        </div>
+        <div class="tool-result" id="tr-${c.id}"></div>
+        <div class="verdict-bar" id="vb-${c.id}">
+          <button class="v-btn v-true" data-verdict="true" data-id="${c.id}">✅ Verified True</button>
+          <button class="v-btn v-mixed" data-verdict="mixed" data-id="${c.id}">⚠️ Misleading</button>
+          <button class="v-btn v-false" data-verdict="false" data-id="${c.id}">❌ False / Misinfo</button>
+        </div>
+        <div id="verdict-result-${c.id}" style="display:none"></div>
+      `;
+      grid.appendChild(card);
+    });
+
+    // Tool buttons
+    grid.addEventListener('click', e => {
+      const tb = e.target.closest('[data-tool]');
+      if (tb) {
+        const claim = CLAIMS.find(c => c.id === tb.dataset.id);
+        const tr = document.getElementById('tr-' + tb.dataset.id);
+        tr.textContent = claim.tools[tb.dataset.tool];
+        tr.classList.add('show');
+        return;
+      }
+
+      const vb = e.target.closest('[data-verdict]');
+      if (vb) {
+        const id      = vb.dataset.id;
+        const verdict = vb.dataset.verdict;
+        const claim   = CLAIMS.find(c => c.id === id);
+        const vbar    = document.getElementById('vb-' + id);
+        const vres    = document.getElementById('verdict-result-' + id);
+        vbar.style.display = 'none';
+        total++;
+        const isCorrect = verdict === claim.answer;
+        if (isCorrect) correct++;
+        vres.style.display = 'block';
+        vres.innerHTML = `
+          <div class="result-panel ${isCorrect ? 'result-good' : 'result-bad'}">
+            <span style="font-size:1.5rem">${isCorrect ? '✅' : '❌'}</span>
+            <div>
+              <strong style="font-size:.85rem">${isCorrect ? 'Correct!' : 'Not quite.'}</strong>
+              <p style="font-size:.78rem;margin-top:4px;line-height:1.6;opacity:.85">${claim.explanation}</p>
+              ${isCorrect ? '<p style="font-size:.72rem;color:var(--green);margin-top:6px">+75 XP earned</p>' : ''}
+            </div>
+          </div>`;
+        if (isCorrect) {
+          TQ.addXP(75, 'Correct investigation');
+          TQ.inc('investigationsCompleted');
+          if (correct === 1) TQ.awardBadge('first_investigation');
+          if (correct >= 3) TQ.awardBadge('viral_buster');
+        }
+        TQ.updateAccuracy(correct, total);
+        TQ.addEvidence({ type:'investigation', platform:claim.platform, claim:claim.text.slice(0,80)+'…', verdict, correct:isCorrect });
+        document.getElementById('inv-count').textContent = TQ.load().investigationsCompleted;
+        document.getElementById('inv-acc').textContent   = TQ.load().accuracy + '%';
+        document.getElementById('inv-xp').textContent    = TQ.load().xp;
+      }
+    });
+
+    // Video checklist
+    const VID_STEPS = [
+      { icon:'📍', text:'Check where the video was originally filmed — does the location match the claim?' },
+      { icon:'📅', text:'Search the video title/description on Google with a date filter before today.' },
+      { icon:'🖼️', text:'Run a reverse image search on a screenshot from the video.' },
+      { icon:'🔊', text:'Listen for unnatural audio sync issues that indicate deepfake.' },
+      { icon:'👤', text:'Check if faces look distorted around the edges — AI deepfakes often fail here.' },
+      { icon:'📡', text:'Find the original source. Can you trace it to an official channel or news outlet?' },
+      { icon:'🤖', text:'Run the video through an AI detection tool like Deepware or InVID.' },
+    ];
+    const checklist = document.getElementById('video-checklist');
+    VID_STEPS.forEach((s,i) => {
+      const d = document.createElement('label');
+      d.style.cssText='display:flex;align-items:flex-start;gap:12px;cursor:pointer;padding:10px 14px;background:var(--glass);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:.82rem;line-height:1.5';
+      d.innerHTML=`<input type="checkbox" id="vc-${i}" style="margin-top:3px;accent-color:var(--blue)"/> <span>${s.icon} ${s.text}</span>`;
+      checklist.appendChild(d);
+    });
+    document.getElementById('vid-complete-btn').addEventListener('click',()=>{
+      const checked = document.querySelectorAll('#video-checklist input:checked').length;
+      if(checked < 5){ alert('Complete at least 5 steps before marking done!'); return; }
+      TQ.addXP(100,'Video verification completed');
+      TQ.awardBadge('image_investigator');
+      document.getElementById('vid-complete-btn').textContent='✅ Complete! +100 XP';
+      document.getElementById('vid-complete-btn').disabled=true;
+    });
+
+    // Image check
+    document.getElementById('img-check-btn').addEventListener('click',()=>{
+      const url = document.getElementById('img-url').value.trim();
+      const res = document.getElementById('img-result');
+      if(!url){ res.innerHTML='<p style="color:var(--red);font-size:.82rem">Please enter an image URL.</p>'; return; }
+      res.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
+      setTimeout(()=>{
+        const isHttps = url.startsWith('https://');
+        const isKnown = ['unsplash','reuters','apnews','bbc','afp','gettyimages'].some(d=>url.includes(d));
+        res.innerHTML=`
+          <div class="result-panel ${isKnown?'result-good':'result-warn'}">
+            <span style="font-size:1.5rem">${isKnown?'✅':'⚠️'}</span>
+            <div>
+              <strong style="font-size:.85rem">${isKnown?'Known credible image source detected':'Image source requires further verification'}</strong>
+              <p style="font-size:.78rem;margin-top:6px;opacity:.85">
+                ${isHttps?'✅ Secure URL (HTTPS)':'⚠️ Insecure URL (HTTP)'}<br/>
+                ${isKnown?'Domain matches a known credible image provider.':'Cannot automatically verify this domain. Run a manual reverse image search on <a href="https://images.google.com" target="_blank" style="color:var(--blue)">Google Images</a> or <a href="https://tineye.com" target="_blank" style="color:var(--blue)">TinEye</a>.'}
+              </p>
+            </div>
+          </div>`;
+        TQ.addXP(30,'Image check performed');
+      }, 600);
+    });
+
+    // Submit claim
+    document.getElementById('submit-inv-btn').addEventListener('click',()=>{
+      const claim = document.getElementById('submit-claim').value.trim();
+      const res   = document.getElementById('submit-result');
+      if(!claim){ res.style.display='block'; res.innerHTML='<p style="color:var(--red);font-size:.82rem">Please enter a claim first.</p>'; return; }
+      TQ.addEvidence({ type:'submitted', claim:claim.slice(0,100), platform:document.getElementById('submit-platform').value });
+      TQ.addXP(50,'Claim submitted for investigation');
+      res.style.display='block';
+      res.innerHTML=`<div class="result-panel result-good"><span style="font-size:1.5rem">✅</span><div><strong>Added to Investigation Queue</strong><p style="font-size:.78rem;margin-top:4px">Your claim has been logged in the Evidence Room. +50 XP earned.</p></div></div>`;
+      document.getElementById('submit-claim').value='';
+    });
+  });
+  </script>
+</body>
+</html>
