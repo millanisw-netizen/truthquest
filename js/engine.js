@@ -451,6 +451,15 @@ const Game = (() => {
     // Also post to leaderboard page if it's open
     try { window.opener && window.opener.postMessage({ type: 'TQ_SCORE', score, badges: state.badgesEarned }, '*'); } catch (e) {}
 
+    // Sync to platform.js shared state
+    try {
+      if (typeof TQ !== 'undefined') {
+        TQ.syncGameScore(score, state.badgesEarned);
+      }
+      // Also fire a custom event for any listeners
+      window.dispatchEvent(new CustomEvent('tq:gamecomplete', { detail: { score, badges: state.badgesEarned } }));
+    } catch (e) { /* platform not loaded on this page */ }
+
     // Badges
     const badgesGrid = document.getElementById('badges-earned-grid');
     if (badgesGrid) {

@@ -485,6 +485,7 @@
   </div>
 
   <!-- Load scripts in dependency order -->
+  <script src="js/platform.js"></script>
   <script src="js/story-data.js"></script>
   <script src="js/city.js"></script>
   <script src="js/verifier.js"></script>
@@ -644,8 +645,18 @@
       chapter: () => [330,440,550,660,770].forEach((f,i) => setTimeout(() => _tone(f, f, 0.18, 0.05), i*100))
     };
 
-    // ── Share score ───────────────────────────────────────────────
+    // ── Sync game completion to platform.js ──────────────────────
     document.addEventListener('DOMContentLoaded', () => {
+      // When game ends, sync score to platform
+      const origShowEnd = typeof Game !== 'undefined' ? null : null;
+    });
+
+    // Override end screen to also sync platform
+    window.addEventListener('tq:gamecomplete', e => {
+      if (typeof TQ !== 'undefined') {
+        TQ.syncGameScore(e.detail.score, e.detail.badges);
+      }
+    });
       const shareBtn = document.getElementById('btn-share');
       if (!shareBtn) return;
       shareBtn.addEventListener('click', async () => {

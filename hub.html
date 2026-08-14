@@ -125,6 +125,8 @@
       <div class="dept-badge">🏛️ HEADQUARTERS</div>
       <h1 class="hub-name" id="hub-name">Welcome back, Journalist</h1>
       <p class="hub-sub">Choose your department and start investigating.</p>
+      <!-- Continue CTA — shown if player has progress -->
+      <div id="hub-continue" style="display:none;margin-top:16px"></div>
     </div>
 
     <!-- Stats strip -->
@@ -284,6 +286,38 @@
           const def = TQ.BADGE_DEFS[id];
           return def ? `<div class="hub-badge-chip"><span>${def.icon}</span><span>${def.name}</span></div>` : '';
         }).join('');
+      }
+
+      // ── Continue where you left off ──────────────────────────
+      const continueCTA = document.getElementById('hub-continue');
+      const DEPT_MAP = {
+        investigationsCompleted: { url:'investigation.html', label:'Continue Investigating', icon:'🔍' },
+        factsChecked:            { url:'factcheck.html',     label:'Continue Fact-Checking', icon:'📋' },
+        deepfakesDetected:       { url:'aidetection.html',   label:'Continue AI Detection',  icon:'🤖' },
+        sourcesAnalysed:         { url:'sourceanalysis.html',label:'Analyse More Sources',   icon:'📚' },
+        socialCasesResolved:     { url:'social.html',        label:'Resolve More Cases',      icon:'📱' },
+        lessonsCompleted:        { url:'academy.html',       label:'Continue Academy',        icon:'🎓' },
+      };
+      // Find highest-activity department
+      let bestKey = null, bestVal = 0;
+      Object.keys(DEPT_MAP).forEach(k => {
+        const v = s[k] || 0;
+        if (v > bestVal) { bestVal = v; bestKey = k; }
+      });
+      // Show game CTA if they've played, otherwise first dept
+      if (s.gameScore > 0 && bestVal === 0) {
+        continueCTA.style.display = 'block';
+        continueCTA.innerHTML = `<a href="game.html" style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--blue),#0099cc);color:var(--navy);font-family:'Orbitron',monospace;font-weight:700;font-size:.82rem;padding:11px 24px;border-radius:100px;text-decoration:none;transition:all .3s ease">🎮 Play Again — Best: ${s.gameScore}/100</a>`;
+      } else if (bestKey) {
+        const dept = DEPT_MAP[bestKey];
+        continueCTA.style.display = 'block';
+        continueCTA.innerHTML = `<a href="${dept.url}" style="display:inline-flex;align-items:center;gap:8px;background:rgba(0,212,255,.12);border:1px solid rgba(0,212,255,.3);color:var(--blue);font-family:'Orbitron',monospace;font-weight:700;font-size:.78rem;padding:9px 20px;border-radius:100px;text-decoration:none;">${dept.icon} ${dept.label}</a>
+        <a href="game.html" style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--blue),#0099cc);color:var(--navy);font-family:'Orbitron',monospace;font-weight:700;font-size:.78rem;padding:9px 20px;border-radius:100px;text-decoration:none;margin-left:8px">🎮 Play Game</a>`;
+      } else {
+        // First-time user — suggest starting point
+        continueCTA.style.display = 'block';
+        continueCTA.innerHTML = `<a href="game.html" style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--blue),#0099cc);color:var(--navy);font-family:'Orbitron',monospace;font-weight:700;font-size:.82rem;padding:11px 24px;border-radius:100px;text-decoration:none;">▶ Start with the Game Mission</a>
+        <a href="academy.html" style="display:inline-flex;align-items:center;gap:8px;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.25);color:var(--blue);font-family:'Orbitron',monospace;font-weight:700;font-size:.78rem;padding:9px 20px;border-radius:100px;text-decoration:none;margin-left:8px">🎓 Or try MIL Academy</a>`;
       }
 
       // Name prompt if first visit
