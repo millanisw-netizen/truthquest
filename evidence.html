@@ -66,6 +66,65 @@
     </div>
 
     <div id="ev-list"></div>
+
+    <!-- Quick log form -->
+    <div style="margin-top:36px">
+      <div class="sect-label" style="margin-bottom:8px">➕ LOG NEW EVIDENCE</div>
+      <div class="card" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div style="grid-column:1/-1">
+          <input type="text" id="ev-new-claim" class="tq-input" placeholder="Describe the claim or content you found…" aria-label="Evidence claim"/>
+        </div>
+        <div>
+          <select id="ev-new-type" class="tq-input" style="appearance:auto" aria-label="Evidence type">
+            <option value="investigation">🔍 Investigation</option>
+            <option value="fact">📋 Fact Check</option>
+            <option value="ai">🤖 AI Detected</option>
+            <option value="source">📚 Source Analysis</option>
+            <option value="social">📱 Social Media</option>
+            <option value="submitted">📤 Submitted</option>
+          </select>
+        </div>
+        <div>
+          <select id="ev-new-verdict" class="tq-input" style="appearance:auto" aria-label="Your verdict">
+            <option value="neutral">📋 Logged (no verdict)</option>
+            <option value="correct">✅ Verified Correct Call</option>
+            <option value="wrong">❌ Wrong Call / Missed</option>
+          </select>
+        </div>
+        <div>
+          <input type="text" id="ev-new-platform" class="tq-input" placeholder="Platform (e.g. WhatsApp, Facebook…)" aria-label="Platform"/>
+        </div>
+        <div>
+          <input type="text" id="ev-new-note" class="tq-input" placeholder="Analysis note (optional)…" aria-label="Note"/>
+        </div>
+        <div style="grid-column:1/-1">
+          <button class="btn btn-primary" id="ev-log-btn" style="width:100%">📁 Add to Evidence Room</button>
+          <div id="ev-log-result" style="display:none;margin-top:10px"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shortcuts to collect more evidence -->
+    <div style="margin-top:36px">
+      <div class="sect-label" style="margin-bottom:12px">🏃 COLLECT MORE EVIDENCE</div>
+      <div class="grid-3">
+        <a href="investigation.html" class="card" style="text-decoration:none;text-align:center;padding:20px">
+          <div style="font-size:2rem;margin-bottom:8px">🔍</div>
+          <div class="card-title">Investigation Dept</div>
+          <p style="font-size:.76rem;color:var(--text-muted);margin-top:4px">Investigate viral claims and earn evidence items</p>
+        </a>
+        <a href="game.html" class="card" style="text-decoration:none;text-align:center;padding:20px">
+          <div style="font-size:2rem;margin-bottom:8px">🎮</div>
+          <div class="card-title">Play the Game</div>
+          <p style="font-size:.76rem;color:var(--text-muted);margin-top:4px">Every badge you earn is logged as evidence</p>
+        </a>
+        <a href="factcheck.html" class="card" style="text-decoration:none;text-align:center;padding:20px">
+          <div style="font-size:2rem;margin-bottom:8px">📋</div>
+          <div class="card-title">Fact-Check Dept</div>
+          <p style="font-size:.76rem;color:var(--text-muted);margin-top:4px">Correct fact-check answers add to your dossier</p>
+        </a>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -107,11 +166,13 @@
       const verdict = ev.correct===true?'<span class="ev-verdict ev-correct">✅ CORRECT</span>':ev.correct===false?'<span class="ev-verdict ev-wrong">❌ WRONG</span>':'<span class="ev-verdict ev-neutral">📋 LOGGED</span>';
       const claim   = ev.claim||ev.label||ev.verdict||ev.platform||'Evidence item';
       const meta    = [ev.platform&&`📱 ${ev.platform}`, ev.type&&`🏷️ ${ev.type}`, fmt(ev.ts)].filter(Boolean).join(' · ');
+      const note    = ev.note ? `<div style="font-size:.72rem;color:rgba(0,212,255,.7);margin-top:5px;font-style:italic">💡 ${ev.note}</div>` : '';
       d.innerHTML=`
         <div class="ev-icon">${icon}</div>
         <div class="ev-body">
           <div class="ev-type">${ev.type||'evidence'}</div>
           <div class="ev-claim">${claim}</div>
+          ${note}
           <div class="ev-meta">${meta}</div>
         </div>
         ${verdict}
@@ -121,6 +182,36 @@
   }
 
   document.addEventListener('DOMContentLoaded',()=>{
+    // ── Seed demo evidence on first visit ────────────────────────
+    const s = TQ.load();
+    if (!s.evidenceCollected || s.evidenceCollected.length === 0) {
+      const DEMO = [
+        { id:'demo_1', type:'investigation', platform:'WhatsApp', ts: Date.now() - 86400000*3,
+          claim:'Forwarded message: "Government hiding water contamination — share before deleted!!"',
+          correct:false, verdict:'misinformation',
+          note:'Fake urgency, no source, recycled claim from 2021.' },
+        { id:'demo_2', type:'ai', platform:'Facebook', ts: Date.now() - 86400000*2,
+          claim:'Profile photo with asymmetric pupils and distorted background — AI-generated face.',
+          correct:true, verdict:'ai_detected',
+          note:'GAN image: mismatched eye reflections, blurred ears, impossible background.' },
+        { id:'demo_3', type:'fact', platform:'Telegram', ts: Date.now() - 86400000,
+          claim:'"WHO confirms new vaccine causes heart failure in 80% of cases"',
+          correct:true, verdict:'misinformation',
+          note:'WHO has no such statement. Claim uses fake authority + health panic framing.' },
+        { id:'demo_4', type:'source', platform:'Web', ts: Date.now() - 3600000*6,
+          claim:'healthtruthdaily.xyz — No named authors, .xyz domain, heavy affiliate ads, no citation policy.',
+          correct:true, verdict:'low_credibility',
+          note:'Fails CRAAP test on all 5 criteria. Do not use as a source.' },
+        { id:'demo_5', type:'social', platform:'TikTok', ts: Date.now() - 3600000*2,
+          claim:'Viral video: "Doctor secretly filmed proving hospitals hiding cure for cancer"',
+          correct:true, verdict:'misinformation',
+          note:'No doctor identified, AI-generated caption, artificial urgency trigger words.' },
+      ];
+      const ns = TQ.load();
+      ns.evidenceCollected = DEMO;
+      TQ.save(ns);
+    }
+
     render();
     let currentFilter='all';
     let currentSearch='';
@@ -152,6 +243,36 @@
     document.getElementById('ev-clear-all').addEventListener('click',()=>{
       if(!confirm('Clear ALL evidence? This cannot be undone.')) return;
       const s=TQ.load(); s.evidenceCollected=[]; TQ.save(s);
+      render(currentFilter, currentSearch);
+    });
+
+    // ── Log new evidence manually ─────────────────────────────
+    document.getElementById('ev-log-btn').addEventListener('click',()=>{
+      const claim   = document.getElementById('ev-new-claim').value.trim();
+      const type    = document.getElementById('ev-new-type').value;
+      const verdRaw = document.getElementById('ev-new-verdict').value;
+      const plat    = document.getElementById('ev-new-platform').value.trim();
+      const note    = document.getElementById('ev-new-note').value.trim();
+      const res     = document.getElementById('ev-log-result');
+
+      if (!claim) {
+        res.style.display='block';
+        res.innerHTML='<p style="color:var(--red);font-size:.82rem">Please describe the claim first.</p>';
+        return;
+      }
+
+      const correct = verdRaw==='correct' ? true : verdRaw==='wrong' ? false : null;
+      TQ.addEvidence({ type, claim, platform:plat||'Unknown', note, correct });
+
+      // Clear form
+      document.getElementById('ev-new-claim').value   = '';
+      document.getElementById('ev-new-platform').value= '';
+      document.getElementById('ev-new-note').value    = '';
+
+      res.style.display='block';
+      res.innerHTML='<div class="result-panel result-good" style="padding:10px 14px"><span>✅</span><span style="font-size:.82rem">Evidence logged! +20 XP earned.</span></div>';
+      setTimeout(()=>{ res.style.display='none'; },3000);
+
       render(currentFilter, currentSearch);
     });
 
