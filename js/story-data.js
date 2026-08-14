@@ -94,7 +94,7 @@ const STORY_FALLBACK = {
           "speaker": "Editor Maya",
           "avatar": "👩‍💼",
           "text": "Chapter 1 complete. We've learned something crucial: in a world of viral misinformation, the first step is always to verify. A whistleblower just contacted us — Chapter 2 begins now.",
-          "choices": [{ "text": "Continue to Chapter 2 →", "trustDelta": 0, "badge": "chapter_1_complete", "feedback": "Chapter 1 complete! Your investigation continues...", "next": "2-1" }]
+          "choices": [{ "text": "Continue to Chapter 2 →", "trustDelta": 0, "badge": "chapter_1_complete", "feedback": "✅ Chapter 1 complete! Your instincts are sharpening. The investigation continues — a whistleblower is waiting.", "next": "2-1" }]
         }
       ]
     },

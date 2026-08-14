@@ -140,6 +140,9 @@ const Game = (() => {
     titleEl.textContent = chapter.title;
     introEl.textContent = chapter.intro;
 
+    // Make sure game screen is visible before showing transition
+    showScreen('game');
+
     overlay.classList.remove('hidden');
     setTimeout(() => {
       overlay.classList.add('hidden');
@@ -355,15 +358,18 @@ const Game = (() => {
       addEvidence(choice.badge, state.sceneId);
     }
 
-    // Show feedback
-    if (choice.feedback) {
+    // Show feedback only if there is content to show
+    const hasFeedback = choice.feedback && choice.feedback.trim() !== '';
+    if (hasFeedback) {
       const type = choice.trustDelta > 0 ? 'good' : choice.trustDelta < 0 ? 'bad' : 'neutral';
       const icon = choice.trustDelta > 0 ? '✅' : choice.trustDelta < 0 ? '❌' : '💡';
       showFeedback(type, icon, choice.feedback);
     }
 
-    // Advance after delay
-    setTimeout(() => advance(choice.next, choice), 2200);
+    // If no feedback and no trust change (pure transition choice), advance immediately
+    // Otherwise wait 2200ms so the player can read the feedback
+    const delay = hasFeedback ? 2200 : 400;
+    setTimeout(() => advance(choice.next, choice), delay);
   }
 
   // ── Advance ───────────────────────────────────────────────────
