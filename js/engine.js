@@ -274,9 +274,15 @@ const Game = (() => {
           // If scene has a minigame, open it
           if (scene.minigame) {
             setTimeout(() => {
-              Verifier.open(scene.minigame, (correct, trustDelta, badge) => {
-                handleMinigameResult(scene, correct, trustDelta, badge);
-              });
+              try {
+                Verifier.open(scene.minigame, (correct, trustDelta, badge) => {
+                  handleMinigameResult(scene, correct, trustDelta, badge);
+                });
+              } catch (e) {
+                console.error('Verifier failed:', e);
+                // Fallback: show a button to manually open
+                renderMinigameFallback(scene);
+              }
             }, 500);
           } else {
             renderChoices(scene.choices);
@@ -284,6 +290,24 @@ const Game = (() => {
         });
       }
     }, 900);
+  }
+
+  // ── Minigame fallback button (if modal fails to open) ────────
+  function renderMinigameFallback(scene) {
+    if (!el.choicesGrid) return;
+    el.choicesGrid.innerHTML = '';
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.style.cssText = 'border-color:rgba(0,212,255,.5);background:rgba(0,212,255,.08)';
+    btn.innerHTML = '<span aria-hidden="true">🔍</span> Open Verification Tool';
+    btn.setAttribute('aria-label', 'Open the source verification minigame');
+    btn.addEventListener('click', () => {
+      btn.disabled = true;
+      Verifier.open(scene.minigame, (correct, trustDelta, badge) => {
+        handleMinigameResult(scene, correct, trustDelta, badge);
+      });
+    });
+    el.choicesGrid.appendChild(btn);
   }
 
   // ── Minigame result ───────────────────────────────────────────
