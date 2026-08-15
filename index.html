@@ -182,13 +182,15 @@
       <div class="video-wrapper" role="region" aria-label="TruthQuest trailer video player">
         <video
           id="trailer-video"
-          src="assets/trailer.mp4"
           preload="metadata"
           playsinline
           controls
           aria-label="TruthQuest gameplay trailer"
           style="display:block;width:100%;border-radius:var(--radius-lg);background:#000;box-shadow:0 20px 60px rgba(0,0,0,0.6),0 0 40px rgba(0,212,255,0.08)"
-        ></video>
+        >
+          <source src="assets/trailer.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
       </div>
 
       <!-- Video description below player -->
