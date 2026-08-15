@@ -2313,3 +2313,200 @@ body, .site-header, .feature-card, .about-section,
   .cases-cta-inner { flex-direction: column; text-align: center; }
   .cases-cta-inner > div { text-align: center; }
 }
+
+/* ══════════════════════════════════════════════════════════════════
+   LEARNING LOOP — Educational flow banner
+   Shows judges: Play → Investigate → Decide → Learn
+══════════════════════════════════════════════════════════════════ */
+
+.learning-loop {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 40px;
+  padding: 16px 28px;
+  background: linear-gradient(135deg, rgba(0,212,255,0.07), rgba(255,215,0,0.05));
+  border: 1px solid rgba(0,212,255,0.2);
+  border-radius: var(--radius-md);
+  max-width: 680px;
+  width: 100%;
+  animation: fadeInUp 0.7s ease 0.35s both;
+}
+
+.ll-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 80px;
+  text-align: center;
+}
+
+.ll-icon {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.ll-label {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--blue);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.ll-desc {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  line-height: 1.3;
+}
+
+.ll-arrow {
+  font-size: 1rem;
+  color: rgba(0,212,255,0.4);
+  font-weight: 300;
+  margin-bottom: 14px; /* align with middle of step */
+}
+
+[data-theme="light"] .learning-loop {
+  background: linear-gradient(135deg, rgba(0,102,204,0.07), rgba(196,127,0,0.05));
+  border-color: rgba(0,102,204,0.2);
+}
+
+@media (max-width: 600px) {
+  .learning-loop { gap: 6px; padding: 14px 16px; }
+  .ll-step { min-width: 60px; }
+  .ll-arrow { display: none; }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   SUSTAINABILITY SECTION
+══════════════════════════════════════════════════════════════════ */
+
+.sustain-section {
+  position: relative;
+  z-index: 1;
+  padding: 100px 24px;
+  text-align: center;
+  background: linear-gradient(180deg, transparent, rgba(0,212,255,0.03) 50%, transparent);
+}
+
+.sustain-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.sustain-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: 28px 24px;
+  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+}
+
+.sustain-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(0,212,255,0.35);
+  box-shadow: 0 12px 40px rgba(0,212,255,0.1);
+}
+
+.sustain-icon {
+  font-size: 2rem;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.sustain-card h3 {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--blue);
+  margin-bottom: 10px;
+  letter-spacing: 0.3px;
+  line-height: 1.3;
+}
+
+.sustain-card p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+[data-theme="light"] .sustain-card {
+  background: #fff;
+  border-color: rgba(0,102,204,0.1);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+@media (max-width: 480px) {
+  .sustain-section { padding: 60px 16px; }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   MIL HIGHLIGHTS — replaces ad strip (one-video version)
+══════════════════════════════════════════════════════════════════ */
+
+.mil-highlights-section {
+  position: relative;
+  z-index: 1;
+  padding: 60px 24px;
+}
+
+.mil-highlights-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.mil-highlight-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: 28px 24px;
+  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+}
+
+.mil-highlight-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(0,212,255,0.35);
+  box-shadow: 0 12px 40px rgba(0,212,255,0.1);
+}
+
+.mh-icon {
+  font-size: 2.2rem;
+  display: block;
+  margin-bottom: 14px;
+}
+
+.mil-highlight-card h3 {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--blue);
+  margin-bottom: 10px;
+}
+
+.mil-highlight-card p {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+[data-theme="light"] .mil-highlight-card {
+  background: #fff;
+  border-color: rgba(0,102,204,0.1);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+@media (max-width: 480px) {
+  .mil-highlights-section { padding: 40px 16px; }
+}

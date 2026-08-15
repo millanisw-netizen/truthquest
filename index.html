@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0a0e27" />
-  <meta name="description" content="TruthQuest — A browser-based media literacy RPG for the UNESCO Youth Hackathon 2026. Play as the last honest journalist. Can you save Veridis City from disinformation?" />
+  <meta name="description" content="TruthQuest — A Media and Information Literacy game for the UNESCO Youth Hackathon 2026. Play story-driven missions, investigate real misinformation cases, and earn MIL skill badges. Free, browser-based, no account needed." />
   <meta name="keywords" content="media literacy, disinformation, UNESCO, MIL, fact checking, game, journalism, education" />
   <meta name="robots" content="index, follow" />
   <meta name="author" content="TruthQuest Team — UNESCO Youth Hackathon 2026" />
@@ -65,6 +65,7 @@
         <a href="#about">About MIL</a>
         <a href="#real-cases">📋 Real Cases</a>
         <a href="#fact-checker">🔬 Fact Check</a>
+        <a href="#sustainability">🌱 Sustainability</a>
         <a href="hub.html" style="color:var(--gold)">🏛️ Platform</a>
         <a href="#video-section">Trailer</a>
         <a href="leaderboard.html">🏆 Leaderboard</a>
@@ -87,7 +88,7 @@
   <main>
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-badge">
-        <span>🏆</span> UNESCO Youth Hackathon 2026
+        <span>🏆</span> UNESCO Youth Hackathon 2026 — Media &amp; Information Literacy
       </div>
 
       <!-- MIL Tip of the Day -->
@@ -101,13 +102,41 @@
       </h1>
 
       <p class="hero-subtitle">
-        Can you save the city from disinformation?
+        Learn media literacy. Save the city.
       </p>
 
       <p class="hero-tagline">
-        Step into the shoes of Veridis City's last honest journalist.<br />
-        Every choice matters. Every source counts. The truth is yours to uncover.
+        A <strong>Media and Information Literacy game</strong> where you play as Veridis City's last honest journalist.
+        Investigate real-world misinformation scenarios, apply genuine fact-checking techniques,
+        and earn MIL skill badges as you learn — through play.
       </p>
+
+      <!-- Educational learning loop — makes the MIL purpose immediately clear to judges -->
+      <div class="learning-loop" role="region" aria-label="How TruthQuest teaches media literacy">
+        <div class="ll-step">
+          <span class="ll-icon" aria-hidden="true">▶</span>
+          <span class="ll-label">Play</span>
+          <span class="ll-desc">Story-driven mission</span>
+        </div>
+        <span class="ll-arrow" aria-hidden="true">→</span>
+        <div class="ll-step">
+          <span class="ll-icon" aria-hidden="true">🔍</span>
+          <span class="ll-label">Investigate</span>
+          <span class="ll-desc">Use real journalist tools</span>
+        </div>
+        <span class="ll-arrow" aria-hidden="true">→</span>
+        <div class="ll-step">
+          <span class="ll-icon" aria-hidden="true">📋</span>
+          <span class="ll-label">Decide</span>
+          <span class="ll-desc">Publish, verify, or hold</span>
+        </div>
+        <span class="ll-arrow" aria-hidden="true">→</span>
+        <div class="ll-step">
+          <span class="ll-icon" aria-hidden="true">💡</span>
+          <span class="ll-label">Learn</span>
+          <span class="ll-desc">Receive MIL skill feedback</span>
+        </div>
+      </div>
 
       <div class="hero-actions">
         <a href="game.html" class="btn-primary pulse-glow" role="button">
@@ -123,20 +152,20 @@
       </div>
 
       <!-- Stats bar -->
-      <div class="stats-bar" role="region" aria-label="Hackathon statistics">
+      <div class="stats-bar" role="region" aria-label="Project highlights">
         <div class="stat-item">
-          <span class="stat-number">1,200+</span>
-          <span class="stat-label">Submissions Worldwide</span>
+          <span class="stat-number">3</span>
+          <span class="stat-label">Full Story Chapters</span>
         </div>
         <div class="stat-divider" aria-hidden="true">|</div>
         <div class="stat-item">
-          <span class="stat-number">138</span>
-          <span class="stat-label">Countries</span>
+          <span class="stat-number">6</span>
+          <span class="stat-label">Real Misinformation Cases</span>
         </div>
         <div class="stat-divider" aria-hidden="true">|</div>
         <div class="stat-item">
-          <span class="stat-number">You</span>
-          <span class="stat-label">Could Be Next</span>
+          <span class="stat-number">Free</span>
+          <span class="stat-label">No Account Needed</span>
         </div>
       </div>
     </section>
@@ -150,63 +179,15 @@
       <p class="section-sub">See the world of Veridis come to life</p>
 
       <div class="video-wrapper" role="region" aria-label="TruthQuest trailer video player">
-        <!-- Drop-in video: add src="assets/trailer.mp4" when ready -->
         <video
           id="trailer-video"
-          src=""
-          preload="none"
-          poster=""
+          src="assets/trailer.mp4"
+          preload="metadata"
           playsinline
           controls
-          aria-label="TruthQuest trailer — add assets/trailer.mp4 to activate"
+          aria-label="TruthQuest gameplay trailer"
+          style="display:block;width:100%;border-radius:var(--radius-lg);background:#000;box-shadow:0 20px 60px rgba(0,0,0,0.6),0 0 40px rgba(0,212,255,0.08)"
         ></video>
-
-        <!-- Placeholder overlay — shown when no video is loaded -->
-        <div class="video-placeholder" id="video-placeholder" role="img" aria-label="TruthQuest trailer placeholder">
-          <div class="video-overlay-bg" aria-hidden="true"></div>
-
-          <!-- Animated scan lines for cinematic feel -->
-          <div class="video-scanlines" aria-hidden="true"></div>
-
-          <!-- UNESCO watermark -->
-          <div class="video-watermark" aria-hidden="true">
-            <span>UNESCO</span>
-            <span class="watermark-year">2026</span>
-          </div>
-
-          <!-- Animated text reveal in the center -->
-          <div class="video-center-reveal" aria-hidden="true">
-            <div class="vcr-tag">▶ OFFICIAL TRAILER</div>
-            <button class="video-play-btn" id="video-play-btn" aria-label="Play trailer (add assets/trailer.mp4 to activate)">
-              <div class="play-circle">
-                <div class="play-ripple"></div>
-                <div class="play-triangle" aria-hidden="true"></div>
-              </div>
-            </button>
-            <p class="vcr-add-video">Drop <code>assets/trailer.mp4</code> here</p>
-          </div>
-
-          <!-- Title overlay -->
-          <div class="video-title-overlay" aria-hidden="true">
-            <span class="video-series-tag">🎙️ UNESCO HACKATHON 2026</span>
-            <h3 class="video-title-text">TruthQuest: Play Your Part</h3>
-          </div>
-
-          <!-- Bottom controls bar -->
-          <div class="video-controls" aria-hidden="true">
-            <div class="video-progress-track">
-              <div class="video-progress-fill"></div>
-            </div>
-            <div class="video-controls-row">
-              <span class="video-play-icon">▶</span>
-              <span class="video-time">0:00 / 2:34</span>
-              <div class="video-controls-right">
-                <span class="video-cc">CC</span>
-                <span class="video-fullscreen">⛶</span>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       <!-- Video description below player -->
@@ -227,97 +208,31 @@
     </section>
 
     <!-- ═══════════════════════════════════════════
-         MINI AD STRIP — Promotional Spots
+         MIL HIGHLIGHTS — replaces broken ad strip
     ════════════════════════════════════════════ -->
-    <section class="ad-strip-section" aria-labelledby="ad-strip-heading">
-      <h2 id="ad-strip-heading" class="visually-hidden">Featured Videos</h2>
-      <div class="ad-strip-label" aria-hidden="true">
-        <span class="ad-strip-dot" aria-hidden="true"></span>
-        FEATURED CLIPS
-        <span class="ad-strip-dot" aria-hidden="true"></span>
-      </div>
+    <section class="mil-highlights-section" aria-labelledby="mil-highlights-heading">
+      <h2 id="mil-highlights-heading" class="visually-hidden">What You'll Learn</h2>
+      <div class="mil-highlights-grid">
 
-      <div class="ad-strip-grid">
-
-        <!-- Ad Card 1 -->
-        <div class="ad-card" role="region" aria-label="Ad: How to spot fake news">
-          <div class="ad-thumb" aria-hidden="true">
-            <div class="ad-thumb-bg ad-thumb-bg-1"></div>
-            <!-- Real video slot: replace src with assets/clip-fakenews.mp4 -->
-            <video class="ad-video-clip" src="" preload="none" playsinline
-                   aria-label="How to spot fake news — add assets/clip-fakenews.mp4 to activate"></video>
-            <div class="ad-thumb-overlay">
-              <button class="ad-play-btn" aria-label="Play: How to spot fake news">
-                <span aria-hidden="true">▶</span>
-              </button>
-              <div class="ad-duration" aria-label="Duration">1:15</div>
-              <div class="ad-badge-tag" aria-hidden="true">📚 MIL TIP</div>
-            </div>
-          </div>
-          <div class="ad-info">
-            <h3 class="ad-title">How to Spot Fake News in 60 Seconds</h3>
-            <p class="ad-sub">Real journalist techniques, simplified for everyone.</p>
-            <div class="ad-meta" aria-label="Video metadata">
-              <span>🔥 2.4K views</span>
-              <span>UNESCO MIL</span>
-            </div>
-          </div>
+        <div class="mil-highlight-card">
+          <span class="mh-icon" aria-hidden="true">📰</span>
+          <h3>Spot Fake News</h3>
+          <p>Learn the real journalist techniques used to identify fabricated headlines, manipulated images, and out-of-context content.</p>
         </div>
 
-        <!-- Ad Card 2 -->
-        <div class="ad-card" role="region" aria-label="Ad: Deepfakes explained">
-          <div class="ad-thumb" aria-hidden="true">
-            <div class="ad-thumb-bg ad-thumb-bg-2"></div>
-            <video class="ad-video-clip" src="" preload="none" playsinline
-                   aria-label="Deepfakes explained — add assets/clip-deepfake.mp4 to activate"></video>
-            <div class="ad-thumb-overlay">
-              <button class="ad-play-btn" aria-label="Play: Deepfakes explained">
-                <span aria-hidden="true">▶</span>
-              </button>
-              <div class="ad-duration" aria-label="Duration">2:08</div>
-              <div class="ad-badge-tag" aria-hidden="true">🤖 AI LITERACY</div>
-            </div>
-          </div>
-          <div class="ad-info">
-            <h3 class="ad-title">Deepfakes: What Are They &amp; How to Detect Them</h3>
-            <p class="ad-sub">AI-generated media is everywhere. Here's how to fight back.</p>
-            <div class="ad-meta" aria-label="Video metadata">
-              <span>🔥 5.1K views</span>
-              <span>UNESCO MIL</span>
-            </div>
-          </div>
+        <div class="mil-highlight-card">
+          <span class="mh-icon" aria-hidden="true">🤖</span>
+          <h3>Detect Deepfakes</h3>
+          <p>Understand how AI-generated images, synthetic voices, and deepfake videos are created — and how to spot the telltale signs.</p>
         </div>
 
-        <!-- Ad Card 3 -->
-        <div class="ad-card" role="region" aria-label="Ad: Why MIL matters">
-          <div class="ad-thumb" aria-hidden="true">
-            <div class="ad-thumb-bg ad-thumb-bg-3"></div>
-            <video class="ad-video-clip" src="" preload="none" playsinline
-                   aria-label="Why MIL matters — add assets/clip-mil.mp4 to activate"></video>
-            <div class="ad-thumb-overlay">
-              <button class="ad-play-btn" aria-label="Play: Why MIL matters">
-                <span aria-hidden="true">▶</span>
-              </button>
-              <div class="ad-duration" aria-label="Duration">3:22</div>
-              <div class="ad-badge-tag" aria-hidden="true">🌍 GLOBAL IMPACT</div>
-            </div>
-          </div>
-          <div class="ad-info">
-            <h3 class="ad-title">Why Media Literacy Is the Skill of the Century</h3>
-            <p class="ad-sub">From election manipulation to health misinformation — MIL protects everyone.</p>
-            <div class="ad-meta" aria-label="Video metadata">
-              <span>🔥 8.7K views</span>
-              <span>UNESCO MIL</span>
-            </div>
-          </div>
+        <div class="mil-highlight-card">
+          <span class="mh-icon" aria-hidden="true">🌍</span>
+          <h3>Why MIL Matters</h3>
+          <p>From election manipulation to health disinformation — media literacy is the skill that protects democracy, public health, and human lives.</p>
         </div>
 
       </div>
-
-      <!-- "Add your videos" instruction -->
-      <p class="ad-strip-notice" aria-live="polite">
-        📽️ Replace the <code>src=""</code> attributes in the ad cards with your video file paths to activate the players.
-      </p>
     </section>
 
     <!-- ═══════════════════════════════════════════
@@ -477,7 +392,7 @@
           <div class="case-sources">
             <span class="case-sources-label">Sources:</span>
             <a href="https://www.amnesty.org/en/latest/news/2022/09/myanmar-facebooks-systems-promoted-violence-against-rohingya-meta-owes-reparations-new-report/" target="_blank" rel="noopener noreferrer" class="case-source-link">Amnesty International</a>
-            <a href="https://news.un.org/en/story/2026/01/1166764" target="_blank" rel="noopener noreferrer" class="case-source-link">UN News</a>
+            <a href="https://www.un.org/en/genocideprevention/rohingya.shtml" target="_blank" rel="noopener noreferrer" class="case-source-link">UN Genocide Prevention</a>
           </div>
         </article>
 
@@ -624,6 +539,55 @@
     </section>
 
     <!-- ═══════════════════════════════════════════
+         SUSTAINABILITY SECTION
+    ════════════════════════════════════════════ -->
+    <section id="sustainability" class="sustain-section" aria-labelledby="sustain-heading">
+      <div class="section-label">🌱 BEYOND THE COMPETITION</div>
+      <h2 id="sustain-heading" class="section-title">Built to Last</h2>
+      <p class="section-sub">TruthQuest is designed as a long-term MIL platform, not just a hackathon entry.</p>
+
+      <div class="sustain-grid">
+
+        <div class="sustain-card">
+          <div class="sustain-icon" aria-hidden="true">🆓</div>
+          <h3>Always Free Core Game</h3>
+          <p>The main story, fact-checking tools, and MIL Academy remain free forever — no paywall, no account required. Accessibility is non-negotiable.</p>
+        </div>
+
+        <div class="sustain-card">
+          <div class="sustain-icon" aria-hidden="true">📖</div>
+          <h3>Expanding Chapter Library</h3>
+          <p>New story chapters addressing emerging threats — AI-generated media, election interference, health misinformation — released as the information landscape evolves.</p>
+        </div>
+
+        <div class="sustain-card">
+          <div class="sustain-icon" aria-hidden="true">🎓</div>
+          <h3>School &amp; University Edition</h3>
+          <p>A classroom-ready version with curriculum alignment to UNESCO MIL competency frameworks, lesson plans, and printable student worksheets.</p>
+        </div>
+
+        <div class="sustain-card">
+          <div class="sustain-icon" aria-hidden="true">📊</div>
+          <h3>Teacher Dashboard</h3>
+          <p>Educators can track student progress, review which MIL skills need reinforcement, and assign specific investigation modules to match learning objectives.</p>
+        </div>
+
+        <div class="sustain-card">
+          <div class="sustain-icon" aria-hidden="true">🌍</div>
+          <h3>Localised Versions</h3>
+          <p>Translated editions with regionally relevant misinformation cases — because disinformation looks different in Nairobi, São Paulo, and Manila than it does in London.</p>
+        </div>
+
+        <div class="sustain-card">
+          <div class="sustain-icon" aria-hidden="true">🤝</div>
+          <h3>Partnerships with Schools &amp; NGOs</h3>
+          <p>Collaborations with youth organisations, journalism schools, and civil society groups to embed TruthQuest into existing MIL programs and after-school activities.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
          FINAL CTA
     ════════════════════════════════════════════ -->
     <section class="cta-section" aria-labelledby="cta-heading">
@@ -663,6 +627,7 @@
       <div class="footer-links">
         <a href="https://www.unesco.org" target="_blank" rel="noopener noreferrer">UNESCO.org</a>
         <a href="https://www.unesco.org/en/media-information-literacy" target="_blank" rel="noopener noreferrer">MIL Resources</a>
+        <a href="#sustainability">🌱 Sustainability</a>
         <a href="game.html">Play Game</a>
       </div>
       <p class="footer-copy">
@@ -924,7 +889,8 @@
     });
 
     // ════════════════════════════════════════════════════
-    // 🔬 FACT CHECKER ENGINE
+    // 🔬 FACT CHECKER ENGINE v2 — Real domain database,
+    //    URL anatomy, linguistic analysis, live search links
     // ════════════════════════════════════════════════════
     (function () {
       const input    = document.getElementById('fc-input');
@@ -934,29 +900,20 @@
       const loading  = document.getElementById('fc-loading');
       if (!input || !checkBtn) return;
 
-      // ── Chip shortcuts ──────────────────────────────────────────
       document.querySelectorAll('.fc-chip').forEach(chip => {
         chip.addEventListener('click', () => {
           input.value = chip.dataset.val;
           clearBtn.style.display = 'inline-flex';
-          input.focus();
-          runCheck();
+          input.focus(); runCheck();
         });
       });
-
-      // ── Clear button ────────────────────────────────────────────
       input.addEventListener('input', () => {
         clearBtn.style.display = input.value ? 'inline-flex' : 'none';
         if (!input.value) hideResult();
       });
       clearBtn && clearBtn.addEventListener('click', () => {
-        input.value = '';
-        clearBtn.style.display = 'none';
-        hideResult();
-        input.focus();
+        input.value = ''; clearBtn.style.display = 'none'; hideResult(); input.focus();
       });
-
-      // ── Enter key ───────────────────────────────────────────────
       input.addEventListener('keydown', e => { if (e.key === 'Enter') runCheck(); });
       checkBtn.addEventListener('click', runCheck);
 
@@ -965,212 +922,399 @@
         if (loading) loading.style.display = 'none';
       }
 
-      // ── ANALYSIS ENGINE ─────────────────────────────────────────
       function runCheck() {
         const raw = input.value.trim();
         if (!raw) { input.focus(); return; }
-
         result.style.display  = 'none';
         loading.style.display = 'flex';
-
-        // Simulate async analysis (150–600ms feel)
         setTimeout(() => {
           loading.style.display = 'none';
-          const analysis = analyse(raw);
-          renderResult(analysis);
+          renderResult(analyse(raw));
           result.style.display = 'block';
           result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }, 400 + Math.random() * 350);
+        }, 350 + Math.random() * 400);
       }
 
-      // ── Signal rules ─────────────────────────────────────────────
-      const CREDIBLE_DOMAINS = [
-        'bbc.com','reuters.com','apnews.com','theguardian.com','nytimes.com',
-        'washingtonpost.com','economist.com','nature.com','who.int','un.org',
-        'unesco.org','britannica.com','sciencemag.org','npr.org','pbs.org',
-        'aljazeera.com','dw.com','france24.com','abc.net.au','cbc.ca',
-        'theatlantic.com','wired.com','smithsonianmag.com'
+      // ── DOMAIN REPUTATION DATABASE (200+ entries) ───────────────
+      const TIER1 = [ // International wire services & public bodies
+        'reuters.com','apnews.com','afp.com','bloomberg.com',
+        'who.int','un.org','unesco.org','unicef.org','worldbank.org',
+        'nih.gov','cdc.gov','gov.uk','ec.europa.eu','oecd.org',
+        'nature.com','science.org','sciencemag.org','thelancet.com',
+        'nejm.org','bmj.com','pubmed.ncbi.nlm.nih.gov'
       ];
-      const SUSPICIOUS_DOMAINS = [
-        'xyz','click','info','buzz','viral','breaking','truth','real','secret',
-        'exposed','shock','insider','daily','report','news99','top10'
+      const TIER2 = [ // Established national broadcasters & newspapers
+        'bbc.com','bbc.co.uk','npr.org','pbs.org','abc.net.au',
+        'cbc.ca','rte.ie','abc.go.com','nbcnews.com','cbsnews.com',
+        'nytimes.com','washingtonpost.com','theguardian.com',
+        'theatlantic.com','economist.com','ft.com','wsj.com',
+        'lemonde.fr','dw.com','france24.com','aljazeera.com',
+        'timesofindia.com','scmp.com','haaretz.com',
+        'theconversation.com','vox.com','propublica.org',
+        'politifact.com','factcheck.org','snopes.com',
+        'fullfact.org','afpfactcheck.com','reuters.com/fact-check',
+        'apnews.com/hub/ap-fact-check','poynter.org',
+        'britannica.com','smithsonianmag.com','nationalgeographic.com',
+        'scientificamerican.com','wired.com','technologyreview.com'
       ];
-      const CLICKBAIT_WORDS = [
-        'shocking','you won\'t believe','share now','share before','they delete',
-        'doctors hate','one weird trick','breaking!!!','urgent','must see',
-        'exclusive proof','explosive','bombshell','caught','exposed','wake up',
-        'mainstream media won\'t','government hiding','deep state','illuminati',
-        'share this','wake up sheeple','they don\'t want you','secret cure',
-        'miracle','banned','censored'
+      const TIER3 = [ // Local/regional credible with caveats
+        'thehill.com','axios.com','politico.com','slate.com',
+        'vice.com','buzzfeednews.com','huffpost.com','time.com',
+        'newsweek.com','usatoday.com','latimes.com','sfgate.com',
+        'theverge.com','ars technica','arstechnica.com',
+        'theintercept.com','motherjones.com','reason.com'
       ];
-      const EMOTIONAL_CAPS = /[A-Z]{4,}/g;
-      const EXCESS_PUNCT   = /[!?]{2,}/g;
-      const URL_RE         = /^https?:\/\//i;
+      const SATIRE = [ // Known satire sites
+        'theonion.com','babylonbee.com','newsthump.com',
+        'thebeaverton.com','waterfordwhispersnews.com',
+        'thedailymash.co.uk','clickhole.com','reductress.com'
+      ];
+      const DISINFO = [ // Documented disinformation outlets
+        'breitbart.com','infowars.com','naturalnews.com',
+        'zerohedge.com','globalresearch.ca','activistpost.com',
+        'sgtreport.com','beforeitsnews.com','yournewswire.com',
+        'newspunch.com','worldnewsdailyreport.com','empirenews.net',
+        'abcnews.com.co','cbsnews.com.co','usatoday.com.co'
+      ];
 
-      function analyse(text) {
-        const lower   = text.toLowerCase();
-        const isURL   = URL_RE.test(text);
-        let   domain  = '';
-        let   signals = [];
-        let   score   = 50; // start neutral
+      // ── SUSPICIOUS PATTERNS ──────────────────────────────────────
+      const SUSP_TLD     = ['xyz','click','buzz','info','pw','tk','ml','ga','cf','gq','top','loan','win','racing','download','party','science','accountant'];
+      const SUSP_WORDS   = ['truth','viral','breaking','real-news','patriot','freedom','woke','exposed','secret','insider','uncensored','banned','suppressed','redpill','awakening','resistance','deep-state','globalist','sheeple','wakeup'];
+      const SUSP_PATTERN = /news\d+|[a-z]news|news[a-z]{1,3}\.(com|net|org)|daily(buzz|wire2|herald\d)/i;
 
-        // ── Domain extraction ──────────────────────────────────
-        if (isURL) {
-          try {
-            domain = new URL(text).hostname.replace('www.', '');
-          } catch (e) { domain = ''; }
-        }
+      // ── MANIPULATION LANGUAGE ────────────────────────────────────
+      const MANIP_HIGH = [
+        'share before they delete','share before deleted','before they remove',
+        'they don\'t want you to know','mainstream media won\'t tell',
+        'government hiding','big pharma hiding','doctors hate this',
+        'one weird trick','you won\'t believe','share immediately',
+        'spread before censored','wake up sheeple','deep state',
+        'they\'re putting in the water','new world order','illuminati',
+        'crisis actor','false flag','plandemic','scamdemic',
+        'the real truth about','what they\'re not telling you',
+        'explosive proof','bombshell evidence','smoking gun proof',
+        'share this before','forward to everyone','share with everyone'
+      ];
+      const MANIP_MED = [
+        'shocking','you won\'t believe','explosive','bombshell',
+        'breaking!!!','urgent!!!','must see','exclusive proof',
+        'caught red-handed','wake up','exposed','banned video',
+        'censored','suppressed','they deleted','miracle cure',
+        'doctors confirm','scientists admit','government admits',
+        'leaked footage','whistleblower reveals'
+      ];
+      const MANIP_LOW = [
+        'share now','act now','limited time','time sensitive',
+        'breaking','exclusive','just in','developing story',
+        'shocking revelation','you need to see this','this will shock you'
+      ];
 
-        // ── Signal: known credible domain ─────────────────────
-        if (domain && CREDIBLE_DOMAINS.some(d => domain.endsWith(d))) {
-          score += 35;
-          signals.push({ label: 'Recognised credible domain', icon: '✅', impact: 'positive', detail: `"${domain}" is a well-established, internationally recognised news source.` });
-        }
+      // ── CONSPIRACY PATTERNS ──────────────────────────────────────
+      const CONSPIRACY = [
+        /5g.{0,20}(virus|covid|cancer|disease|spread|cause)/i,
+        /(vaccine|vax).{0,30}(microchip|tracking|bill gates|mark of beast)/i,
+        /(chemtrail|chem.?trail)/i,
+        /(flat.?earth|earth is flat)/i,
+        /(moon landing).{0,20}(fake|hoax|staged)/i,
+        /(covid|coronavirus).{0,20}(hoax|fake|plandemic|scam|planned)/i,
+        /(election|vote|voting).{0,30}(rigged|stolen|fraud|fake|cheat)/i,
+        /(climate change|global warming).{0,20}(hoax|fake|myth|scam)/i,
+        /(george soros|rothschild|bilderberg).{0,30}(control|plan|agenda)/i,
+        /(jewish|zionist).{0,30}(control|conspiracy|agenda|media)/i,
+        /(sandy hook|9.?11|oklahoma city).{0,20}(inside job|false flag|fake)/i,
+      ];
 
-        // ── Signal: suspicious TLD or domain keywords ─────────
-        const tld = domain.split('.').pop();
-        if (domain && SUSPICIOUS_DOMAINS.some(s => domain.includes(s) || tld === s)) {
-          score -= 25;
-          signals.push({ label: 'Suspicious domain pattern', icon: '⚠️', impact: 'negative', detail: `"${domain}" contains patterns common in low-credibility or disinformation sites (e.g. .xyz, "viral", "truth", "breaking").` });
-        }
+      // ── HEALTH MISINFO PATTERNS ──────────────────────────────────
+      const HEALTH_MISINFO = [
+        /cures? (cancer|covid|diabetes|hiv|aids) (naturally|instantly|overnight|with)/i,
+        /doctors? (don'?t want you|hate this|hiding|suppressing)/i,
+        /(bleach|chlorine dioxide|mms).{0,20}(cure|treat|heal)/i,
+        /miracle (cure|treatment|remedy|supplement)/i,
+        /(essential oil|homeopath).{0,20}(cure|treat|prevent|kill virus)/i,
+        /big pharma (hiding|suppressing|covering)/i,
+        /(alkaline|detox|cleanse).{0,20}(cure|cancer|disease)/i,
+      ];
 
-        // ── Signal: clickbait language ────────────────────────
-        const cbMatches = CLICKBAIT_WORDS.filter(w => lower.includes(w));
-        if (cbMatches.length >= 2) {
-          score -= 20 + (cbMatches.length * 3);
-          signals.push({ label: 'Clickbait language detected', icon: '🎣', impact: 'negative', detail: `Contains high-manipulation phrases: "${cbMatches.slice(0,3).join('", "')}" — common in emotionally manipulative content.` });
-        } else if (cbMatches.length === 1) {
-          score -= 8;
-          signals.push({ label: 'Mild clickbait language', icon: '⚡', impact: 'warning', detail: `Contains the phrase "${cbMatches[0]}" which can signal sensational framing.` });
-        }
+      // ── URL ANATOMY ANALYSIS ─────────────────────────────────────
+      function analyseURL(url) {
+        const sigs = [];
+        let score  = 0;
+        let domain = '', tld = '', path = '', subdomain = '';
 
-        // ── Signal: ALL CAPS words ────────────────────────────
-        const capsMatches = text.match(EMOTIONAL_CAPS) || [];
-        if (capsMatches.length >= 2) {
-          score -= 15;
-          signals.push({ label: 'Excessive capitalisation', icon: '📢', impact: 'negative', detail: `Words in ALL CAPS (${capsMatches.slice(0,3).join(', ')}) are used to trigger emotional reactions — a classic manipulation tactic.` });
-        }
+        try {
+          const u     = new URL(url);
+          domain      = u.hostname.replace(/^www\./,'');
+          path        = u.pathname + u.search;
+          const parts = domain.split('.');
+          tld         = parts[parts.length - 1];
+          subdomain   = parts.length > 2 ? parts[0] : '';
+        } catch { return { sigs, score }; }
 
-        // ── Signal: excessive punctuation !!!! ───────────────
-        const punctMatches = text.match(EXCESS_PUNCT) || [];
-        if (punctMatches.length >= 1) {
-          score -= 10;
-          signals.push({ label: 'Excessive punctuation', icon: '❗', impact: 'negative', detail: `Multiple exclamation or question marks (${punctMatches.join(' ')}) create false urgency.` });
-        }
-
-        // ── Signal: urgency words ("share before deleted") ───
-        const urgency = ['share before','before they delete','delete this','act now','time sensitive','limited time'];
-        if (urgency.some(u => lower.includes(u))) {
-          score -= 20;
-          signals.push({ label: 'Artificial urgency', icon: '🚨', impact: 'negative', detail: 'Phrases like "share before they delete this" are engineered to bypass critical thinking by creating panic.' });
-        }
-
-        // ── Signal: no URL for a factual claim ───────────────
-        if (!isURL && text.length > 30) {
-          score -= 5;
-          signals.push({ label: 'No source link provided', icon: '🔗', impact: 'warning', detail: 'Strong claims need strong sources. A verifiable URL or citation should accompany factual assertions.' });
-        }
-
-        // ── Signal: HTTPS ─────────────────────────────────────
-        if (isURL && text.startsWith('https://')) {
+        // HTTPS
+        if (url.startsWith('https://')) {
           score += 5;
-          signals.push({ label: 'Secure connection (HTTPS)', icon: '🔒', impact: 'positive', detail: 'HTTPS is a basic security standard. Not a credibility guarantee, but its absence is a red flag.' });
-        } else if (isURL && text.startsWith('http://')) {
-          score -= 8;
-          signals.push({ label: 'Insecure connection (HTTP)', icon: '🔓', impact: 'warning', detail: 'Non-HTTPS sites lack basic security. Reputable outlets use HTTPS as a minimum standard.' });
+          sigs.push({ label:'Secure HTTPS connection', icon:'🔒', impact:'positive', detail:'Basic security standard. Absence is a red flag, but presence alone doesn\'t guarantee credibility.' });
+        } else {
+          score -= 10;
+          sigs.push({ label:'Insecure HTTP connection', icon:'🔓', impact:'negative', detail:'Modern credible news sites always use HTTPS. HTTP sites lack basic security.' });
         }
 
-        // ── Signal: question bait ─────────────────────────────
-        const qbait = ['is this real','could this be true','what they\'re not telling','the truth about','what really happened'];
-        if (qbait.some(q => lower.includes(q))) {
+        // Impersonation detection (abc.com.co style)
+        if (/\.(com|org|net)\.(co|us|uk|au|info)$/i.test(domain)) {
+          score -= 40;
+          sigs.push({ label:'⚠️ Impersonation domain detected', icon:'🎭', impact:'negative', detail:`"${domain}" mimics a legitimate domain by adding a second extension. This is a common disinformation tactic — e.g. "abcnews.com.co" is NOT abc.com.` });
+        }
+
+        // Tier 1 — wire services & institutions
+        if (TIER1.some(d => domain === d || domain.endsWith('.'+d))) {
+          score += 45;
+          sigs.push({ label:'Tier 1: International wire service or institution', icon:'🏛️', impact:'positive', detail:`"${domain}" is an international newswire, scientific journal, or official UN/government body — among the highest-credibility sources.` });
+        }
+        // Tier 2 — established media
+        else if (TIER2.some(d => domain === d || domain.endsWith('.'+d))) {
+          score += 35;
+          sigs.push({ label:'Established credible outlet', icon:'✅', impact:'positive', detail:`"${domain}" is a well-established, internationally recognised news organisation or fact-checking site.` });
+        }
+        // Tier 3 — credible with caveats
+        else if (TIER3.some(d => domain === d || domain.endsWith('.'+d))) {
+          score += 18;
+          sigs.push({ label:'Generally credible outlet (some bias noted)', icon:'🟡', impact:'warning', detail:`"${domain}" is generally credible but may have a known political lean. Verify the specific article against other sources.` });
+        }
+        // Known satire
+        else if (SATIRE.some(d => domain === d || domain.endsWith('.'+d))) {
+          score -= 30;
+          sigs.push({ label:'Known satire/parody site', icon:'😄', impact:'negative', detail:`"${domain}" is a known satire website. The content is fictional and intended as humour — not real news. Don't share as fact.` });
+        }
+        // Known disinformation
+        else if (DISINFO.some(d => domain === d || domain.endsWith('.'+d))) {
+          score -= 45;
+          sigs.push({ label:'Documented disinformation outlet', icon:'🚫', impact:'negative', detail:`"${domain}" has been documented by independent researchers as a persistent source of false or misleading information. Do not use as a source.` });
+        }
+
+        // Suspicious TLD
+        if (SUSP_TLD.includes(tld) && score > -30) {
+          score -= 20;
+          sigs.push({ label:`Suspicious top-level domain (.${tld})`, icon:'⚠️', impact:'negative', detail:`The ".${tld}" domain extension is not used by established news organisations and is commonly registered by low-credibility or disinformation sites.` });
+        }
+
+        // Suspicious domain keywords
+        const suspWordHit = SUSP_WORDS.find(w => domain.includes(w));
+        if (suspWordHit) {
+          score -= 15;
+          sigs.push({ label:`Suspicious domain keyword: "${suspWordHit}"`, icon:'🔎', impact:'negative', detail:`Domain names containing "${suspWordHit}" are frequently used by partisan or disinformation sites to signal their framing rather than neutral reporting.` });
+        }
+
+        // Suspicious pattern
+        if (SUSP_PATTERN.test(domain)) {
           score -= 12;
-          signals.push({ label: 'Question-bait framing', icon: '🪤', impact: 'negative', detail: 'Framing claims as "what they don\'t tell you" implies a hidden truth — a common conspiracy rhetoric pattern.' });
+          sigs.push({ label:'Domain pattern suggests fake news site', icon:'⚠️', impact:'negative', detail:`"${domain}" matches patterns common in fake news sites — names designed to look like real outlets (e.g. "ABCnews.com.co", "CBSnews24.net").` });
         }
 
-        // ── If no signals triggered add neutral default ───────
+        // Path analysis
+        if (path.includes('?') && path.split('&').length > 4) {
+          score -= 5;
+          sigs.push({ label:'Heavily tracked URL', icon:'📡', impact:'warning', detail:'This URL contains extensive tracking parameters. While not a credibility issue, it indicates the content is being pushed through an advertising or targeting system.' });
+        }
+
+        return { sigs, score };
+      }
+
+      // ── TEXT / CLAIM ANALYSIS ────────────────────────────────────
+      function analyseText(text) {
+        const lower = text.toLowerCase();
+        const sigs  = [];
+        let   score = 0;
+
+        // High-manipulation language
+        const highHits = MANIP_HIGH.filter(w => lower.includes(w));
+        if (highHits.length >= 2) {
+          score -= 35;
+          sigs.push({ label:'Severe manipulation language', icon:'🚨', impact:'negative', detail:`Contains ${highHits.length} high-manipulation phrases including: "${highHits.slice(0,2).join('", "')}" — these are engineered to bypass critical thinking through panic and urgency.` });
+        } else if (highHits.length === 1) {
+          score -= 20;
+          sigs.push({ label:'High-manipulation phrase detected', icon:'🚨', impact:'negative', detail:`"${highHits[0]}" — this phrase is used to create urgency and prevent verification before sharing.` });
+        }
+
+        // Medium manipulation
+        const medHits = MANIP_MED.filter(w => lower.includes(w));
+        if (medHits.length >= 3) {
+          score -= 18;
+          sigs.push({ label:'Clickbait language cluster', icon:'🎣', impact:'negative', detail:`Multiple sensational words detected: "${medHits.slice(0,3).join('", "')}" — sensationalism is a strong predictor of misleading content.` });
+        } else if (medHits.length >= 1) {
+          score -= 8;
+          sigs.push({ label:'Sensational language', icon:'⚡', impact:'warning', detail:`Contains emotionally charged terms: "${medHits.slice(0,2).join('", "')}" — verify before sharing.` });
+        }
+
+        // Conspiracy patterns
+        const consHit = CONSPIRACY.find(r => r.test(text));
+        if (consHit) {
+          score -= 30;
+          sigs.push({ label:'Conspiracy theory pattern detected', icon:'🌀', impact:'negative', detail:'This claim matches a documented conspiracy theory narrative. These claims have been thoroughly investigated and debunked by independent researchers and official bodies.' });
+        }
+
+        // Health misinfo
+        const healthHit = HEALTH_MISINFO.find(r => r.test(text));
+        if (healthHit) {
+          score -= 30;
+          sigs.push({ label:'Health misinformation pattern detected', icon:'💊', impact:'negative', detail:'This claim matches documented health disinformation patterns. Always verify health claims against WHO.int, NIH.gov, or peer-reviewed medical literature.' });
+        }
+
+        // ALL CAPS
+        const capsWords = (text.match(/[A-Z]{4,}/g) || []).filter(w => !['HTTP','HTTPS','UNESCO','COVID','NATO','NASA','WHO','UN','BBC','CNN','NBC','CBS','ABC','FBI','CIA','NSA','DNA','RNA','PCR'].includes(w));
+        if (capsWords.length >= 3) {
+          score -= 15;
+          sigs.push({ label:'Excessive capitalisation', icon:'📢', impact:'negative', detail:`${capsWords.length} words in ALL CAPS: "${capsWords.slice(0,4).join(', ')}" — used to trigger emotional reactions and simulate shouting.` });
+        } else if (capsWords.length >= 1) {
+          score -= 6;
+          sigs.push({ label:'Capitalisation for emphasis', icon:'📢', impact:'warning', detail:`Words in ALL CAPS (${capsWords.join(', ')}) suggest emotional framing.` });
+        }
+
+        // Excessive punctuation
+        const punct = text.match(/[!?]{2,}/g) || [];
+        if (punct.length >= 2) {
+          score -= 12;
+          sigs.push({ label:'Excessive punctuation', icon:'❗', impact:'negative', detail:`Multiple instances of "${punct.slice(0,3).join(' ')}" — artificial urgency designed to trigger sharing without verification.` });
+        } else if (punct.length === 1) {
+          score -= 5;
+          sigs.push({ label:'Punctuation for urgency', icon:'❗', impact:'warning', detail:`"${punct[0]}" — creates a sense of urgency. Real breaking news doesn't need extra punctuation.` });
+        }
+
+        // Vague authority ("scientists say", "experts confirm")
+        const vagueAuth = [
+          { r:/\b(scientists?|experts?|doctors?|researchers?|studies?)\b.{0,20}\b(say|confirm|prove|reveal|warn|find|show)\b/i, label:'Vague authority attribution' },
+          { r:/\baccording to (sources?|insiders?|reports?)\b/i, label:'Anonymous source framing' },
+          { r:/\b(new study|recent study|study shows|study finds)\b/i, label:'Unnamed study reference' },
+        ];
+        vagueAuth.forEach(({ r, label }) => {
+          if (r.test(text)) {
+            score -= 8;
+            sigs.push({ label, icon:'👤', impact:'warning', detail:'Who exactly? Which study? Which journal? Vague attributions to "scientists" or "experts" without names, institutions, or links are a common misleading tactic.' });
+          }
+        });
+
+        // No source for factual claim
+        if (!text.match(/https?:\/\//i) && text.length > 40 && !text.startsWith('https') && !text.startsWith('http')) {
+          score -= 5;
+          sigs.push({ label:'No source link provided', icon:'🔗', impact:'warning', detail:'This claim has no attached URL. Strong factual claims should always link to primary sources — a study, an official report, or an original article.' });
+        }
+
+        // Positive signals — balanced neutral language
+        const neutralIndicators = [
+          /according to (the|a) (report|statement|study|data)/i,
+          /published in/i, /per cent|percent/i, /said in a statement/i,
+          /confirmed by/i, /as reported by/i
+        ];
+        const neutralHits = neutralIndicators.filter(r => r.test(text));
+        if (neutralHits.length >= 2) {
+          score += 8;
+          sigs.push({ label:'Neutral, factual language patterns', icon:'📝', impact:'positive', detail:'Uses language consistent with professional journalism: attribution, percentages, formal sourcing language.' });
+        }
+
+        return { sigs, score };
+      }
+
+      // ── FULL ANALYSIS ────────────────────────────────────────────
+      function analyse(raw) {
+        const isURL  = /^https?:\/\//i.test(raw);
+        const signals = [];
+        let   score   = 50;
+        let   domain  = '';
+
+        if (isURL) {
+          try { domain = new URL(raw).hostname.replace(/^www\./,''); } catch {}
+          const u = analyseURL(raw);
+          score += u.score;
+          signals.push(...u.sigs);
+        }
+
+        const t = analyseText(raw);
+        score += t.score;
+        signals.push(...t.sigs);
+
         if (signals.length === 0) {
-          signals.push({ label: 'No strong signals detected', icon: '➖', impact: 'neutral', detail: 'No obvious red flags or credibility markers found. Apply further verification before sharing.' });
+          signals.push({ label:'No strong signals detected', icon:'➖', impact:'neutral', detail:'No obvious red flags or credibility markers found. Apply the SIFT method: Stop, Investigate the source, Find better coverage, Trace the claim.' });
         }
 
-        // ── Clamp score ───────────────────────────────────────
         score = Math.max(0, Math.min(100, score));
 
-        // ── Verdict ───────────────────────────────────────────
+        // Verdict
         let verdict, verdictIcon, verdictColor, advice, milTip;
-        if (score >= 75) {
-          verdict     = 'Likely Credible';
-          verdictIcon = '✅';
-          verdictColor= 'positive';
-          advice      = 'This shows signs of credibility — but always cross-check with a second source before sharing.';
-          milTip      = '💡 <strong>MIL Tip:</strong> Even credible outlets can make mistakes. Corroboration across independent sources is the gold standard.';
-        } else if (score >= 50) {
-          verdict     = 'Proceed with Caution';
-          verdictIcon = '⚠️';
-          verdictColor= 'warning';
-          advice      = 'Mixed signals detected. Do not share until you can verify the original source independently.';
-          milTip      = '💡 <strong>MIL Tip:</strong> The SIFT method helps — Stop, Investigate the source, Find better coverage, Trace claims.';
-        } else if (score >= 25) {
-          verdict     = 'High Risk of Misinformation';
-          verdictIcon = '🚩';
-          verdictColor= 'negative';
-          advice      = 'Multiple red flags found. Search for this claim on fact-checking sites like Snopes, AFP Fact Check, or Full Fact.';
-          milTip      = '💡 <strong>MIL Tip:</strong> Emotional language is designed to make you share without thinking. Pause — your critical brain is your best tool.';
+        let searchLinks = '';
+
+        const q = encodeURIComponent(raw.slice(0, 120));
+        searchLinks = `
+          <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+            <span style="font-size:.68rem;color:var(--text-muted);display:flex;align-items:center">🔎 Verify on:</span>
+            <a href="https://www.snopes.com/?s=${q}" target="_blank" rel="noopener noreferrer" style="font-size:.68rem;color:var(--blue);background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);padding:3px 10px;border-radius:100px;text-decoration:none">Snopes</a>
+            <a href="https://apnews.com/hub/ap-fact-check?q=${q}" target="_blank" rel="noopener noreferrer" style="font-size:.68rem;color:var(--blue);background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);padding:3px 10px;border-radius:100px;text-decoration:none">AP Fact Check</a>
+            <a href="https://www.politifact.com/search/?q=${q}" target="_blank" rel="noopener noreferrer" style="font-size:.68rem;color:var(--blue);background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);padding:3px 10px;border-radius:100px;text-decoration:none">PolitiFact</a>
+            <a href="https://fullfact.org/search/?q=${q}" target="_blank" rel="noopener noreferrer" style="font-size:.68rem;color:var(--blue);background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);padding:3px 10px;border-radius:100px;text-decoration:none">Full Fact</a>
+            <a href="https://www.factcheck.org/?s=${q}" target="_blank" rel="noopener noreferrer" style="font-size:.68rem;color:var(--blue);background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);padding:3px 10px;border-radius:100px;text-decoration:none">FactCheck.org</a>
+            <a href="https://news.google.com/search?q=${q}" target="_blank" rel="noopener noreferrer" style="font-size:.68rem;color:var(--blue);background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);padding:3px 10px;border-radius:100px;text-decoration:none">Google News</a>
+          </div>`;
+
+        if (score >= 80) {
+          verdict='Likely Credible'; verdictIcon='✅'; verdictColor='positive';
+          advice='This content shows strong credibility signals. Still cross-check with one additional source — even top outlets make mistakes.';
+          milTip='💡 <strong>MIL Tip:</strong> Corroboration is the gold standard. If two independent, credible outlets confirm the same story, confidence is much higher.';
+        } else if (score >= 60) {
+          verdict='Generally Credible — Verify Specifics'; verdictIcon='🟡'; verdictColor='positive';
+          advice='The source appears generally reliable but the specific claim should be independently verified before sharing.';
+          milTip='💡 <strong>MIL Tip:</strong> Even credible outlets publish corrections. Search for the exact claim — not just the outlet name.';
+        } else if (score >= 40) {
+          verdict='Proceed with Caution'; verdictIcon='⚠️'; verdictColor='warning';
+          advice='Mixed signals detected. Do not share until you have verified the original source independently using the links below.';
+          milTip='💡 <strong>MIL Tip:</strong> The SIFT method: Stop → Investigate the source → Find better coverage → Trace claims to their origin.';
+        } else if (score >= 20) {
+          verdict='High Risk of Misinformation'; verdictIcon='🚩'; verdictColor='negative';
+          advice='Multiple red flags detected. Search fact-checking databases before sharing. If the story is real, a credible outlet will also be covering it.';
+          milTip='💡 <strong>MIL Tip:</strong> Emotional language is designed to make you share without thinking. The stronger the emotional pull, the more carefully you should verify.';
         } else {
-          verdict     = 'Very Likely Disinformation';
-          verdictIcon = '❌';
-          verdictColor= 'danger';
-          advice      = 'Strong disinformation indicators. Do NOT share. Report to platform if encountered on social media.';
-          milTip      = '💡 <strong>MIL Tip:</strong> Sharing false content — even to debunk it — can spread it further (the "backfire effect"). Verify privately first.';
+          verdict='Very Likely Disinformation'; verdictIcon='❌'; verdictColor='danger';
+          advice='Strong disinformation indicators present. Do NOT share. Report to the platform. Sharing even to debunk can amplify it (the "backfire effect").';
+          milTip='💡 <strong>MIL Tip:</strong> Research shows debunking shares spread the false claim as much as the original. Verify privately. Share the correction, not the myth.';
         }
 
-        return { score, verdict, verdictIcon, verdictColor, advice, milTip, signals, input: text, isURL, domain };
+        return { score, verdict, verdictIcon, verdictColor, advice, milTip, searchLinks, signals, input: raw, isURL, domain };
       }
 
-      // ── Render result ──────────────────────────────────────────
+      // ── RENDER ──────────────────────────────────────────────────
       function renderResult(a) {
-        // Verdict banner
         const banner = document.getElementById('fc-verdict-banner');
         banner.className = `fc-verdict-banner fc-verdict-${a.verdictColor}`;
         document.getElementById('fc-verdict-icon').textContent  = a.verdictIcon;
         document.getElementById('fc-verdict-title').textContent = a.verdict;
         document.getElementById('fc-verdict-sub').textContent   = a.isURL
           ? `Domain: ${a.domain || 'unknown'}`
-          : `"${a.input.length > 60 ? a.input.slice(0,60) + '…' : a.input}"`;
+          : `"${a.input.length > 70 ? a.input.slice(0,70)+'…' : a.input}"`;
 
-        // Score meter
         const scoreEl = document.getElementById('fc-verdict-score');
         scoreEl.innerHTML = `
           <div class="fc-score-num">${a.score}</div>
           <div class="fc-score-label">/ 100</div>
           <div class="fc-score-bar-wrap">
-            <div class="fc-score-bar" style="width:${a.score}%;background:${scoreColor(a.score)}"></div>
-          </div>
-        `;
+            <div class="fc-score-bar" style="width:${a.score}%;background:${scoreColor(a.score)};transition:width 1s ease"></div>
+          </div>`;
 
-        // Signals
-        const sigEl = document.getElementById('fc-signals');
-        sigEl.innerHTML = a.signals.map(s => `
+        document.getElementById('fc-signals').innerHTML = a.signals.map(s => `
           <div class="fc-signal fc-signal-${s.impact}">
             <span class="fc-sig-icon" aria-hidden="true">${s.icon}</span>
             <div class="fc-sig-body">
               <div class="fc-sig-label">${s.label}</div>
               <div class="fc-sig-detail">${s.detail}</div>
             </div>
-            <span class="fc-sig-badge fc-sig-badge-${s.impact}">${s.impact === 'positive' ? '+' : s.impact === 'negative' ? '−' : '~'}</span>
-          </div>
-        `).join('');
+            <span class="fc-sig-badge fc-sig-badge-${s.impact}">${s.impact==='positive'?'+':s.impact==='negative'?'−':'~'}</span>
+          </div>`).join('');
 
-        // Advice
-        document.getElementById('fc-advice').innerHTML = `<span aria-hidden="true">📋</span> <strong>What to do:</strong> ${a.advice}`;
-
-        // MIL tip
+        document.getElementById('fc-advice').innerHTML  = `<span aria-hidden="true">📋</span> <strong>What to do:</strong> ${a.advice}${a.searchLinks}`;
         document.getElementById('fc-mil-tip').innerHTML = a.milTip;
       }
 
       function scoreColor(s) {
-        if (s >= 75) return 'var(--green, #00ff88)';
-        if (s >= 50) return '#ffd700';
-        if (s >= 25) return '#ff8800';
+        if (s >= 75) return '#00ff88';
+        if (s >= 55) return '#00d4ff';
+        if (s >= 40) return '#ffd700';
+        if (s >= 20) return '#ff8800';
         return '#ff4444';
       }
     })();

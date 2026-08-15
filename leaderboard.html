@@ -293,6 +293,20 @@
       .stats-row { flex-direction: column; }
       .stat-box  { border-right: none; border-bottom: 1px solid var(--border); }
     }
+
+    /* ── Demo notice ──────────────────────────────────── */
+    .lb-demo-notice {
+      text-align: center;
+      font-size: 0.78rem;
+      color: rgba(136,153,187,0.65);
+      font-style: italic;
+      margin: 0 auto 16px;
+      max-width: 520px;
+      padding: 8px 16px;
+      background: rgba(0,212,255,0.04);
+      border: 1px solid rgba(0,212,255,0.1);
+      border-radius: 8px;
+    }
   </style>
 </head>
 <body>
@@ -303,6 +317,7 @@
     <a href="index.html" class="logo" aria-label="TruthQuest Home">🔍 Truth<span>Quest</span></a>
     <nav aria-label="Main navigation">
       <a href="index.html">Home</a>
+      <a href="hub.html">🏛️ Platform</a>
       <a href="game.html" class="nav-cta">Play Now</a>
     </nav>
   </header>
@@ -328,7 +343,7 @@
         <span class="stat-lbl">Badges Earned</span>
       </div>
       <div class="stat-box">
-        <span class="stat-num" id="stat-countries">138</span>
+        <span class="stat-num" id="stat-countries">—</span>
         <span class="stat-lbl">Countries</span>
       </div>
     </div>
@@ -351,6 +366,11 @@
       <button class="filter-btn"        data-filter="week"   aria-pressed="false">This Week</button>
       <button class="filter-btn"        data-filter="badges" aria-pressed="false">Most Badges</button>
     </div>
+
+    <!-- Demo data notice -->
+    <p class="lb-demo-notice" role="note">
+      📋 Showing sample entries to illustrate the leaderboard format. Play the game to add your real score.
+    </p>
 
     <!-- Table -->
     <table class="lb-table" role="grid" aria-label="Leaderboard">
@@ -499,9 +519,15 @@
       // Stats
       const totalBadges = all.reduce((n, r) => n + r.badges.length, 0);
       const avgScore    = all.length ? Math.round(all.reduce((n,r)=>n+r.score,0)/all.length) : 0;
+      const uniqueCountries = new Set(all.map(r => r.country)).size;
       animCount('stat-players', all.length);
       animCount('stat-avg',     avgScore);
       animCount('stat-badges',  totalBadges);
+      document.getElementById('stat-countries').textContent = uniqueCountries || '—';
+
+      // Hide demo notice if real scores exist
+      const demoNotice = document.querySelector('.lb-demo-notice');
+      if (demoNotice) demoNotice.style.display = real.length > 0 ? 'none' : '';
 
       // Your score card
       const yourEntries = real.filter(r => r.isYou);
