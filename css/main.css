@@ -46,11 +46,7 @@ body {
 
 /* ── Quotes Background ───────────────────────────────────────────── */
 #quotes-bg {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  overflow: hidden;
+  display: none;
 }
 
 /* Each floating quote card */
